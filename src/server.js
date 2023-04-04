@@ -15,7 +15,7 @@ app.use(express.urlencoded({extend:false}));
 app.use(json());
 
 //Rutas
-app.use('/', router);
+// app.use('/', router);
 
 app.use((req, res, next) => {
   res.status(404).json({
