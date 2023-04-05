@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
        Rol.hasMany(models.Usuario, {foreignKey: 'id_rol'}); 
     } 
   }
-  Estado.init({ 
+  Rol.init({ 
     descripcion: {
       type: DataTypes.STRING(50),
       allowNull: false,
