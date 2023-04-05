@@ -2,7 +2,9 @@ const app = require('./server');
 const {sequelize} = require('./database/models/index');
 const http = require('http').createServer(app);
 
+
 const PORT=process.env.PORT ||3000;
+
 
 http.listen(PORT, () => {
     console.log(`Running on a port: ${PORT}`);

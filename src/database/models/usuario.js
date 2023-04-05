@@ -5,10 +5,8 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Usuario extends Model {
      static associate(models) {
-      /* User.belongsToMany(models.Game, {through: 'Usergame', foreignKey: 'idUser'});
-        User.hasMany(models.Usergame, {foreignKey: 'idUser'});
-
-      User.belongsTo(models.Role, {foreignKey: 'idRole'}); */
+      Usuario.belongsTo(models.Estado, {foreignKey: 'cod_estado'});
+      Usuario.belongsTo(models.Rol, {foreignKey: 'id_rol'});
     } 
   }
   Usuario.init({ 
@@ -77,14 +75,19 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
             isNumeric: { msg:"El telefono solo debe contener numeros" },
+            }
       },
       fechaNacimiento: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false,
       },
-  }, 
+      cod_estado: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+  }, {    
     sequelize,
-    modelName: 'Usuario',
+    modelName: 'Usuario', 
   });
   return Usuario;
 };
