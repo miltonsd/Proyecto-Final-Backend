@@ -9,6 +9,12 @@ module.exports = (sequelize, DataTypes) => {
     } 
   }
   Pedido.init({ 
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER,
+    },
     fechaHoraPedido: {
       type: DataTypes.DATE,
       allowNull: false,

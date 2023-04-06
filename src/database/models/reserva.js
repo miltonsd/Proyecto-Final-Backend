@@ -9,6 +9,12 @@ module.exports = (sequelize, DataTypes) => {
     } 
   }
   Reserva.init({ 
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER,
+    },
     fechaHora: {
       type: DataTypes.DATE,
       allowNull: false,

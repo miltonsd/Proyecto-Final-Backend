@@ -9,6 +9,12 @@ module.exports = (sequelize, DataTypes) => {
     } 
   }
   Mesa.init({ 
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER,
+    },
     ubicacion: {
       type: DataTypes.STRING,
       allowNull: false,

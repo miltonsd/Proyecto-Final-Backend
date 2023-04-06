@@ -9,6 +9,12 @@ module.exports = (sequelize, DataTypes) => {
     } 
   }
   Menu.init({ 
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER,
+    },
     titulo: {
       type: DataTypes.STRING,
       allowNull: false,

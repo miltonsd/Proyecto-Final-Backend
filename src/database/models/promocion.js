@@ -9,6 +9,12 @@ module.exports = (sequelize, DataTypes) => {
     } 
   }
   Promocion.init({ 
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER,
+    },
     porcentaje_desc: {
       type: DataTypes.INTEGER,
       allowNull: false,
