@@ -21,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
     }}, {
     sequelize,
     modelName: 'Rol',
+    tableName: 'roles'
  });
   return Rol;
 };
