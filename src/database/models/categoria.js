@@ -1,27 +1,30 @@
-'use strict'; 
-const {
-  Model
-} = require('sequelize');
+'use strict';
+
+const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Categoria extends Model {
-     static associate(models) {
-      Categoria.hasMany(models.Usuario, { foreignKey: "cod_categoria" });
+    static associate(models) {
+      Categoria.hasMany(models.Usuario, { 
+        foreignKey: 'cod_categoria',
+        onDelete: 'NO ACTION',
+      });
     } 
   }
   Categoria.init({ 
-    id: {
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true,
+    cod_categoria: {
       type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
     },
     descripcion: {
       type: DataTypes.STRING(50),
       allowNull: false,
-    }}, {
+    }
+  }, {
     sequelize,
     modelName: 'Categoria',
-    tableName: 'categorias'
- });
+    tableName: 'categorias',
+  });
   return Categoria;
 };

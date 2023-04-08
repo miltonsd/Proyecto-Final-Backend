@@ -1,14 +1,12 @@
-"use strict";
+'use strict';
 
-/** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("usuarios", {
+  async up (queryInterface, Sequelize) {
+    await queryInterface.createTable('usuarios', {
       id_usuario: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
         type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
       },
       nombre: {
         type: Sequelize.STRING(50),
@@ -21,14 +19,16 @@ module.exports = {
       email: {
         type: Sequelize.STRING(100),
         allowNull: false,
+        unique: true,
       },
       contraseña: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(150),
         allowNull: false,
       },
       documento: {
         type: Sequelize.STRING(8),
         allowNull: false,
+        unique: true,
       },
       direccion: {
         type: Sequelize.STRING,
@@ -39,53 +39,50 @@ module.exports = {
         allowNull: false,
       },
       fechaNacimiento: {
-        type: Sequelize.DATE,
+        type: Sequelize.DATEONLY,
         allowNull: false,
       },
       cod_estado: {
         type: Sequelize.INTEGER,
-        references: {
-          model: "Estados",
-          key: "id",
-        },
         allowNull: false,
+        references: {
+          model: 'Estados',
+          key: 'cod_estado',
+        },
+        onUpdate: 'CASCADE',
       },
-      cod_estado: {
+      id_rol: {
         type: Sequelize.INTEGER,
-        references: {
-          model: "Estados",
-          key: "id",
-        },
         allowNull: false,
-      },
-      cod_rol: {
-        type: Sequelize.INTEGER,
+        defaultValue: 2,
         references: {
-          model: "Roles",
-          key: "id",
+          model: 'Roles',
+          key: 'id_rol',
         },
-        allowNull: false,
+        onUpdate: 'CASCADE',
       },
       cod_categoria: {
         type: Sequelize.INTEGER,
-        references: {
-          model: "Categorias",
-          key: "id",
-        },
         allowNull: false,
+        defaultValue: 1,
+        references: {
+          model: 'Categorias',
+          key: 'cod_categoria',
+        },
+        onUpdate: 'CASCADE',
       },
       createdAt: {
-        allowNull: false,
         type: Sequelize.DATE,
+        allowNull: false,
       },
       updatedAt: {
-        allowNull: false,
         type: Sequelize.DATE,
+        allowNull: false,
       },
     });
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("usuarios");
+    await queryInterface.dropTable('usuarios');
   },
 };
