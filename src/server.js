@@ -1,20 +1,21 @@
-require("dotenv").config();
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
-const path = require("path");
+const path = require('path');
 const {json} = require('body-parser');
 const app = express();
 
-//Requerir router
+// Requerir router
 const router = require('./routes/index.routes');
 
-//Settings
+// Settings
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extend:false}));
 app.use(json());
 
-//Rutas
+// Rutas
 // app.use('/', router);
 
 app.use((req, res, next) => {

@@ -20,10 +20,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(50),
       allowNull: false,
       validate: {
-        isAlpha: { msg: "El nombre solo debe contener letras" },
+        isAlpha: { msg: 'El nombre solo debe contener letras' },
         len: {
           args: [3, 50],
-          msg: "El nombre debe contener entre 3 a 50 letras",
+          msg: 'El nombre debe contener entre 3 a 50 letras',
         },
       },
     },
@@ -31,10 +31,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(50),
       allowNull: false,
       validate: {
-        isAlpha: { msg: "El apellido solo debe contener letras" },
+        isAlpha: { msg: 'El apellido solo debe contener letras' },
         len: {
           args: [3, 50],
-          msg: "El apellido debe contener entre 3 a 50 letras",
+          msg: 'El apellido debe contener entre 3 a 50 letras',
         },
       },
     },
@@ -43,11 +43,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true,
       validate: {
-        notNull: { msg: "Email requerido" },
-        isEmail: { msg: "Formato de email invalido" },
+        notNull: { msg: 'Email requerido' },
+        isEmail: { msg: 'Formato de email invalido' },
         len: {
           args: [5, 100],
-          msg: "El correo puede contener hasta 100 caracteres maximo",
+          msg: 'El correo puede contener hasta 100 caracteres maximo',
         },
       },
     },
@@ -60,10 +60,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true,
       validate: {
-        isNumeric: { msg: "El apellido solo debe contener numeros" },
+        isNumeric: { msg: 'El apellido solo debe contener numeros' },
         len: {
           args: [7, 8],
-          msg: "El documento debe contener entre 7 y 8 numeros",
+          msg: 'El documento debe contener entre 7 y 8 numeros',
         },
       },
     },
@@ -75,7 +75,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        isNumeric: { msg: "El telefono solo debe contener numeros" },
+        isNumeric: { msg: 'El telefono solo debe contener numeros' },
       },
     },
     fechaNacimiento: {
