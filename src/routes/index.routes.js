@@ -19,7 +19,7 @@ router.use('/menues', apiMenuRouter);
 const apiMesaRouter = require('./api/mesa.routes');
 router.use('/mesas', apiMesaRouter);
 
-const apiPedidoRouter = require('./api/pedido.routes');
+/* const apiPedidoRouter = require('./api/pedido.routes');
 router.use('/pedidos', apiPedidoRouter);
 
 const apiProductoRouter = require('./api/producto.routes');
@@ -32,6 +32,6 @@ const apiReservaRouter = require('./api/reserva.routes');
 router.use('/reservas', apiReservaRouter);
 
 const apiTipoProductoRouter = require('./api/tipoProducto.routes');
-router.use('/tiposProducto', apiTipoProductoRouter);
+router.use('/tiposProducto', apiTipoProductoRouter); */
 
 module.exports = router;

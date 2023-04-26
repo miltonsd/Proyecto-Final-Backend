@@ -2,9 +2,9 @@ const { Usuario } = require('../../database/models/index');
 
 const getOneUsuario = async (req,res) => {
     try {
-        const { id } = req.params;
+        const { id_usuario } = req.params;
         const usuario = await Usuario.findOne({
-            where: { id },
+            where: { id_usuario },
             attributes: { exclude: ['contraseña', 'id_rol', 'cod_categoria', 'cod_estado'] },
             include: [ { model: Rol }, { model: Categoria }, { model: Estado } ],
         });
@@ -57,10 +57,10 @@ const register = async (req,res) => {
 const updateUsuario = async (req,res) => {
     try{
         const params = req.body;
-        const id = req.params.id_usuario;
-        let u = await Usuario.findByPk(id);
+        const id_usuario = req.params.id_usuario;
+        let u = await Usuario.findByPk(id_usuario);
         if (u) {
-            let email = u.email;
+            // let email = u.email;
             // Valido para cambiar el correo
             /* if (u.email != params.email){ // El mail del body es distinto al del usuario
                 console.log("Voy a validar el email")
@@ -76,7 +76,7 @@ const updateUsuario = async (req,res) => {
                 nombre: params.nombre || u.nombre,
                 apellido: params.apellido || u.apellido,
                 id_rol: params.id_rol || u.id_rol,
-                email: params.email || u.direccion,
+                email: params.email || u.email,
                 contraseña: params.contraseña || u.contraseña,
                 direccion: params.direccion || u.direccion,
                 telefono: params.telefono || u.telefono,
@@ -93,11 +93,10 @@ const updateUsuario = async (req,res) => {
     }
 }
 
-
 const deleteOneUsuario = async (req,res) => {
     try{
-        const id = req.params.id_usuario;
-        const usuario = await Usuario.findByPk(id);
+        const id_usuario = req.params.id_usuario;
+        const usuario = await Usuario.findByPk(id_usuario);
         if (!usuario) {
             return res.status(404).json({msg:"Elemento no encontrado"})
         } else {
@@ -111,3 +110,4 @@ const deleteOneUsuario = async (req,res) => {
     }
 }
 
+module.exports = {getOneUsuario,getAllUsuarios,register,updateUsuario,deleteOneUsuario}

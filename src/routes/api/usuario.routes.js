@@ -6,7 +6,9 @@ const { getAllUsuarios, getOneUsuario, register, updateUsuario, deleteOneUsuario
 
 // Rutas Especificas
 router.get('/', getAllUsuarios); // Muestra todos
-router.get('/:id', getOneUsuario); // Muestra un usuario
+router.get('/:id_usuario', getOneUsuario); // Muestra un usuario
 router.post('/register', register); // Crea un usuario
-router.patch('/:id', updateUsuario); // Modifica un usuario
-router.delete('/:id', deleteOneUsuario); // Elimina un usuario
+router.patch('/:id_usuario', updateUsuario); // Modifica un usuario
+router.delete('/:id_usuario', deleteOneUsuario); // Elimina un usuario
+
+module.exports = router;
