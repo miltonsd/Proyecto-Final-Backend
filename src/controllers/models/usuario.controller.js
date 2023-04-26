@@ -20,35 +20,17 @@ const getOneUsuario = async (req,res) => {
     }
 }
 
-const getAllUsuarios = async (req,res) => {}
-const register = async (req,res) => {}
-const updateUsuario = async (req,res) => {}
-const deleteOneUsuario = async (req,res) => {}
-
-/*
-const getAll = async (req, res) => {
+const getAllUsuarios = async (req,res) => {
     try {
-        const users = await User.findAll({
-            attributes: { exclude: ['password', 'idRole'] },
-            include: [{model: Role}]
+        const usuarios = await Usuario.findAll({
+            attributes: { exclude: ['contraseña', 'id_rol','cod_categoria', 'cod_estado'] },
+            include: [{model: Rol}, { model: Categoria }, { model: Estado }]
         });
-        if (!users) {
+        if (!usuarios) {
             return res.status(404).json({ msg: 'Usuarios no encontrados' });
         } else {
-            const usersArray = [];
-            const promises = users.map(async (user) => {
-                const seed = user.seed;
-                const url = await externalApi(seed);
-
-                // Devuelvo todos los datos y la url de la imagen
-                user.dataValues.image = url;
-
-                usersArray.push(user);
-            });
-            // Espero a que se resuelvan todas las promesas
-            await Promise.all(promises);
-            usersArray.sort((a, b) => a.id - b.id);
-            return await res.status(200).json(usersArray);
+            usuarios.sort((a, b) => a.id_usuario - b.id_usuario);
+            return await res.status(200).json(usuarios);
         }
     } catch (error) {
         console.log(error);
@@ -56,31 +38,49 @@ const getAll = async (req, res) => {
     }
 }
 
-const update = async (req,res) => {
+const register = async (req,res) => {
+    try{
+        // req.body.contraseña = bcrypt.hashSync(req.body.contraseña, 10); // tomo la contraseña que me llega, la encripto y la guardo en el campo password
+        const u = await Usuario.create(req.body);
+        // sendConfirmationEmail(u);
+        if (u) {
+            return res.status(200).json({'msg':'Creado correctamente', u})
+        } else {
+            return res.status(404).json({'msg':'No se recibieron los datos'})
+        } 
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg: 'Error en el servidor' });
+    }
+}
+
+const updateUsuario = async (req,res) => {
     try{
         const params = req.body;
-        const id = req.params.id;
-        let u = await User.findByPk(id);
+        const id = req.params.id_usuario;
+        let u = await Usuario.findByPk(id);
         if (u) {
             let email = u.email;
             // Valido para cambiar el correo
-            if (u.email != params.email){ // El mail del body es distinto al del usuario
+            /* if (u.email != params.email){ // El mail del body es distinto al del usuario
                 console.log("Voy a validar el email")
                 const emailUnique = await EmailIsUniqueB(req, res); // Valido si ese mail lo tiene otro usuario
-
                 if (emailUnique){
                     email = params.email; // Si el correo es distinto al de la db y no esta en uso, guardo el nuevo
                 }else{
                     return res.status(404).json({msg:"El mail ya fue registrado"})
                 }
-            }
+            } */
             // Hago el update
             u.update({
-                name: params.name || u.name,
-                surname: params.surname || u.surname,
-                idRole: params.idRole || u.idRole,
-                email: email,
-                seed: params.seed || u.seed,
+                nombre: params.nombre || u.nombre,
+                apellido: params.apellido || u.apellido,
+                id_rol: params.id_rol || u.id_rol,
+                email: params.email || u.direccion,
+                contraseña: params.contraseña || u.contraseña,
+                direccion: params.direccion || u.direccion,
+                telefono: params.telefono || u.telefono,
+                cod_categoria: params.cod_categoria || u.cod_categoria,
             }).then(u => {
             res.status(201).json({u, 'msg':'Editado correctamente'})
             })
@@ -91,20 +91,18 @@ const update = async (req,res) => {
         console.log(error);
         res.status(500).json({ msg: 'Error en el servidor' });
     }
-};
+}
 
-const deleteOne = async (req, res, next) => {
+
+const deleteOneUsuario = async (req,res) => {
     try{
-        const id = req.params.id;
-        const user = await User.findByPk(id);
-        if (!user) {
+        const id = req.params.id_usuario;
+        const usuario = await Usuario.findByPk(id);
+        if (!usuario) {
             return res.status(404).json({msg:"Elemento no encontrado"})
         } else {
-            // Encuentro el usuario y borro los juegos que tiene
-            Usergame.destroy({where: {idUser: id}})
-
             // Borro el usuario
-            user.destroy();
+            usuario.destroy();
             return res.status(200).json({msg:"Borrado correctamente"})
         }
     } catch (error) {
@@ -113,19 +111,3 @@ const deleteOne = async (req, res, next) => {
     }
 }
 
-const register =  async (req, res) => {
-    try{
-        req.body.password = bcrypt.hashSync(req.body.password, 10); // tomo la pw que me llega, la encripto y la guardo en el campo password
-        const u = await User.create(req.body);
-        sendConfirmationEmail(u);
-        if (u) {
-            return res.status(200).json({'msg':'Creado correctamente', u})
-        } else {
-            return res.status(404).json({'msg':'No se recibieron los datos'})
-        }
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ msg: 'Error en el servidor' });
-    }
-}
-*/
