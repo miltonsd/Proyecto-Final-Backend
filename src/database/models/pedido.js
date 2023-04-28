@@ -4,10 +4,13 @@ const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Pedido extends Model {
-    static associate(models) {}
+    static associate(models) {
+      Pedido.belongsTo(models.Usuario, {foreignKey: 'id_usuario'});
+      Pedido.belongsToMany(models.Producto, { through: 'PedidoProductos'});
+    }
   }
   Pedido.init({ 
-    id: {
+    id_pedido: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
@@ -23,7 +26,11 @@ module.exports = (sequelize, DataTypes) => {
     montoImporte: {
       type: DataTypes.FLOAT,
       allowNull: false,
-    }
+    },
+    id_usuario: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
   }, {
     sequelize,
     modelName: 'Pedido',

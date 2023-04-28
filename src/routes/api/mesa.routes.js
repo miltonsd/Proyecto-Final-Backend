@@ -1,6 +1,6 @@
 const Router = require('express');
 const router = Router();
-const { createMesa, /*habilitarMesa */ /*deshabilitarMesa */ getAllMesas, getOneMesa, updateMesa, deleteOneMesa } = require('../../controllers/models/mesa.controller');
+const { createMesa, /*habilitarMesa */ /*deshabilitarMesa */ getAllMesas, getOneMesa, updateMesa, deleteMesa } = require('../../controllers/models/mesa.controller');
 
 // Rutas Genericas
 
@@ -11,6 +11,6 @@ router.post('/create', createMesa); // Crea una mesa
 router.get('/', getAllMesas); // Muestra todas
 router.get('/:id', getOneMesa); // Muestra una mesa
 router.patch('/:id', updateMesa); // Modifica una mesa
-router.delete('/:id', deleteOneMesa); // Elimina una mesa
+router.delete('/:id', deleteMesa); // Elimina una mesa
 
 module.exports = router;

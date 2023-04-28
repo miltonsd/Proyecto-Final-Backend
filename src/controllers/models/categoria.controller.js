@@ -1,12 +1,9 @@
-const categoria = require('../../database/models/categoria');
 const { Categoria } = require('../../database/models/index');
 
 const getOneCategoria = async (req,res) => {
     try {
-        const { cod_categoria } = req.params; // const { id } = req.params   =    const id = req.params.cod_categoria;
-        const categoria = await Categoria.findOne({
-            where: { cod_categoria },
-        });
+        const { cod_categoria } = req.params; // const { id } = req.params   =    const cod_categoria = req.params.cod_categoria;
+        const categoria = await Categoria.findByPk(cod_categoria);
         if (!categoria) {
             return res.status(404).json({ msg: 'Categoria no encontrada.'});
         } else {
@@ -55,7 +52,7 @@ const updateCategoria = async (req,res) => {
     }
 }
 
-const deleteOneCategoria = async (req,res) => {
+const deleteCategoria = async (req,res) => {
     try{
         const cod_categoria = req.params.cod_categoria;
         const categoria = await Categoria.findByPk(cod_categoria);
@@ -86,4 +83,4 @@ const createCategoria = async (req,res) => {
     }
 }
 
-module.exports = {getAllCategorias,getOneCategoria,deleteOneCategoria,updateCategoria,createCategoria}
+module.exports = {getAllCategorias,getOneCategoria,deleteCategoria,updateCategoria,createCategoria}

@@ -4,9 +4,7 @@ const { Mesa } = require('../../database/models/index');
 const getOneMesa = async (req,res) => {
     try {
         const { id } = req.params; 
-        const mesa = await Mesa.findOne({
-            where: { id },
-        });
+        const mesa = await Mesa.findByPk(id);
         if (!mesa) {
             return res.status(404).json({ msg: 'Mesa no encontrada.'});
         } else {
@@ -55,7 +53,7 @@ const updateMesa = async (req,res) => {
     }
 }
 
-const deleteOneMesa = async (req,res) => {
+const deleteMesa = async (req,res) => {
     try{
         const id = req.params.id;
         const mesa = await Categoria.findByPk(id);
@@ -107,4 +105,4 @@ const deshabilitarMesa = async (req,res) => {
 
 */
 
-module.exports = {getAllMesas,/*habilitarMesa */ /*deshabilitarMesa */ getOneMesa,deleteOneMesa,updateMesa,createMesa}
+module.exports = {getAllMesas,/*habilitarMesa */ /*deshabilitarMesa */ getOneMesa,deleteMesa,updateMesa,createMesa}

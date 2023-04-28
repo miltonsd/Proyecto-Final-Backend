@@ -4,9 +4,7 @@ const { Estado } = require('../../database/models/index');
 const getOneEstado = async (req,res) => {
     try {
         const { cod_estado } = req.params; 
-        const estado = await Estado.findOne({
-            where: { cod_estado },
-        });
+        const estado = await Estado.findByPk(cod_estado);
         if (!estado) {
             return res.status(404).json({ msg: 'Estado no encontrado.'});
         } else {

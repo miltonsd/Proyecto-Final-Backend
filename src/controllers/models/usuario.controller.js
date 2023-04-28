@@ -1,13 +1,14 @@
-const { Usuario } = require('../../database/models/index');
+const { Usuario, Rol, Categoria, Estado } = require('../../database/models/index');
 
 const getOneUsuario = async (req,res) => {
     try {
         const { id_usuario } = req.params;
-        const usuario = await Usuario.findOne({
-            where: { id_usuario },
+        const usuario = await Usuario.findByPk(id_usuario, 
+        {
             attributes: { exclude: ['contraseña', 'id_rol', 'cod_categoria', 'cod_estado'] },
             include: [ { model: Rol }, { model: Categoria }, { model: Estado } ],
-        });
+        }
+        );
         if (!usuario) {
             return res.status(404).json({ msg: 'Usuario no encontrado.'});
         } else {
@@ -26,11 +27,14 @@ const getAllUsuarios = async (req,res) => {
             attributes: { exclude: ['contraseña', 'id_rol','cod_categoria', 'cod_estado'] },
             include: [{model: Rol}, { model: Categoria }, { model: Estado }]
         });
-        if (!usuarios) {
-            return res.status(404).json({ msg: 'Usuarios no encontrados' });
-        } else {
+        //if (!usuarios) {
+        //    return res.status(404).json({ msg: 'Usuarios no encontrados' });
+        //} else {
+        if (usuarios.length > 0) {
             usuarios.sort((a, b) => a.id_usuario - b.id_usuario);
             return await res.status(200).json(usuarios);
+        } else {
+            return res.status(404).json({ msg: 'Usuarios no encontrados' })
         }
     } catch (error) {
         console.log(error);
@@ -93,7 +97,7 @@ const updateUsuario = async (req,res) => {
     }
 }
 
-const deleteOneUsuario = async (req,res) => {
+const deleteUsuario = async (req,res) => {
     try{
         const id_usuario = req.params.id_usuario;
         const usuario = await Usuario.findByPk(id_usuario);
@@ -110,4 +114,4 @@ const deleteOneUsuario = async (req,res) => {
     }
 }
 
-module.exports = {getOneUsuario,getAllUsuarios,register,updateUsuario,deleteOneUsuario}
+module.exports = {getOneUsuario,getAllUsuarios,register,updateUsuario,deleteUsuario}

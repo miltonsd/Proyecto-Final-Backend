@@ -19,9 +19,9 @@ router.use('/menues', apiMenuRouter);
 const apiMesaRouter = require('./api/mesa.routes');
 router.use('/mesas', apiMesaRouter);
 
-/* const apiPedidoRouter = require('./api/pedido.routes');
+const apiPedidoRouter = require('./api/pedido.routes');
 router.use('/pedidos', apiPedidoRouter);
-
+/*
 const apiProductoRouter = require('./api/producto.routes');
 router.use('/productos', apiProductoRouter);
 

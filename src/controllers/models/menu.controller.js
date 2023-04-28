@@ -4,9 +4,7 @@ const { Menu } = require('../../database/models/index');
 const getOneMenu = async (req,res) => {
     try {
         const { id } = req.params; 
-        const menu = await Menu.findOne({
-            where: { id },
-        });
+        const menu = await Menu.findByPk(id);
         if (!menu) {
             return res.status(404).json({ msg: 'Menu no encontrado.'});
         } else {
@@ -55,7 +53,7 @@ const getAllMenues = async (req,res) => {
     }
 } */
 
-const deleteOneMenu = async (req,res) => {
+const deleteMenu = async (req,res) => {
     try{
         const id = req.params.id;
         const menu = await Menu.findByPk(id);
@@ -86,4 +84,4 @@ const createMenu = async (req,res) => {
     }
 }
 
-module.exports = {getAllMenues,getOneMenu,deleteOneMenu, /*updateMenu*/ createMenu}
+module.exports = {getAllMenues,getOneMenu,deleteMenu, /*updateMenu*/ createMenu}

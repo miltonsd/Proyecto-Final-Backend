@@ -3,10 +3,12 @@ const { Rol } = require('../../database/models/index');
 
 const getOneRol = async (req,res) => {
     try {
-        const {id_rol} = req.params;
-        const rol = await Rol.findOne({
-            where: {id_rol},
-        });
+        console.log(req.params);
+        const {id_rol} = req.params;    
+        // const rol = await Rol.findOne({
+        //     // where: {id_rol}, // Es = a where: {id_rol: id_rol}
+        // });
+        const rol = await Rol.findByPk(id_rol);
         if (!rol) {
             return res.status(404).json({ msg: 'Rol no encontrado.'});
         } else {
@@ -55,7 +57,7 @@ const updateRol = async (req,res) => {
     }
 }
 
-const deleteOneRol = async (req,res) => {
+const deleteRol = async (req,res) => {
     try{
         const id_rol = req.params.id_rol;
         const rol = await Rol.findByPk(id_rol);
@@ -86,4 +88,4 @@ const createRol = async (req,res) => {
     }
 }
 
-module.exports = {getAllRoles,getOneRol,deleteOneRol,updateRol,createRol}
+module.exports = {getAllRoles,getOneRol,deleteRol,updateRol,createRol}
