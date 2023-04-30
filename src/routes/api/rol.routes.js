@@ -6,10 +6,10 @@ const { getAllRoles, getOneRol, createRol, updateRol, deleteRol } = require('../
 
 // Rutas Genericas
 router.get('/', getAll(Rol)); // Muestra todos
-router.get('/:id_rol', getOne(Rol)); // Muestra un rol
+router.get('/:id', getOne(Rol)); // Muestra un rol
 router.post('/create', createOne(Rol)); // Crea un rol
-router.patch('/:id_rol', updateOne(Rol)); // Modifica un rol
-router.delete('/:id_rol', deleteOne(Rol)); // Elimina un rol
+router.patch('/:id', updateOne(Rol)); // Modifica un rol
+router.delete('/:id', deleteOne(Rol)); // Elimina un rol
 
 // Rutas Especificas
 
