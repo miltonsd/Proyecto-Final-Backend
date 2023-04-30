@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Usuario.belongsTo(models.Estado, { foreignKey: 'cod_estado' });
       Usuario.belongsTo(models.Rol, { foreignKey: 'id_rol' });
-      Usuario.belongsTo(models.Categoria, { foreignKey: 'cod_categoria' });
+      Usuario.belongsTo(models.Categoria, { as: 'Categoria', foreignKey: 'cod_categoria' });
     }
   }
   Usuario.init({
