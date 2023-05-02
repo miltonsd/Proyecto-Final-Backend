@@ -3,29 +3,29 @@
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  class Menu extends Model {
+  class MenuProductos extends Model {
     static associate(models) {
-      Menu.belongsTo(models.Usuario, { as: 'Usuario', foreignKey: 'id_usuario' });
-      Menu.belongsToMany(models.Producto, { through: 'MenuProductos'});
+        MenuProductos.belongsTo(models.Menu, { foreignKey: 'id_menu' });
+        MenuProductos.belongsTo(models.Producto, { foreignKey: 'id_producto'});
     } 
   }
-  Menu.init({ 
-    id_menu: {
+  MenuProductos.init({ 
+    id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    titulo: {
-      type: DataTypes.STRING,
+    id_menu: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
-    id_usuario: {
+    id_producto: {
       type: DataTypes.INTEGER,
       allowNull: false,
     }, 
   }, {
     sequelize,
-    modelName: 'Menu',
+    modelName: 'MenuProductos',
   });
-  return Menu;
+  return MenuProductos;
 };

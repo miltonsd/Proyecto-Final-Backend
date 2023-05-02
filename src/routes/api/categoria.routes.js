@@ -2,7 +2,7 @@ const Router = require('express');
 const router = Router();
 const { getAll, getOne, createOne, updateOne, deleteOne } = require('../../controllers/generico.controller');
 const { Categoria } = require('../../database/models/index');
-const { createCategoria, getAllCategorias, getOneCategoria, updateCategoria, deleteCategoria } = require('../../controllers/models/categoria.controller');
+const {} = require('../../controllers/models/categoria.controller');
 
 // Rutas Genericas
 router.get('/', getAll(Categoria)); // Muestra todas

@@ -4,10 +4,12 @@ const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Promocion extends Model {
-    static associate(models) {}
+    static associate(models) {
+      Promocion.belongsToMany(models.Producto, { through: { model: 'PromocionProductos', unique:false }});
+    }
   }
   Promocion.init({ 
-    id: {
+    id_promocion: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,

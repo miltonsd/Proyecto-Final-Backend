@@ -1,10 +1,13 @@
 const menu = require('../../database/models/menu');
-const { Menu } = require('../../database/models/index');
+const { Menu, Usuario} = require('../../database/models/index');
 
 const getOneMenu = async (req,res) => {
     try {
         const { id } = req.params; 
-        const menu = await Menu.findByPk(id);
+        const menu = await Menu.findByPk(id, {
+            attributes: { exclude: ['id_usuario'] },
+            include: [{ model: Usuario, as: 'Usuario' }]
+          });
         if (!menu) {
             return res.status(404).json({ msg: 'Menu no encontrado.'});
         } else {
@@ -19,39 +22,21 @@ const getOneMenu = async (req,res) => {
 
 const getAllMenues = async (req,res) => {
     try {
-        const menues = await Menu.findAll();
-        if (!menues) {
-            return res.status(404).json({ msg: 'Menues no encontrados' });
-        } else {
-            menues.sort((a, b) => a.id - b.id);
+        const menues = await Menu.findAll({
+            attributes: { exclude: ['id_usuario'] },
+            include: [{ model: Usuario, as: 'Usuario' }]
+          });
+        if (menues.length > 0) {
+            menues.sort((a, b) => a.id_menu - b.id_menu);
             return await res.status(200).json(menues);
+        } else {
+            return res.status(404).json({ msg: 'Menues no encontrados.' })
         }
     } catch (error) {
         console.log(error);
         res.status(500).json({ msg: 'Error en el servidor' });
     }
 }
-
-/* const updateMenu = async (req,res) => {
-    try{
-        const params = req.body;
-        const id = req.params.id;
-        let m = await Menu.findByPk(id);
-        if (m) {  
-            // Hago el update
-            m.update({
-                descripcion: params.descripcion || u.descripcion,
-            }).then(c => {
-            res.status(201).json({c, 'msg':'Editada correctamente'})
-            })
-        } else {
-            return res.status(404).json({msg:"Categoria no encontrada"})
-        }
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ msg: 'Error en el servidor' });
-    }
-} */
 
 const deleteMenu = async (req,res) => {
     try{
@@ -70,18 +55,4 @@ const deleteMenu = async (req,res) => {
     }
 }
 
-const createMenu = async (req,res) => {
-    try{
-        const m = await Menu.create(req.body);
-        if (m) {
-            return res.status(200).json({'msg':'Creado correctamente', m})
-        } else {
-            return res.status(404).json({'msg':'No se recibieron los datos'})
-        } 
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ msg: 'Error en el servidor' });
-    }
-}
-
-module.exports = {getAllMenues,getOneMenu,deleteMenu, /*updateMenu*/ createMenu}
+module.exports = {getAllMenues,getOneMenu,deleteMenu}

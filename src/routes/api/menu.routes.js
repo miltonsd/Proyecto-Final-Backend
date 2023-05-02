@@ -1,14 +1,16 @@
 const Router = require('express');
 const router = Router();
-const { createMenu, getAllMenues, getOneMenu, /*updateMenu*/ deleteMenu } = require('../../controllers/models/menu.controller');
+const { createOne, updateOne} = require('../../controllers/generico.controller');
+const { Menu } = require('../../database/models/index');
+const { getAllMenues, getOneMenu,  deleteMenu } = require('../../controllers/models/menu.controller');
 
 // Rutas Genericas
+router.post('/create', createOne(Menu)); // Crea un Menu
+router.patch('/:id', updateOne(Menu)); // Modifica un menu
 
 // Rutas Especificas
-router.post('/create', createMenu); // Crea un Menu
 router.get('/', getAllMenues); // Muestra todos
 router.get('/:id', getOneMenu); // Muestra un menu
-// router.patch('/:id', updateMenu); // Modifica un menu
 router.delete('/:id', deleteMenu); // Elimina un menu
 
 module.exports = router;

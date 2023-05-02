@@ -5,9 +5,12 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Usuario extends Model {
     static associate(models) {
-      Usuario.belongsTo(models.Estado, { foreignKey: 'cod_estado' });
+      Usuario.belongsTo(models.Estado, { foreignKey: 'id_estado' });
       Usuario.belongsTo(models.Rol, { foreignKey: 'id_rol' });
-      Usuario.belongsTo(models.Categoria, { as: 'Categoria', foreignKey: 'cod_categoria' });
+      Usuario.belongsTo(models.Categoria, { as: 'Categoria', foreignKey: 'id_categoria' });
+      Usuario.hasMany(models.Menu, { foreignKey: 'id_usuario', onDelete: 'NO ACTION'});
+      Usuario.hasMany(models.Pedido, { foreignKey: 'id_usuario', onDelete: 'NO ACTION'});
+      Usuario.hasMany(models.Reserva, { foreignKey: 'id_usuario', onDelete: 'NO ACTION'});
     }
   }
   Usuario.init({
@@ -82,7 +85,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATEONLY,
       allowNull: false,
     },
-    cod_estado: {
+    id_estado: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
@@ -91,7 +94,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: 2, // Lo crea como cliente (1:AS|2:Cliente|3:Mozo)
     },
-    cod_categoria: {
+    id_categoria: {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 1, // El nivel de categoría mínima es 1 (1: Básico|2:GOLD|3:PLATINUM|4:BLACK)

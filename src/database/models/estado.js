@@ -5,14 +5,11 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Estado extends Model {
     static associate(models) {
-      Estado.hasMany(models.Usuario, {
-        foreignKey: 'cod_estado',
-        onDelete: 'NO ACTION',
-      });
+      Estado.hasMany(models.Usuario, { foreignKey: 'id_estado', onDelete: 'NO ACTION' });
     }
   }
   Estado.init({
-    cod_estado: {
+    id_estado: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,

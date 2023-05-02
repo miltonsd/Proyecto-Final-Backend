@@ -3,11 +3,13 @@
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  class tipoProducto extends Model {
-    static associate(models) {}
+  class TipoProducto extends Model {
+    static associate(models) {
+      TipoProducto.hasMany(models.Producto, { foreignKey: 'id_tipoProducto', onDelete: 'NO ACTION'});
+    }
   }
-  tipoProducto.init({ 
-    id: {
+  TipoProducto.init({ 
+    id_tipoProducto: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
@@ -18,8 +20,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     sequelize,
-    modelName: 'tipoProducto',
+    modelName: 'TipoProducto',
     tableName: 'tipos_producto'
   });
-  return tipoProducto;
+  return TipoProducto;
 };

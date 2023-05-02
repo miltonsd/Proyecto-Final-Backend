@@ -3,7 +3,7 @@ const { Usuario, Rol, Categoria, Estado } = require('../../database/models/index
 const getAllUsuarios = async (req, res) => {
   try {
     const usuarios = await Usuario.findAll({
-      attributes: { exclude: ['contraseña', 'id_rol','cod_categoria', 'cod_estado'] },
+      attributes: { exclude: ['contraseña', 'id_rol','id_categoria', 'id_estado'] },
       include: [{ model: Rol }, { model: Categoria, as: 'Categoria' }, { model: Estado }]
     });
     // if (!usuarios) {
@@ -25,7 +25,7 @@ const getOneUsuario = async (req, res) => {
   try {
     const { id_usuario } = req.params;
     const usuario = await Usuario.findByPk(id_usuario, {
-      attributes: { exclude: ['contraseña', 'id_rol', 'cod_categoria', 'cod_estado'] },
+      attributes: { exclude: ['contraseña', 'id_rol', 'id_categoria', 'id_estado'] },
       include: [{ model: Rol }, { model: Categoria, as: 'Categoria' }, { model: Estado }],
     });
     if (!usuario) {
@@ -82,7 +82,7 @@ const updateUsuario = async (req, res) => {
         contraseña: params.contraseña || usuario.contraseña,
         direccion: params.direccion || usuario.direccion,
         telefono: params.telefono || usuario.telefono,
-        cod_categoria: params.cod_categoria || usuario.cod_categoria,
+        id_categoria: params.id_categoria || usuario.id_categoria,
       })
         .then(usuario => {
           res.status(201).json({ usuario, msg: 'Editado correctamente.' })
@@ -96,21 +96,4 @@ const updateUsuario = async (req, res) => {
   }
 }
 
-const deleteUsuario = async (req, res) => {
-  try {
-    const id_usuario = req.params.id_usuario;
-    const usuario = await Usuario.findByPk(id_usuario);
-    if (!usuario) {
-      return res.status(404).json({ msg: 'Elemento no encontrado.' })
-    } else {
-      // Borro el usuario
-      usuario.destroy();
-      return res.status(200).json({msg: 'Borrado correctamente.' })
-    }
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ msg: 'Error en el servidor.' });
-  }
-}
-
-module.exports = { getAllUsuarios, getOneUsuario, register, updateUsuario, deleteUsuario }
+module.exports = { getAllUsuarios, getOneUsuario, register, updateUsuario }

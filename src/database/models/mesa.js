@@ -4,10 +4,12 @@ const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Mesa extends Model {
-    static associate(models) {}
+    static associate(models) {
+      Mesa.hasMany(models.Reserva, { foreignKey: 'id_mesa', onDelete: 'NO ACTION'});
+    }
   }
   Mesa.init({ 
-    id: {
+    id_mesa: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
