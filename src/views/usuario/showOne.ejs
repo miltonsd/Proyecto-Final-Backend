@@ -1,0 +1,63 @@
+<%- include('./../layouts/header.ejs', {title:usuario.nombre+' '+usuario.apellido}) -%>
+  <section class="jumbotron">
+    <div class="container">
+      <a href="/usuarios/editOne/<%= usuario.id_usuario %> " class="btn btn-primary">Modificar</a>
+      <input type="hidden" class="form-control" id="id_usuario" value="<%= usuario.id_usuario %>" />
+      <div class="col-md-12 py-4">
+        <label for="nombre" class="form-label">Nombre</label>
+        <input type="text" class="form-control" id="nombre" value="<%= usuario.nombre %>" readonly />
+      </div>
+      <div class="col-md-12 py-4">
+        <label for="apellido" class="form-label">Apellido</label>
+        <input type="text" class="form-control" name="apellido" id="edad" value="<%= usuario.apellido %> " readonly />
+      </div>
+      <div class="col-md-12 py-4">
+        <label for="email" class="form-label">Email</label>
+        <input type="text" class="form-control" name="email" id="pais" value="<%= usuario.email %> " readonly />
+      </div>
+      <div class="row justify-content-between">
+        <a href="javascript:history.back()" class="btn btn-secondary">Atrás</a>
+        <button class="btn btn-danger btn-sm" name="eliminar" id="eliminar">Eliminar</button>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <!-- Bootstrap core JavaScript
+    ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script>
+    const $eliminar = document.getElementById("eliminar");
+
+    eliminar.addEventListener("click", async (e) => {
+      e.preventDefault();
+
+      let id_usuario = document.getElementById("id_usuario").value;
+      let nombre = document.getElementById("nombre").value;
+
+      const data = await destroy(id_usuario);
+      console.log(data);
+      if (data.status == 200) {
+        alert(nombre + " eliminado correctamente");
+        window.location.href = "/";
+      } else {
+        alert(data.error[0].msg);
+      }
+    });
+
+    const destroy = async (id_usuario) => {
+      try {
+        const request = await fetch("http://localhost:3000/usuarios/" + id_usuario, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const datos = await request.json();
+        return datos;
+      } catch (error) {
+        return error;
+      }
+    };
+  </script>
+  <%- include("./../layouts/footer.ejs") -%>

@@ -1,0 +1,75 @@
+<%- include('./../layouts/header.ejs', {title:'Modificar usuario'}) -%>
+  <section class="jumbotron">
+    <div class="container">
+      <input type="hidden" class="form-control" id="id_usuario" value="<%= usuario.id_usuario %>" />
+      <div class="col-md-12 py-4">
+        <label for="nombre" class="form-label">Nombre</label>
+        <input type="text" class="form-control" name="nombre" id="nombre" value="<%= usuario.nombre %>" required />
+      </div>
+      <div class="col-md-12 py-4">
+        <label for="apellido" class="form-label">Apellido</label>
+        <input type="text" class="form-control" name="apellido" id="apellido" value="<%= usuario.apellido %> "
+          required />
+      </div>
+      <div class="col-md-12 py-4">
+        <label for="email" class="form-label">Email</label>
+        <input type="text" class="form-control" name="email" id="email" value="<%= usuario.email %> " required />
+      </div>
+      <div class="col-12">
+        <div class="row justify-content-between">
+          <a href="javascript:history.back()" class="btn btn-secondary">Atrás</a>
+          <button class="btn btn-primary" type="submit" id="boton">Enviar</button>
+        </div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <!-- Bootstrap core JavaScript
+    ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script>
+    const $boton = document.getElementById("boton");
+
+    $boton.addEventListener("click", async (e) => {
+      e.preventDefault();
+
+      let id_usuario = document.getElementById("id_usuario").value;
+      let nombre = document.getElementById("nombre").value;
+      let apellido = document.getElementById("apellido").value;
+      let email = document.getElementById("email").value;
+
+      const data = await update(id_usuario, nombre, apellido, email);
+      console.log(data);
+      if (data.status == 201) {
+        alert(nombre + " agregado correctamente");
+        window.location.href = "/";
+      } else {
+        alert(data.error[0].msg);
+      }
+    });
+
+    const update = async (id_usuario, nombre, apellido, email) => {
+      try {
+        console.log(id_usuario);
+        console.log(nombre);
+        const request = await fetch("http://localhost:3000/usuarios/" + id_usuario, {
+          method: "PATCH",
+          body: JSON.stringify({
+            nombre,
+            apellido,
+            email
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        console.log(request);
+        const datos = await request.json();
+        return datos;
+      } catch (error) {
+        return error;
+      }
+    };
+  </script>
+  <%- include("./../layouts/footer.ejs") -%>

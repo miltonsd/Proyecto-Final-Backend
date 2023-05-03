@@ -1,0 +1,54 @@
+<%- include('./../layouts/header.ejs', {title:'Listado de usuarios'}) -%>
+  <section class="jumbotron text-center">
+    <div class="container">
+      <h1 class="jumbotron-heading">Modulo de NodeJS</h1>
+    </div>
+  </section>
+  <div class="album py-5 bg-light">
+    <div class="container">
+      <div class="row justify-content-between">
+        <h4>Lista de usuarios</h4>
+        <a href="/usuarios/createOne" class="btn btn-sm btn-success">Crear</a>
+      </div>
+      <div class="row">
+        <table class="table table-responsive table-hover text-center">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Apellido</th>
+              <th>Email</th>
+              <th>Rol</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% usuarios.forEach(usuario=> { %>
+              <tr>
+                <td>
+                  <%= usuario.nombre %>
+                </td>
+                <td>
+                  <%= usuario.apellido %>
+                </td>
+                <td>
+                  <%= usuario.email %>
+                </td>
+                <td>
+                  <%= usuario.Rol.descripcion %>
+                </td>
+                <td>
+                  <a class="btn btn-primary" href="/usuarios/<%= usuario.id_usuario %>">Ver detalles</a>
+                </td>
+              </tr>
+              <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  </main>
+
+  <!-- Bootstrap core JavaScript
+    ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <%- include("./../layouts/footer.ejs") -%>

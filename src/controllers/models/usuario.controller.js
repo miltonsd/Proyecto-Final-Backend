@@ -11,7 +11,8 @@ const getAllUsuarios = async (req, res) => {
     // } else {
     if (usuarios.length > 0) {
       usuarios.sort((a, b) => a.id_usuario - b.id_usuario);
-      return await res.status(200).json(usuarios);
+      return res.render('../src/views/usuario/index', { usuarios });
+      //return await res.status(200).json(usuarios);
     } else {
       return res.status(404).json({ msg: 'Usuarios no encontrados.' })
     }
@@ -32,12 +33,17 @@ const getOneUsuario = async (req, res) => {
       return res.status(404).json({ msg: 'Usuario no encontrado.'});
     } else {
       // Devuelvo el usuario
-      return res.status(200).json(usuario);
+      return res.render("../src/views/usuario/showOne", { usuario });
+      //return res.status(200).json(usuario);
     }
   } catch (error) {
     console.log(error);
     res.status(500).json({ msg: 'Error en el servidor.' });
   }
+}
+
+const createOne = async (req, res) => {
+  return res.render("../src/views/usuario/createOne");
 }
 
 const register = async (req, res) => {
@@ -50,6 +56,21 @@ const register = async (req, res) => {
     } else {
       return res.status(404).json({ msg: 'No se recibieron los datos.' })
     } 
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: 'Error en el servidor.' });
+  }
+}
+
+const editOne = async (req, res) => {
+  try {
+    const id_usuario = req.params.id_usuario;
+    const usuario = await Usuario.findByPk(id_usuario);
+    if (usuario) {
+      return res.render("../src/views/usuario/editOne", { usuario }); 
+    } else {
+      return res.status(404).json({ msg: 'Usuario no encontrado.' })
+    }
   } catch (error) {
     console.log(error);
     res.status(500).json({ msg: 'Error en el servidor.' });
@@ -84,8 +105,10 @@ const updateUsuario = async (req, res) => {
         telefono: params.telefono || usuario.telefono,
         id_categoria: params.id_categoria || usuario.id_categoria,
       })
-        .then(usuario => {
-          res.status(201).json({ usuario, msg: 'Editado correctamente.' })
+        //.then(usuario => {
+        .then( () => {
+          res.redirect("../src/views/usuario/index");
+          //res.status(201).json({ usuario, msg: 'Editado correctamente.' })
         })
     } else {
       return res.status(404).json({ msg: 'Usuario no encontrado.' })
@@ -96,4 +119,4 @@ const updateUsuario = async (req, res) => {
   }
 }
 
-module.exports = { getAllUsuarios, getOneUsuario, register, updateUsuario }
+module.exports = { getAllUsuarios, getOneUsuario, register, updateUsuario, editOne, createOne }
