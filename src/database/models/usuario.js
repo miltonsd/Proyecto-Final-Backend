@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(50),
       allowNull: false,
       validate: {
-        isAlpha: { msg: 'El nombre solo debe contener letras' },
+        // isAlpha: { msg: 'El nombre solo debe contener letras' },
         len: {
           args: [3, 50],
           msg: 'El nombre debe contener entre 3 a 50 letras',
@@ -34,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(50),
       allowNull: false,
       validate: {
-        isAlpha: { msg: 'El apellido solo debe contener letras' },
+        // isAlpha: { msg: 'El apellido solo debe contener letras' },
         len: {
           args: [3, 50],
           msg: 'El apellido debe contener entre 3 a 50 letras',
@@ -63,7 +63,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true,
       validate: {
-        isNumeric: { msg: 'El apellido solo debe contener numeros' },
+        isNumeric: { msg: 'El documento solo debe contener numeros' },
         len: {
           args: [7, 8],
           msg: 'El documento debe contener entre 7 y 8 numeros',
