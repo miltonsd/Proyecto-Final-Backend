@@ -4,16 +4,38 @@
       <a href="/usuarios/editOne/<%= usuario.id_usuario %> " class="btn btn-primary">Modificar</a>
       <input type="hidden" class="form-control" id="id_usuario" value="<%= usuario.id_usuario %>" />
       <div class="col-md-12 py-4">
-        <label for="nombre" class="form-label">Nombre</label>
-        <input type="text" class="form-control" id="nombre" value="<%= usuario.nombre %>" readonly />
+        <label for="id_usuario" class="form-label">ID: <%= usuario.id_usuario %></label>
       </div>
       <div class="col-md-12 py-4">
-        <label for="apellido" class="form-label">Apellido</label>
-        <input type="text" class="form-control" name="apellido" id="edad" value="<%= usuario.apellido %> " readonly />
+        <input type="hidden" class="form-control" id="nombre" value="<%= usuario.nombre %>" />
+        <label for="nombre" class="form-label">Nombre: <%= usuario.nombre %></label>
       </div>
       <div class="col-md-12 py-4">
-        <label for="email" class="form-label">Email</label>
-        <input type="text" class="form-control" name="email" id="pais" value="<%= usuario.email %> " readonly />
+        <label for="apellido" class="form-label">Apellido: <%= usuario.apellido %></label>
+      </div>
+      <div class="col-md-12 py-4">
+        <label for="email" class="form-label">Email: <%= usuario.email %></label>
+      </div>
+      <div class="col-md-12 py-4">
+        <label for="documento" class="form-label">Documento: <%= usuario.documento %></label>
+      </div>
+      <div class="col-md-12 py-4">
+        <label for="direccion" class="form-label">Dirección: <%= usuario.direccion %></label>
+      </div>
+      <div class="col-md-12 py-4">
+        <label for="telefono" class="form-label">Teléfono: <%= usuario.telefono %></label>
+      </div>
+      <div class="col-md-12 py-4">
+        <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento: <%= usuario.fechaNacimiento %></label>
+      </div>
+      <div class="col-md-12 py-4">
+        <label for="rol" class="form-label">Rol: <%= usuario.Rol.descripcion %></label>
+      </div>
+      <div class="col-md-12 py-4">
+        <label for="categoria" class="form-label">Categoría: <%= usuario.Categoria.descripcion %></label>
+      </div>
+      <div class="col-md-12 py-4">
+        <label for="estado" class="form-label">Estado: <%= usuario.Estado.descripcion %></label>
       </div>
       <div class="row justify-content-between">
         <a href="javascript:history.back()" class="btn btn-secondary">Atrás</a>
@@ -37,15 +59,11 @@
 
       const data = await destroy(id_usuario);
       console.log(data);
-      if (data.status == 200) {
-        alert(nombre + " eliminado correctamente");
-        window.location.href = "/";
-      } else {
-        alert(data.error[0].msg);
-      }
-    });
-
-    const destroy = async (id_usuario) => {
+      if (data.msg == ' Eliminado correctamente.') {
+        alert(nombre + " eliminado correctamente.");
+        window.location.href = "/usuarios/";
+      } else { alert(data.msg); }
+    }); const destroy = async (id_usuario) => {
       try {
         const request = await fetch("http://localhost:3000/usuarios/" + id_usuario, {
           method: "DELETE",
@@ -54,6 +72,7 @@
           },
         });
         const datos = await request.json();
+        console.log(datos);
         return datos;
       } catch (error) {
         return error;

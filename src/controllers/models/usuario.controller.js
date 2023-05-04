@@ -107,8 +107,7 @@ const updateUsuario = async (req, res) => {
       })
         //.then(usuario => {
         .then( () => {
-          res.redirect("../src/views/usuario/index");
-          //res.status(201).json({ usuario, msg: 'Editado correctamente.' })
+          res.status(201).json({ usuario, msg: 'Editado correctamente.' })
         })
     } else {
       return res.status(404).json({ msg: 'Usuario no encontrado.' })

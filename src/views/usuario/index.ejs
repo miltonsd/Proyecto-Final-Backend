@@ -14,16 +14,26 @@
         <table class="table table-responsive table-hover text-center">
           <thead>
             <tr>
+              <th>ID</th>
               <th>Nombre</th>
               <th>Apellido</th>
               <th>Email</th>
+              <th>Documento</th>
+              <th>Dirección</th>
+              <th>Teléfono</th>
+              <th>Fecha de Nacimiento</th>
               <th>Rol</th>
+              <th>Categoría</th>
+              <th>Estado</th>
               <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
             <% usuarios.forEach(usuario=> { %>
               <tr>
+                <td>
+                  <%= usuario.id_usuario %>
+                </td>
                 <td>
                   <%= usuario.nombre %>
                 </td>
@@ -34,7 +44,25 @@
                   <%= usuario.email %>
                 </td>
                 <td>
+                  <%= usuario.documento %>
+                </td>
+                <td>
+                  <%= usuario.direccion %>
+                </td>
+                <td>
+                  <%= usuario.telefono %>
+                </td>
+                <td>
+                  <%= usuario.fechaNacimiento %>
+                </td>
+                <td>
                   <%= usuario.Rol.descripcion %>
+                </td>
+                <td>
+                  <%= usuario.Categoria.descripcion %>
+                </td>
+                <td>
+                  <%= usuario.Estado.descripcion %>
                 </td>
                 <td>
                   <a class="btn btn-primary" href="/usuarios/<%= usuario.id_usuario %>">Ver detalles</a>

@@ -70,17 +70,17 @@
 
       const data = await register(nombre, apellido, email, contraseña, documento, telefono, direccion, fechaNacimiento, id_estado);
       console.log(data);
-      if (data.status == 200) {
-        alert(data.stored.nombre + " " + data.msg);
-        window.location.href = "/";
+      if (data.msg == 'Creado correctamente.') {
+        alert(data.usuario.nombre + " creado correctamente.");
+        window.location.href = "/usuarios/";
       } else {
-        alert(data.error[0].msg);
+        alert(data.msg);
       }
     });
 
     const register = async (nombre, apellido, email, contraseña, documento, telefono, direccion, fechaNacimiento, id_estado) => {
       try {
-        const request = await fetch("http://localhost:3000/usuarios/register", {
+        const request = await fetch(`/usuarios/register`, {
           method: "POST",
           body: JSON.stringify({
             nombre,
@@ -98,6 +98,7 @@
           },
         });
         const datos = await request.json();
+        console.log(datos);
         return datos;
       } catch (error) {
         return error;
