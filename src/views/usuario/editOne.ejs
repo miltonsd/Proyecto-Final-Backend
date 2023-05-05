@@ -1,0 +1,94 @@
+<%- include('./../layouts/header.ejs', {title:'Modificar usuario'}) -%>
+  <section class="jumbotron">
+    <div class="container">
+      <div class="col-md-12 py-4">
+        <label for="id_usuario" class="form-label">ID</label>
+        <input type="text" class="form-control" id="id_usuario" value="<%= usuario.id_usuario %>" readonly />
+      </div>
+      <div class="col-md-12 py-4">
+        <label for="nombre" class="form-label">Nombre</label>
+        <input type="text" class="form-control" id="nombre" value="<%= usuario.nombre %>" required />
+      </div>
+      <div class="col-md-12 py-4">
+        <label for="apellido" class="form-label">Apellido</label>
+        <input type="text" class="form-control" id="apellido" value="<%= usuario.apellido %>" required />
+      </div>
+      <div class="col-md-12 py-4">
+        <label for="email" class="form-label">Email</label>
+        <input type="text" class="form-control" id="email" value="<%= usuario.email %>" required />
+      </div>
+      <div class="col-md-12 py-4">
+        <label for="direccion" class="form-label">Direccion</label>
+        <input type="text" class="form-control" id="direccion" value="<%= usuario.direccion %>" required />
+      </div>
+      <div class="col-md-12 py-4">
+        <label for="telefono" class="form-label">Teléfono</label>
+        <input type="text" class="form-control" id="telefono" value="<%= usuario.telefono %>" required />
+      </div>
+      <div class="col-md-12 py-4">
+        <label for="id_categoria" class="form-label">ID Categoria (1 - 4)</label>
+        <input type="text" class="form-control" id="id_categoria" value="<%= usuario.id_categoria %>" required />
+      </div>
+      <div class="col-12">
+        <div class="row justify-content-between">
+          <a href="javascript:history.back()" class="btn btn-secondary">Atrás</a>
+          <button class="btn btn-primary" type="submit" id="boton">Enviar</button>
+        </div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <!-- Bootstrap core JavaScript
+    ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script>
+    const $boton = document.getElementById("boton");
+
+    $boton.addEventListener("click", async (e) => {
+      e.preventDefault();
+
+      let id_usuario = document.getElementById("id_usuario").value;
+      let nombre = document.getElementById("nombre").value;
+      let apellido = document.getElementById("apellido").value;
+      let email = document.getElementById("email").value;
+      let direccion = document.getElementById("direccion").value;
+      let telefono = document.getElementById("telefono").value;
+      let id_categoria = document.getElementById("id_categoria").value;
+
+      const data = await update(id_usuario, nombre, apellido, email, direccion, telefono, id_categoria);
+      console.log(data);
+      if (data.msg == 'Editado correctamente.') {
+        alert(nombre + " editado correctamente.");
+        window.location.href = "/usuarios/";
+      } else {
+        alert(data.msg);
+      }
+    });
+
+    const update = async (id_usuario, nombre, apellido, email, direccion, telefono, id_categoria) => {
+      try {
+        const request = await fetch(`/usuarios/${id_usuario}`, {
+          method: "PATCH",
+          body: JSON.stringify({
+            nombre,
+            apellido,
+            email,
+            direccion,
+            telefono,
+            id_categoria
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        console.log(request);
+        const datos = await request.json();
+        console.log(datos);
+        return datos;
+      } catch (error) {
+        return error;
+      }
+    };
+  </script>
+  <%- include("./../layouts/footer.ejs") -%>

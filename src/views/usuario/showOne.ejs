@@ -1,0 +1,82 @@
+<%- include('./../layouts/header.ejs', {title:usuario.nombre+' '+usuario.apellido}) -%>
+  <section class="jumbotron">
+    <div class="container">
+      <a href="/usuarios/editOne/<%= usuario.id_usuario %> " class="btn btn-primary">Modificar</a>
+      <input type="hidden" class="form-control" id="id_usuario" value="<%= usuario.id_usuario %>" />
+      <div class="col-md-12 py-4">
+        <label for="id_usuario" class="form-label">ID: <%= usuario.id_usuario %></label>
+      </div>
+      <div class="col-md-12 py-4">
+        <input type="hidden" class="form-control" id="nombre" value="<%= usuario.nombre %>" />
+        <label for="nombre" class="form-label">Nombre: <%= usuario.nombre %></label>
+      </div>
+      <div class="col-md-12 py-4">
+        <label for="apellido" class="form-label">Apellido: <%= usuario.apellido %></label>
+      </div>
+      <div class="col-md-12 py-4">
+        <label for="email" class="form-label">Email: <%= usuario.email %></label>
+      </div>
+      <div class="col-md-12 py-4">
+        <label for="documento" class="form-label">Documento: <%= usuario.documento %></label>
+      </div>
+      <div class="col-md-12 py-4">
+        <label for="direccion" class="form-label">Dirección: <%= usuario.direccion %></label>
+      </div>
+      <div class="col-md-12 py-4">
+        <label for="telefono" class="form-label">Teléfono: <%= usuario.telefono %></label>
+      </div>
+      <div class="col-md-12 py-4">
+        <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento: <%= usuario.fechaNacimiento %></label>
+      </div>
+      <div class="col-md-12 py-4">
+        <label for="rol" class="form-label">Rol: <%= usuario.Rol.descripcion %></label>
+      </div>
+      <div class="col-md-12 py-4">
+        <label for="categoria" class="form-label">Categoría: <%= usuario.Categoria.descripcion %></label>
+      </div>
+      <div class="col-md-12 py-4">
+        <label for="estado" class="form-label">Estado: <%= usuario.Estado.descripcion %></label>
+      </div>
+      <div class="row justify-content-between">
+        <a href="javascript:history.back()" class="btn btn-secondary">Atrás</a>
+        <button class="btn btn-danger btn-sm" name="eliminar" id="eliminar">Eliminar</button>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <!-- Bootstrap core JavaScript
+    ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script>
+    const $eliminar = document.getElementById("eliminar");
+
+    eliminar.addEventListener("click", async (e) => {
+      e.preventDefault();
+
+      let id_usuario = document.getElementById("id_usuario").value;
+      let nombre = document.getElementById("nombre").value;
+
+      const data = await destroy(id_usuario);
+      console.log(data);
+      if (data.msg == ' Eliminado correctamente.') {
+        alert(nombre + " eliminado correctamente.");
+        window.location.href = "/usuarios/";
+      } else { alert(data.msg); }
+    }); const destroy = async (id_usuario) => {
+      try {
+        const request = await fetch("http://localhost:3000/usuarios/" + id_usuario, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const datos = await request.json();
+        console.log(datos);
+        return datos;
+      } catch (error) {
+        return error;
+      }
+    };
+  </script>
+  <%- include("./../layouts/footer.ejs") -%>

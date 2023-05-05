@@ -76,7 +76,7 @@ exports.deleteOne = Model =>
       } else {
         elemento.destroy()
           .then(elemento => {
-            return res.status(200).json({ elemento, msg: 'Eliminado correctamente.' })
+            return res.status(200).json({ elemento, msg: ' Eliminado correctamente.' })
           })
       }
     } catch (error) {
