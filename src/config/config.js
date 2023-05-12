@@ -10,6 +10,7 @@ const database = process.env.DB_NAME || "pedidosagiles";
 const password = process.env.DB_PASS;
 const dialect = process.env.DB_TYPE || "mysql";
 const logging = false; // es para que no se muestre cada query por consola
+const timezone = process.env.DB_TIMEZONE || '-03:00';
 
 // Configs Seeds
 const seederStorage = "sequelize";
@@ -27,6 +28,7 @@ module.exports = {
   password,
   dialect,
   logging,
+  timezone,
   seederStorage,
   seederStorageTableName,
   migrationStorage,
