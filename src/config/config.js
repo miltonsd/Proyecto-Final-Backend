@@ -21,16 +21,16 @@ const migrationStorage = "sequelize";
 const migrationStorageTableName = "migrations";
 
 module.exports = {
-  PORT,
-  host,
-  username,
-  database,
-  password,
-  dialect,
-  logging,
-  timezone,
-  seederStorage,
-  seederStorageTableName,
-  migrationStorage,
-  migrationStorageTableName,
+    PORT,
+    host,
+    username,
+    database,
+    password,
+    dialect,
+    logging,
+    timezone,
+    seederStorage,
+    seederStorageTableName,
+    migrationStorage,
+    migrationStorageTableName,
 }
