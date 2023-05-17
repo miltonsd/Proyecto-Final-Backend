@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true,
     },
+    capacidad: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
     ubicacion: {
       type: DataTypes.STRING,
       allowNull: false,
