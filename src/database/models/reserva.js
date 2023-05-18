@@ -23,9 +23,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: false,
         }, 
-        estado: {
-            type: DataTypes.STRING,
+        isPendiente: {
+            type: DataTypes.BOOLEAN, // si isPendiente = false, se llevo a cabo la reserva // En MySQL true = 1, false = 0
             allowNull: false,
+            defaultValue: true, // Por defecto, una reserva se registra con el estado Pendiente
         },
         id_usuario: {
             type: DataTypes.INTEGER,
