@@ -7,9 +7,6 @@ router.use('/usuarios', apiUsuarioRouter);
 const apiCategoriaRouter = require('./api/categoria.routes');
 router.use('/categorias', apiCategoriaRouter);
 
-const apiEstadoRouter = require('./api/estado.routes');
-router.use('/estados', apiEstadoRouter);
-
 const apiRolRouter = require('./api/rol.routes');
 router.use('/roles', apiRolRouter);
 

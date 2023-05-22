@@ -5,7 +5,6 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
     class Usuario extends Model {
         static associate(models) {
-            Usuario.belongsTo(models.Estado, { foreignKey: 'id_estado' });
             Usuario.belongsTo(models.Rol, { foreignKey: 'id_rol' });
             Usuario.belongsTo(models.Categoria, { as: 'Categoria', foreignKey: 'id_categoria' });
             Usuario.hasMany(models.Menu, { foreignKey: 'id_usuario', onDelete: 'NO ACTION' });
@@ -23,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(50),
             allowNull: false,
             validate: {
-                // isAlpha: { msg: 'El nombre solo debe contener letras.' },
+                is: /^[a-zA-ZáéíóúÁÉÍÓÚ\s]+$/,
                 len: {
                     args: [3, 50],
                     msg: 'El nombre debe contener entre 3 a 50 letras.',
@@ -34,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(50),
             allowNull: false,
             validate: {
-                // isAlpha: { msg: 'El apellido solo debe contener letras.' },
+                is: /^[a-zA-ZáéíóúÁÉÍÓÚ\s]+$/,
                 len: {
                     args: [3, 50],
                     msg: 'El apellido debe contener entre 3 a 50 letras.',
@@ -57,6 +56,11 @@ module.exports = (sequelize, DataTypes) => {
         contraseña: {
             type: DataTypes.STRING(150),
             allowNull: false,
+        },
+        isConfirmado: {
+            type: DataTypes.BOOLEAN, // si isConfirmado = false, aun no confirmo/valido su mail // En MySQL true = 1, false = 0
+            allowNull: false,
+            defaultValue: false, // Por defecto, un usuario se registra con un estado NO confirmado
         },
         documento: {
             type: DataTypes.STRING(8),
@@ -85,10 +89,6 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.DATEONLY,
             allowNull: false,
         },
-        id_estado: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-        },
         id_rol: {
             type: DataTypes.INTEGER,
             allowNull: false,
@@ -101,6 +101,7 @@ module.exports = (sequelize, DataTypes) => {
         },
     }, {
         sequelize,
+        paranoid: true,
         modelName: 'Usuario',
     });
     return Usuario;

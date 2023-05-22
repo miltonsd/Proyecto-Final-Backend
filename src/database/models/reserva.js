@@ -18,10 +18,12 @@ module.exports = (sequelize, DataTypes) => {
         fechaHora: {
             type: DataTypes.DATE,
             allowNull: false,
+            validate: { contains: ['18:00', '19:00', '20:00', '21:00', '22:00', '23:00'] }
         },
         cant_personas: {
             type: DataTypes.INTEGER,
             allowNull: false,
+            validate: {min:1, max:6}
         }, 
         isPendiente: {
             type: DataTypes.BOOLEAN, // si isPendiente = false, se llevo a cabo la reserva // En MySQL true = 1, false = 0
@@ -38,6 +40,7 @@ module.exports = (sequelize, DataTypes) => {
         },
     }, {
         sequelize,
+        paranoid: true,
         modelName: 'Reserva',
     });
     return Reserva;

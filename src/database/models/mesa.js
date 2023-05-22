@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         capacidad: {
             type: DataTypes.INTEGER,
             allowNull: false,
+            validate: {min:2, max:6}
         },
         ubicacion: {
             type: DataTypes.STRING,
@@ -24,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
         }
     }, {
         sequelize,
+        paranoid: true,
         modelName: 'Mesa',
     });
     return Mesa;
