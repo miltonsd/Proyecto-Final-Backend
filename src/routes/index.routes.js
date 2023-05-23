@@ -1,5 +1,6 @@
 const Router = require('express');
 const router = Router();
+const { validarReservas } = require('../validators/middleware');
 
 const apiUsuarioRouter = require('./api/usuario.routes');
 router.use('/usuarios', apiUsuarioRouter);
@@ -26,7 +27,7 @@ const apiPromocionRouter = require('./api/promocion.routes');
 router.use('/promociones', apiPromocionRouter);
 
 const apiReservaRouter = require('./api/reserva.routes');
-router.use('/reservas', apiReservaRouter);
+router.use('/reservas', validarReservas, apiReservaRouter);
 
 const apiTipoProductoRouter = require('./api/tipoProducto.routes');
 router.use('/tiposProducto', apiTipoProductoRouter); 
