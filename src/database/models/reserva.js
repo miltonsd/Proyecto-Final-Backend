@@ -17,31 +17,16 @@ module.exports = (sequelize, DataTypes) => {
         },
         fechaHora: {
             type: DataTypes.DATE,
-            allowNull: false,
-            validate: { 
-                // contains: ['18:00'], 
-                // contains: ['19:00'],
-                // contains: ['20:00'],
-                // contains: ['21:00'],
-                // contains: ['22:00'],
-                // contains: ['23:00'],
+            allowNull: false,       
+            validate: {
+                validarHora(valor) {
+                    const hora = valor.toTimeString().substring(0,5);
+                    const horasReservas = ['18:00', '19:00', '20:00', '21:00', '22:00', '23:00']
+                    if(!horasReservas.includes(hora)) {
+                        throw new Error('Hora inválida');
+                    }
+                }
             }
-            // validate: {
-                // validarHora(valor) {
-                    // hora = fechaHora.substring(11,15);
-                    // hora = String(valor).substring(11,15);
-                    // horasReservas = [['18:00', '19:00', '20:00', '21:00', '22:00', '23:00']]
-                    // if(![['18', '19', '20', '21', '22', '23']].includes(String(valor).substring(16,18))) {
-                    // if(this.notIn(String(valor).substring(11,15), [['18:00', '19:00', '20:00', '21:00', '22:00', '23:00']])) {
-                    // if(value) {
-                        // 2023-05-31T22:00:00.000Z
-                        // Wed May 31 2023 19:00:00 GMT-0300 (hora estándar de Argentina)
-                        // console.log(String(valor).substring(16,18));
-                        // throw new Error('Hora invalida');
-                    // }
-                    
-                // }
-            // }
         },
         cant_personas: {
             type: DataTypes.INTEGER,
