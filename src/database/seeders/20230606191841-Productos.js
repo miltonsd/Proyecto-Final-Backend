@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.bulkInsert('tipos_producto', [
+    await queryInterface.bulkInsert('productos', [
       { id_producto: 1, precio: 1800, stock: 100, descripcion: "Ensalada Mediterránea", imagen: "", id_tipoProducto: 1, createdAt: new Date(), updatedAt: new Date() },
       { id_producto: 2, precio: 1000, stock: 100, descripcion: "Ensalada Mixta", imagen: "", id_tipoProducto: 1, createdAt: new Date(), updatedAt: new Date() },
       { id_producto: 3, precio: 2000, stock: 100, descripcion: "Ensalada César", imagen: "", id_tipoProducto: 1, createdAt: new Date(), updatedAt: new Date() },
