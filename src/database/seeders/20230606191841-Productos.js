@@ -29,7 +29,7 @@ module.exports = {
       { id_producto: 23, precio: 600, stock: 100, descripcion: "Flan", imagen: "", id_tipoProducto: 5, createdAt: new Date(), updatedAt: new Date() },
       { id_producto: 25, precio: 350, stock: 100, descripcion: "Café negro", imagen: "", id_tipoProducto: 5, createdAt: new Date(), updatedAt: new Date() },
       { id_producto: 26, precio: 350, stock: 100, descripcion: "Cortado", imagen: "", id_tipoProducto: 5, createdAt: new Date(), updatedAt: new Date() },
-      { id_producto: 27, precio: 350, stock: 100, descripcion: "Lagrima", imagen: "", id_tipoProducto: 5, createdAt: new Date(), updatedAt: new Date() },
+      { id_producto: 27, precio: 350, stock: 100, descripcion: "Lágrima", imagen: "", id_tipoProducto: 5, createdAt: new Date(), updatedAt: new Date() },
       { id_producto: 28, precio: 300, stock: 100, descripcion: "Té", imagen: "", id_tipoProducto: 5, createdAt: new Date(), updatedAt: new Date() },
       { id_producto: 29, precio: 500, stock: 100, descripcion: "Submarino", imagen: "", id_tipoProducto: 5, createdAt: new Date(), updatedAt: new Date() },
       { id_producto: 30, precio: 500, stock: 100, descripcion: "Gaseosa", imagen: "", id_tipoProducto: 6, createdAt: new Date(), updatedAt: new Date() },
