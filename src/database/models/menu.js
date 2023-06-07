@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     class Menu extends Model {
         static associate(models) {
             Menu.belongsTo(models.Usuario, { as: 'Usuario', foreignKey: 'id_usuario' });
-            Menu.belongsToMany(models.Producto, { through: 'MenuProductos' });
+            Menu.belongsToMany(models.Producto, { through: 'MenuProductos', foreignKey: 'id_menu' });
         } 
     }
     Menu.init({

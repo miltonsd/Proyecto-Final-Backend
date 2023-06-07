@@ -5,9 +5,9 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
     class Producto extends Model {
         static associate(models) {
-            Producto.belongsToMany(models.Pedido, { through: 'PedidoProductos' });
-            Producto.belongsToMany(models.Menu, { through: 'MenuProductos' });
-            Producto.belongsToMany(models.Promocion, { through: { model: 'PromocionProductos', unique: false } });
+            Producto.belongsToMany(models.Pedido, { through: 'PedidoProductos', foreignKey: 'id_producto' });
+            Producto.belongsToMany(models.Menu, { through: 'MenuProductos', foreignKey: 'id_producto' });
+            Producto.belongsToMany(models.Promocion, { through: { model: 'PromocionProductos', unique: false }, foreignKey: 'id_producto' });
             Producto.belongsTo(models.TipoProducto, { foreignKey: 'id_tipoProducto' });
         }
     }
