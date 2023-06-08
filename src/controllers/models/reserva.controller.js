@@ -4,7 +4,7 @@ const getAllReservas = async (req, res) => {
     try {
         const reservas = await Reserva.findAll({
             attributes: { exclude: ['id_usuario','id_mesa'] },
-            include: [{ model: Usuario, as: 'Usuario', required:true }, { model: Mesa, as: 'Mesa', required:true }],
+            include: [{ model: Usuario, as: 'Usuario', required: true, attributes: { exclude: ['contraseña'] }}, { model: Mesa, as: 'Mesa', required: true }],
         });
         if (reservas.length > 0) {
             reservas.sort((a, b) => a.id_reserva - b.id_reserva);
@@ -23,7 +23,7 @@ const getOneReserva = async (req, res) => {
         const { id } = req.params;
         const reserva = await Reserva.findByPk(id, {
             attributes: { exclude: ['id_usuario', 'id_mesa'] },
-            include: [{ model: Usuario, as: 'Usuario', required:true }, { model: Mesa, as: 'Mesa', required:true }],
+            include: [{ model: Usuario, as: 'Usuario', required: true, attributes: { exclude: ['contraseña'] }}, { model: Mesa, as: 'Mesa', required: true }],
         });
         if (!reserva) {
             return res.status(404).json({ msg: 'Reserva no encontrada.' });

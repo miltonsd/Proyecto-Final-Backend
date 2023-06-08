@@ -1,10 +1,10 @@
-const { Usuario, Rol, Categoria, Estado } = require('../../database/models/index');
+const { Usuario, Rol, Categoria } = require('../../database/models/index');
 
 const getAllUsuarios = async (req, res) => {
     try {
         const usuarios = await Usuario.findAll({
-            attributes: { exclude: ['contraseña', 'id_rol','id_categoria', 'id_estado'] },
-            include: [{ model: Rol }, { model: Categoria, as: 'Categoria' }, { model: Estado }]
+            attributes: { exclude: ['contraseña', 'id_rol', 'id_categoria'] },
+            include: [{ model: Rol }, { model: Categoria, as: 'Categoria' }]
         });
         // if (!usuarios) {
         //   return res.status(404).json({ msg: 'Usuarios no encontrados' });
@@ -25,8 +25,8 @@ const getOneUsuario = async (req, res) => {
     try {
         const { id_usuario } = req.params;
         const usuario = await Usuario.findByPk(id_usuario, {
-            attributes: { exclude: ['contraseña', 'id_rol', 'id_categoria', 'id_estado'] },
-            include: [{ model: Rol }, { model: Categoria, as: 'Categoria' }, { model: Estado }],
+            attributes: { exclude: ['contraseña', 'id_rol', 'id_categoria'] },
+            include: [{ model: Rol }, { model: Categoria, as: 'Categoria' }],
         });
         if (!usuario) {
             return res.status(404).json({ msg: 'Usuario no encontrado.'});

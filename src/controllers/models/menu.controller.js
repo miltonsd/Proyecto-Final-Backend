@@ -1,10 +1,10 @@
-const { Menu, Usuario } = require('../../database/models/index');
+const { Menu, Producto, Usuario } = require('../../database/models/index');
 
 const getAllMenues = async (req, res) => {
     try {
         const menues = await Menu.findAll({
             attributes: { exclude: ['id_usuario'] },
-            include: [{ model: Usuario, as: 'Usuario' }]
+            include: [{ model: Usuario, as: 'Usuario', attributes: { exclude: ['contraseña'] }}, { model: Producto }]
         });
         if (menues.length > 0) {
             menues.sort((a, b) => a.id_menu - b.id_menu);
@@ -23,7 +23,7 @@ const getOneMenu = async (req, res) => {
         const { id } = req.params; 
         const menu = await Menu.findByPk(id, {
             attributes: { exclude: ['id_usuario'] },
-            include: [{ model: Usuario, as: 'Usuario' }]
+            include: [{ model: Usuario, as: 'Usuario', attributes: { exclude: ['contraseña'] }}, { model: Producto }]
         });
         if (!menu) {
             return res.status(404).json({ msg: 'Menu no encontrado.' });

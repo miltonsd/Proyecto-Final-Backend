@@ -19,9 +19,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.DATE,
             allowNull: false,
         },
-        estado: {
-            type: DataTypes.STRING,
+        isPendiente: {
+            type: DataTypes.BOOLEAN, // si isPendiente = false, se entregó el pedido // En MySQL true = 1, false = 0
             allowNull: false,
+            defaultValue: true, // Por defecto, un pedido se registra con el estado Pendiente
         },
         montoImporte: {
             type: DataTypes.FLOAT,

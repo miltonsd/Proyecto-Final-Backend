@@ -1,10 +1,38 @@
-const { Pedido, Usuario, PedidoProductos } = require('../../database/models/index');
+const { Pedido, Producto, Usuario, PedidoProductos } = require('../../database/models/index');
+
+const createPedido = async (req, res) => {
+    try {
+        const pedido = await Pedido.create({
+            fechaHoraPedido: req.body.fechaHoraPedido,
+            montoImporte: req.body.montoImporte,
+            id_usuario: req.body.id_usuario,
+        });
+
+        req.body.lista_productos.forEach((prod) => {
+            PedidoProductos.create({
+                id_pedido: pedido.id_pedido,
+                id_producto: prod.id_producto,
+                cantidad_prod: prod.cant_actual,
+                precio_unitario: prod.precio
+            });
+        });
+
+        if (pedido) {
+            return res.status(200).json({ msg: 'Creado correctamente.', pedido })
+        } else {
+            return res.status(404).json({ msg: 'No se recibieron los datos.' })
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg: 'Error en el servidor.' });
+    }
+}
 
 const getAllPedidos = async (req, res) => {
     try {
         const pedidos = await Pedido.findAll({
             attributes: { exclude: ['id_usuario'] },
-            include: [{ model: Usuario, as: 'Usuario' }],
+            include: [{ model: Usuario, as: 'Usuario', attributes: { exclude: ['contraseña'] }}, { model: Producto }], // Sequelize incluye la tabla intermedia (PedidosProductos) y de ahi relaciona con Producto
         });
         if (pedidos.length > 0) {
             pedidos.sort((a, b) => a.id_pedido - b.id_pedido);
@@ -23,7 +51,7 @@ const getOnePedido = async (req, res) => {
         const { id } = req.params;
         const pedido = await Pedido.findByPk(id, {
             attributes: { exclude: ['id_usuario'] },
-            include: [{ model: Usuario, as: 'Usuario' }],
+            include: [{ model: Usuario, as: 'Usuario', attributes: { exclude: ['contraseña'] }}, { model: Producto }],
         });
         if (!pedido) {
             return res.status(404).json({ msg: 'Pedido no encontrado.' });
@@ -56,4 +84,4 @@ const deletePedido = async (req, res) => {
     }
 }
 
-module.exports = { getAllPedidos, getOnePedido, deletePedido }
+module.exports = { getAllPedidos, getOnePedido, createPedido, deletePedido }
