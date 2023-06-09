@@ -3,7 +3,7 @@ const { Pedido, Producto, Usuario, PedidoProductos } = require('../../database/m
 const createPedido = async (req, res) => {
     try {
         const pedido = await Pedido.create({
-            fechaHoraPedido: req.body.fechaHoraPedido,
+            fechaHora: req.body.fechaHora,
             montoImporte: req.body.montoImporte,
             id_usuario: req.body.id_usuario,
         });
@@ -12,7 +12,7 @@ const createPedido = async (req, res) => {
             PedidoProductos.create({
                 id_pedido: pedido.id_pedido,
                 id_producto: prod.id_producto,
-                cantidad_prod: prod.cant_actual,
+                cantidad_prod: prod.cant_selecc,
                 precio_unitario: prod.precio
             });
         });

@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true,
             autoIncrement: true,
         },
-        fechaHoraPedido: {
+        fechaHora: {
             type: DataTypes.DATE,
             allowNull: false,
         },
@@ -34,6 +34,7 @@ module.exports = (sequelize, DataTypes) => {
         },
     }, {
         sequelize,
+        createdAt: false,
         paranoid: true,
         modelName: 'Pedido',
     });
