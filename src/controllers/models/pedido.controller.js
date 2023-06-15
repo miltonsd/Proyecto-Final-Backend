@@ -2,10 +2,12 @@ const { Pedido, Producto, Usuario, PedidoProductos } = require('../../database/m
 
 const createPedido = async (req, res) => {
     try {
+        console.log(req.body)
         const pedido = await Pedido.create({
             fechaHora: req.body.fechaHora,
+            isPendiente: req.body.isPendiente,
             montoImporte: req.body.montoImporte,
-            id_usuario: req.body.id_usuario,
+            id_usuario: req.body.id_usuario
         });
 
         req.body.lista_productos.forEach((prod) => {

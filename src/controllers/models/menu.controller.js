@@ -1,4 +1,28 @@
-const { Menu, Producto, Usuario } = require('../../database/models/index');
+const { Menu, Producto, Usuario, MenuProductos } = require('../../database/models/index');
+
+const createMenu = async (req, res) => {
+    try {
+        const menu = await Menu.create({
+            titulo: req.body.titulo,
+            id_usuario: req.body.id_usuario
+        });
+        req.body.lista_productos.forEach((prod) => {
+            MenuProductos.create({
+                id_menu: menu.id_menu,
+                id_producto: prod.id_producto,
+            });
+        });
+
+        if (menu) {
+            return res.status(200).json({ msg: 'Creado correctamente.', menu })
+        } else {
+            return res.status(404).json({ msg: 'No se recibieron los datos.' })
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg: 'Error en el servidor.' });
+    }
+}
 
 const getAllMenues = async (req, res) => {
     try {
@@ -54,4 +78,4 @@ const deleteMenu = async (req, res) => {
     }
 }
 
-module.exports = { getAllMenues, getOneMenu, deleteMenu }
+module.exports = { createMenu, getAllMenues, getOneMenu, deleteMenu }
