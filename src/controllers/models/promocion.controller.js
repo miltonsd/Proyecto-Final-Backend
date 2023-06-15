@@ -1,6 +1,29 @@
 const { Promocion, Producto, PromocionProductos } = require('../../database/models/index');
 
-// const createPromocion
+const createPromocion = async (req, res) => {
+    try {
+        const promocion = await Promocion.create({
+            porcentaje_desc: req.body.porcentaje_desc,
+            fecha_desde: req.body.fecha_desde,
+            fecha_hasta: req.body.fecha_hasta,
+        });
+        req.body.lista_productos.forEach((prod) => {
+            PromocionProductos.create({
+                id_promocion: promocion.id_promocion,
+                id_producto: prod.id_producto,
+            });
+        });
+
+        if (promocion) {
+            return res.status(200).json({ msg: 'Creado correctamente.', promocion })
+        } else {
+            return res.status(404).json({ msg: 'No se recibieron los datos.' })
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg: 'Error en el servidor.' });
+    }
+}
 
 const getAllPromociones = async (req, res) => {
     try {
@@ -56,4 +79,4 @@ const deletePromocion = async (req, res) => {
     }
 }
 
-module.exports = { getAllPromociones, getOnePromocion, /*createPromocion,*/ deletePromocion }
+module.exports = { getAllPromociones, getOnePromocion, createPromocion, deletePromocion }

@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
             autoIncrement: true,
         },
         porcentaje_desc: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.FLOAT,
             allowNull: false,
         },
         fecha_desde: {
