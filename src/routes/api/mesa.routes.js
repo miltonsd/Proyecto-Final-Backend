@@ -21,7 +21,7 @@ router.patch("/:id", updateOne(Mesa)); // Modifica una mesa
 router.delete("/:id", deleteOne(Mesa)); // Elimina una mesa
 
 //Rutas Especificas
-router.post("/habilitar/:id", habilitarMesa());
-router.post("/deshabilitar/:id", deshabilitarMesa());
+router.post("/habilitar/:id", habilitarMesa);
+router.post("/deshabilitar/:id", deshabilitarMesa);
 
 module.exports = router;
