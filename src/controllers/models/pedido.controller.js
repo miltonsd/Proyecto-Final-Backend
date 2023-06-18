@@ -105,5 +105,58 @@ const deletePedido = async (req, res) => {
     res.status(500).json({ msg: "Error en el servidor." });
   }
 };
+const getPendientes = async (req, res) => {
+  try {
+    const pedidos = await Pedido.findAll({
+      where: {
+        isPendiente: true,
+      },
+      attributes: { exclude: ["id_usuario"] },
+      include: [
+        {
+          model: Usuario,
+          as: "Usuario",
+          attributes: { exclude: ["contraseña"] },
+        },
+        { model: Producto },
+      ],
+    });
+    if (pedidos.length > 0) {
+      pedidos.sort((a, b) => a.id_pedido - b.id_pedido);
+      return await res.status(200).json(pedidos);
+    } else {
+      return res.status(404).json({ msg: "Pedidos no encontrados." });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: "Error en el servidor." });
+  }
+};
 
-module.exports = { getAllPedidos, getOnePedido, createPedido, deletePedido };
+const setEntregado = async (req, res) => {
+  try {
+    const id = req.params.id;
+    let p = await Pedido.findByPk(id);
+    if (p) {
+      p.update({
+        isPendiente: false,
+      }).then((p) => {
+        res.status(201).json({ p, msg: "Pedido entregado" });
+      });
+    } else {
+      return res.status(404).json({ msg: "Pedido no encontrado" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: "Error en el servidor" });
+  }
+};
+
+module.exports = {
+  getAllPedidos,
+  getOnePedido,
+  createPedido,
+  deletePedido,
+  getPendientes,
+  setEntregado,
+};
