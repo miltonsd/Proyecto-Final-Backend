@@ -105,6 +105,7 @@ const deletePedido = async (req, res) => {
     res.status(500).json({ msg: "Error en el servidor." });
   }
 };
+
 const getPendientes = async (req, res) => {
   try {
     const pedidos = await Pedido.findAll({
