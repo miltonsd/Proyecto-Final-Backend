@@ -126,7 +126,7 @@ const getPendientes = async (req, res) => {
       pedidos.sort((a, b) => a.id_pedido - b.id_pedido);
       return await res.status(200).json(pedidos);
     } else {
-      return res.status(404).json({ msg: "Pedidos no encontrados." });
+      return res.status(404).json({ msg: "No se encontraron pedidos pendientes." });
     }
   } catch (error) {
     console.log(error);
