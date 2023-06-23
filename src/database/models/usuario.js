@@ -56,6 +56,12 @@ module.exports = (sequelize, DataTypes) => {
         contraseña: {
             type: DataTypes.STRING(150),
             allowNull: false,
+            validate: {
+                len: {
+                    args: [6, 20],
+                    msg: 'La contraseña debe contener entre 6 y 20 caracteres.'
+                }
+            }
         },
         isConfirmado: {
             type: DataTypes.BOOLEAN, // si isConfirmado = false, aun no confirmo/valido su mail // En MySQL true = 1, false = 0
