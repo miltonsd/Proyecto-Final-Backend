@@ -58,8 +58,8 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             validate: {
                 len: {
-                    args: [6, 20],
-                    msg: 'La contraseña debe contener entre 6 y 20 caracteres.'
+                    args: [6, 150],
+                    msg: 'La contraseña debe contener entre 6 y 150 caracteres.'
                 }
             }
         },
