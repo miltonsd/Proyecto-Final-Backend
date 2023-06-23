@@ -83,6 +83,12 @@ module.exports = (sequelize, DataTypes) => {
         direccion: {
             type: DataTypes.STRING,
             allowNull: false,
+            validate: {
+                len: {
+                    args: [3, 500],
+                    msg: 'La dirección debe contener mínimo 3 caracteres.',
+                },
+            }
         },
         telefono: {
             type: DataTypes.STRING,
@@ -104,7 +110,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: false,
             defaultValue: 1, // El nivel de categoría mínima es 1 (1: Básico|2:GOLD|3:PLATINUM|4:BLACK)
-        },
+        }
     }, {
         sequelize,
         paranoid: true,

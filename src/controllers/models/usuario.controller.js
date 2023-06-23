@@ -85,7 +85,7 @@ const crearToken = (usuario) => {
 
 const register = async (req, res) => {
     try {
-        req.body.contraseña = bcrypt.hashSync(req.body.contraseña, 15); // tomo la contraseña que me llega, la encripto y la guardo en la DB
+        req.body.contraseña = bcrypt.hashSync(req.body.contraseña); // tomo la contraseña que me llega, la encripto y la guardo en la DB
         const usuario = await Usuario.create(req.body);
         // sendConfirmationEmail(u);
         if (usuario) {
