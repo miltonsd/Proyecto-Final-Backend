@@ -74,7 +74,6 @@ const crearToken = (usuario) => {
     // El payload son los datos del usuario que le pasó para crear el token con JWT
     const payload = {
         id_usuario: usuario.id_usuario,
-        email: usuario.email,
         id_rol: usuario.id_rol,
         createdAt: moment().unix(),
         // Rol = 2 (Usuario) -> 90 minutos / El resto (admin y mozo/cocina) -> 8 horas
@@ -99,12 +98,18 @@ const register = async (req, res) => {
     }
 }
 
-// const logOut = async (req, res, next) => {
-//     // Eliminar cookie jwt
-//     res.clearCookie('jwt')
-//     // Redirigir a la vista de login
-//     return res.redirect('/login')
-// };
+const logOut = async (req, res, next) => {
+    try {
+        const token = req.headers.authorization?.split(' ')[1]
+        const payload = jwt.decode(token, process.env.HASH_KEY);
+        payload.expiredAt = Math.floor(Date.now() / 1000) - 10; // Establece la fecha de expiración 10 segundos en el pasado
+        const newToken = jwt.encode(payload, process.env.HASH_KEY); // Genera un nuevo token con la fecha de expiración modificada
+        res.status(200).json({ message: 'Logout exitoso', token: newToken });
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ msg: 'No hay token.' })
+    }
+};
 
 const updateUsuario = async (req, res) => {
     try {
@@ -129,7 +134,7 @@ const updateUsuario = async (req, res) => {
                 apellido: params.apellido || usuario.apellido,
                 id_rol: params.id_rol || usuario.id_rol,
                 email: params.email || usuario.email,
-                contraseña: params.contraseña || usuario.contraseña,
+                contraseña: bcrypt.hashSync(params.contraseña) || usuario.contraseña,
                 direccion: params.direccion || usuario.direccion,
                 telefono: params.telefono || usuario.telefono,
                 id_categoria: params.id_categoria || usuario.id_categoria,
@@ -144,4 +149,22 @@ const updateUsuario = async (req, res) => {
     }
 }
 
-module.exports = { getAllUsuarios, getOneUsuario, login, register, updateUsuario }
+const cambiarPassword = async (req, res) => {
+    try {
+        const usuario = await Usuario.findOne({ where: { email: req.body.email } });
+        if (usuario) {
+        // Hago el update
+            usuario.update({
+                contraseña: bcrypt.hashSync(req.body.contraseña) || usuario.contraseña,
+            })
+                .then(usuario => { res.status(201).json({ usuario, msg: 'Contraseña actualizada correctamente.' }) })
+        } else {
+            return res.status(404).json({ msg: 'Usuario no encontrado.' })
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg: 'Error en el servidor.' });
+    }
+}
+
+module.exports = { getAllUsuarios, getOneUsuario, login, logOut, register, cambiarPassword, updateUsuario }
