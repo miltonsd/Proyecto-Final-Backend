@@ -78,4 +78,27 @@ const deleteMenu = async (req, res) => {
     }
 }
 
-module.exports = { createMenu, getAllMenues, getOneMenu, deleteMenu }
+const getAllMenuesUsuario = async (req, res) => {
+    try {
+        const id  = req.params.id_usuario;
+        const menues = await Menu.findAll({
+            where: { id_usuario : id },
+            attributes: { exclude: ['id_usuario', 'createdAt', 'updatedAt', 'deletedAt'] },
+            include: { 
+              model: Producto, attributes: ['id_producto', 'descripcion', 'precio'], // ASÍ SE TRAEN LOS ATRIBUTOS QUE QUIERO (SIN USAR EL EXCLUDE)
+              through: { attributes: [] }, // ASÍ NO SE TRAEN LOS ATRIBUTOS DE LA TABLA INTERMEDIA
+            },
+        });
+        if (menues.length > 0) {
+            menues.sort((a, b) => a.id_menu - b.id_menu);
+            return await res.status(200).json(menues);
+        } else {
+            return res.status(404).json({ msg: 'El usuario no posee menúes personalizados.' })
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg: 'Error en el servidor.' });
+    }
+  }
+
+module.exports = { createMenu, getAllMenues, getOneMenu, deleteMenu, getAllMenuesUsuario }

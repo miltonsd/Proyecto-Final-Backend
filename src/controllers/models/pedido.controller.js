@@ -153,6 +153,30 @@ const setEntregado = async (req, res) => {
   }
 };
 
+const getAllPedidosUsuario = async (req, res) => {
+  try {
+      const id  = req.params.id_usuario;
+      const pedidos = await Pedido.findAll({
+          where: { id_usuario : id },
+          attributes: { exclude: ['id_usuario', 'updatedAt'] },
+          include: { 
+            model: Producto, attributes: ['descripcion'], // ASÍ SE TRAEN LOS ATRIBUTOS QUE QUIERO (SIN USAR EL EXCLUDE)
+            through: { attributes: ['cantidad_prod', 'precio_unitario'] }, // ASÍ SE TRAEN LOS ATRIBUTOS QUE QUIERO DE LA TABLA INTERMEDIA
+          },
+          paranoid: false
+      });
+      if (pedidos.length > 0) {
+          pedidos.sort((a, b) => a.fechaHora - b.fechaHora);
+          return await res.status(200).json(pedidos);
+      } else {
+          return res.status(404).json({ msg: 'El usuario no posee pedidos registrados.' })
+      }
+  } catch (error) {
+      console.log(error);
+      res.status(500).json({ msg: 'Error en el servidor.' });
+  }
+}
+
 module.exports = {
   getAllPedidos,
   getOnePedido,
@@ -160,4 +184,5 @@ module.exports = {
   deletePedido,
   getPendientes,
   setEntregado,
+  getAllPedidosUsuario
 };

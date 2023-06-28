@@ -37,4 +37,24 @@ const getOneReserva = async (req, res) => {
     }
 }
 
-module.exports = { getAllReservas, getOneReserva }
+const getAllReservasUsuario = async (req, res) => {
+    try {
+        const id  = req.params.id_usuario;
+        const reservas = await Reserva.findAll({
+            where: { id_usuario : id },
+            attributes: { exclude: ['id_usuario', 'createdAt', 'updatedAt'] },
+            paranoid: false
+        });
+        if (reservas.length > 0) {
+            reservas.sort((a, b) => a.fechaHora - b.fechaHora);
+            return await res.status(200).json(reservas);
+        } else {
+            return res.status(404).json({ msg: 'El usuario no posee reservas registradas.' })
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg: 'Error en el servidor.' });
+    }
+}
+
+module.exports = { getAllReservas, getOneReserva, getAllReservasUsuario }
