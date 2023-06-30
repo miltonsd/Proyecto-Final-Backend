@@ -2,7 +2,7 @@ const Router = require('express');
 const router = Router();
 const { deleteOne } = require('../../controllers/generico.controller');
 const { Usuario } = require('../../database/models/index');
-const { getAllUsuarios, getOneUsuario, login, logOut, register, updateUsuario, cambiarPassword } = require('../../controllers/models/usuario.controller');
+const { getAllUsuarios, getOneUsuario, login, logOut, register, updateUsuario, cambiarPassword, modificarPerfil } = require('../../controllers/models/usuario.controller');
 const { getAllReservasUsuario } = require('../../controllers/models/reserva.controller');
 const { getAllPedidosUsuario } = require('../../controllers/models/pedido.controller');
 const { getAllMenuesUsuario } = require('../../controllers/models/menu.controller');
@@ -20,6 +20,7 @@ router.post('/login', /*validateLogin, checkVerification,*/ login); // Login de 
 router.post('/logout', /*validateLogin, checkVerification,*/ logOut); // LogOut del usuario
 router.post('/register', register); // Crea un usuario
 router.patch('/resetPassword', cambiarPassword); // Modifica la contraseña del usuario
+router.patch('/modificarPerfil/:id_usuario', modificarPerfil); // Modifica los datos del perfil de un usuario
 router.patch('/:id_usuario', updateUsuario); // Modifica un usuario
 
 module.exports = router;

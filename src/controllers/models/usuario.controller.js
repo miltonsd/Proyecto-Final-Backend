@@ -167,4 +167,35 @@ const cambiarPassword = async (req, res) => {
     }
 }
 
-module.exports = { getAllUsuarios, getOneUsuario, login, logOut, register, cambiarPassword, updateUsuario }
+// Este método valida la contraseña para luego modificar los datos del usuario y/o la contraseña
+const modificarPerfil = async (req, res) => {
+    try {
+        const id_usuario = req.params.id_usuario;
+        const usuario = await Usuario.findByPk(id_usuario);
+        if (usuario) {
+            console.log(usuario)
+            if (bcrypt.compareSync(req.body.contrasenia, usuario.contraseña)) {
+                // Aca modifica los datos del perfil del usuario
+                const datos = req.body
+                usuario.update({
+                    nombre: datos.nombre || usuario.nombre,
+                    apellido: datos.apellido || usuario.apellido,
+                    contraseña: bcrypt.hashSync(datos.nuevaContrasenia) || usuario.contraseña,
+                    direccion: datos.direccion || usuario.direccion,
+                    telefono: datos.telefono || usuario.telefono,
+                })
+                    .then(usuario => { res.status(201).json({ usuario, msg: 'Editado correctamente.' }) })
+            } else {
+                // En caso de que la contraseña ingresada no sea la correcta
+                return res.status(404).json({ msg: 'Contraseña incorrecta.' })
+            }
+        } else {
+            return res.status(404).json({ msg: 'Usuario no encontrado.' })
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg: 'Error en el servidor.' });
+    }
+}
+
+module.exports = { getAllUsuarios, getOneUsuario, login, logOut, register, cambiarPassword, updateUsuario, modificarPerfil }
