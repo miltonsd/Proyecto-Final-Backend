@@ -2,6 +2,7 @@ const { Promocion, Producto, PromocionProductos } = require('../../database/mode
 
 const createPromocion = async (req, res) => {
     try {
+        console.log(req.body)
         const promocion = await Promocion.create({
             porcentaje_desc: req.body.porcentaje_desc,
             fecha_desde: req.body.fecha_desde,
@@ -10,7 +11,7 @@ const createPromocion = async (req, res) => {
         req.body.lista_productos.forEach((prod) => {
             PromocionProductos.create({
                 id_promocion: promocion.id_promocion,
-                id_producto: prod.id_producto,
+                id_producto: prod,
             });
         });
 
@@ -60,6 +61,30 @@ const getOnePromocion = async (req, res) => {
     }
 }
 
+const updatePromocion = async (req,res) => {
+    try{
+        console.log(req.body)
+        const params = req.body;
+        const id_menu = req.params.id_menu;
+        let m = await Menu.findByPk(id_menu);
+        if (m) {  
+            // Hago el update
+            m.update({
+                titulo: params.titulo || m.titulo,
+                id_usuario: params.id_usuario || m.id_usuario
+            }).then(m => {
+            // const menuProductos = await MenuProductos.findAll({ where: { id_menu: req.body.id_menu } })
+            res.status(201).json({m, 'msg':'Editado correctamente'})
+            })
+        } else {
+            return res.status(404).json({msg:"Rol no encontrado"})
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg: 'Error en el servidor' });
+    }
+}
+
 const deletePromocion = async (req, res) => {
     try {
         const id = req.params.id;
@@ -79,4 +104,4 @@ const deletePromocion = async (req, res) => {
     }
 }
 
-module.exports = { getAllPromociones, getOnePromocion, createPromocion, deletePromocion }
+module.exports = { getAllPromociones, getOnePromocion, createPromocion, deletePromocion, updatePromocion }
