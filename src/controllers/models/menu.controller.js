@@ -2,7 +2,6 @@ const { Menu, Producto, Usuario, MenuProductos } = require('../../database/model
 
 const createMenu = async (req, res) => {
     try {
-        console.log(req.body)
         const menu = await Menu.create({
             titulo: req.body.titulo,
             id_usuario: req.body.id_usuario
@@ -63,22 +62,51 @@ const getOneMenu = async (req, res) => {
 }
 
 const updateMenu = async (req,res) => {
-    try{
-        console.log(req.body)
-        const params = req.body;
-        const id_menu = req.params.id_menu;
-        let m = await Menu.findByPk(id_menu);
-        if (m) {  
+    try {
+        // Obtiene el menú
+        const id_menu = req.params.id;
+        let m = await Menu.findByPk(id_menu)
+        if (m) {
             // Hago el update
             m.update({
-                titulo: params.titulo || m.titulo,
-                id_usuario: params.id_usuario || m.id_usuario
-            }).then(m => {
-            // const menuProductos = await MenuProductos.findAll({ where: { id_menu: req.body.id_menu } })
-            res.status(201).json({m, 'msg':'Editado correctamente'})
+                titulo: req.body.titulo || m.titulo,
+                id_usuario: req.body.id_usuario || m.id_usuario
+            }).then(async m => {
+                const listaOriginal = []
+                // Obtengo los productos asociados al menu
+                const productosM = await m.getProductos({ joinTableAttributes: ['id_producto'] })
+                productosM.forEach((p) => {
+                    // Guardo los id_producto de la lista original asociados al menu
+                    listaOriginal.push(p.dataValues.id_producto)
+                })
+                // Defino la lista con los productos que envía el frontend desde la petición HTTP
+                const listaNuevos = req.body.lista_productos
+
+                // Filtra desde los productos de la lista nueva aquellos que no están incluidos en la lista original, para agregarlos luego
+                const productosAgregar = listaNuevos.filter(
+                    (producto) => !listaOriginal.includes(producto)
+                )
+                
+                // Filtra desde los productos de la lista original aquellos que no están incluidos en la lista nueva, para eliminarlos luego
+                const productosEliminar = listaOriginal.filter(
+                    (producto) => !listaNuevos.includes(producto)
+                )
+
+                // Agrega los nuevos productos asociados a la tabla intermedia
+                await Promise.all(productosAgregar.map((id_productoAgregar) =>
+                    MenuProductos.create({ id_menu: m.id_menu, id_producto: id_productoAgregar })
+                ))
+
+                // Elimina los productos asociados que ya no corresponden en la tabla intermedia
+                await MenuProductos.destroy({
+                    where: { id_menu: m.id_menu, id_producto: productosEliminar }, 
+                    force: true // Hace un eliminado físico del registro en la tabla MenuProductos
+                })
+
+                res.status(201).json({m, 'msg':'Editado correctamente.'})
             })
         } else {
-            return res.status(404).json({msg:"Rol no encontrado"})
+            return res.status(404).json({msg : "Menú no encontrado."})
         }
     } catch (error) {
         console.log(error);

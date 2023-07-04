@@ -62,22 +62,52 @@ const getOnePromocion = async (req, res) => {
 }
 
 const updatePromocion = async (req,res) => {
-    try{
-        console.log(req.body)
-        const params = req.body;
-        const id_menu = req.params.id_menu;
-        let m = await Menu.findByPk(id_menu);
-        if (m) {  
+    try {
+        // Obtiene la promoción
+        const id_promocion = req.params.id;
+        let prom = await Promocion.findByPk(id_promocion)
+        if (prom) {
             // Hago el update
-            m.update({
-                titulo: params.titulo || m.titulo,
-                id_usuario: params.id_usuario || m.id_usuario
-            }).then(m => {
-            // const menuProductos = await MenuProductos.findAll({ where: { id_menu: req.body.id_menu } })
-            res.status(201).json({m, 'msg':'Editado correctamente'})
+            prom.update({
+                porcentaje_desc: req.body.porcentaje_desc || prom.porcentaje_desc,
+                fecha_desde: req.body.fecha_desde || prom.fecha_desde,
+                fecha_hasta: req.body.fecha_hasta || prom.fecha_hasta,
+            }).then(async prom => {
+                const listaOriginal = []
+                // Obtengo los productos asociados a la promocion
+                const productosProm = await prom.getProductos({ joinTableAttributes: ['id_producto'] })
+                productosProm.forEach((prod) => {
+                    // Guardo los id_producto de la lista original asociados a la promocion
+                    listaOriginal.push(prod.dataValues.id_producto)
+                })
+                // Defino la lista con los productos que envía el frontend desde la petición HTTP
+                const listaNuevos = req.body.lista_productos
+
+                // Filtra desde los productos de la lista nueva aquellos que no están incluidos en la lista original, para agregarlos luego
+                const productosAgregar = listaNuevos.filter(
+                    (producto) => !listaOriginal.includes(producto)
+                )
+                
+                // Filtra desde los productos de la lista original aquellos que no están incluidos en la lista nueva, para eliminarlos luego
+                const productosEliminar = listaOriginal.filter(
+                    (producto) => !listaNuevos.includes(producto)
+                )
+
+                // Agrega los nuevos productos asociados a la tabla intermedia
+                await Promise.all(productosAgregar.map((id_productoAgregar) =>
+                    PromocionProductos.create({ id_promocion: prom.id_promocion, id_producto: id_productoAgregar })
+                ))
+
+                // Elimina los productos asociados que ya no corresponden en la tabla intermedia
+                await PromocionProductos.destroy({
+                    where: { id_promocion: prom.id_promocion, id_producto: productosEliminar }, 
+                    force: true // Hace un eliminado físico del registro en la tabla PromocionProductos
+                })
+
+                res.status(201).json({prom, 'msg' : 'Editado correctamente.'})
             })
         } else {
-            return res.status(404).json({msg:"Rol no encontrado"})
+            return res.status(404).json({msg : "Promoción no encontrada."})
         }
     } catch (error) {
         console.log(error);

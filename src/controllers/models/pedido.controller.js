@@ -87,6 +87,80 @@ const getOnePedido = async (req, res) => {
   }
 };
 
+const updatePedido = async (req,res) => {
+  try {
+      // Obtiene el pedido
+      const id_pedido = req.params.id;
+      let p = await Pedido.findByPk(id_pedido)
+      if (p) {
+          // Hago el update
+          p.update({
+              id_usuario: req.body.id_usuario || p.id_usuario,
+              id_mesa: req.body.id_mesa || p.id_mesa,
+              isPendiente: req.body.isPendiente || p.isPendiente,
+              montoImporte: req.body.montoImporte || p.montoImporte,
+          }).then(async p => {
+              const listaOriginal = []
+              // Obtengo los productos asociados al pedido
+              const productosPedido = await p.getProductos({ joinTableAttributes: ['id_producto', 'cantidad_prod', 'precio_unitario'] })
+              productosPedido.forEach((prod) => {
+                const producto = {
+                  id_producto: prod.dataValues.id_producto,
+                  precio_unitario: prod.dataValues.PedidoProductos.dataValues.precio_unitario,
+                  cantidad_prod: prod.dataValues.PedidoProductos.dataValues.cantidad_prod,
+                }
+                // Guardo los id_producto de la lista original asociados al pedido
+                listaOriginal.push(producto)
+              })
+              console.log('Productos del pedido Original:', listaOriginal)
+              // Defino la lista con los productos que envía el frontend desde la petición HTTP
+              const listaNuevos = req.body.lista_productos.map((p) => ({
+                id_producto: p.id_producto,
+                precio_unitario: p.precio,
+                cantidad_prod: p.cant_selecc
+              }))
+
+              console.log('Productos desde el front:', listaNuevos)
+
+              // Filtra desde los productos de la lista nueva aquellos que no están incluidos en la lista original, para agregarlos luego
+              const productosAgregar = listaNuevos.filter(
+                  (producto) => !listaOriginal.includes(producto) 
+              )
+              console.log('Productos a agregar:', productosAgregar)
+              
+              // Filtra desde los productos de la lista original aquellos que no están incluidos en la lista nueva, para eliminarlos luego
+              const productosEliminar = listaOriginal.filter(
+                (producto) => !listaNuevos.includes(producto)
+              )
+              console.log('Productos a eliminar:', productosEliminar)
+
+              // Agrega los nuevos productos asociados a la tabla intermedia
+              // await Promise.all(productosAgregar.map((producto) =>
+              //   PedidoProductos.create({ 
+              //     id_pedido: p.id_pedido, 
+              //     id_producto: producto.id_producto, 
+              //     cantidad_prod: producto.cantidad_prod, 
+              //     precio_unitario: producto.precio_unitario 
+              //   })
+              // ))
+
+              // // Elimina los productos asociados que ya no corresponden en la tabla intermedia
+              // await PedidoProductos.destroy({
+              //     where: { id_pedido: p.id_pedido, id_producto: productosEliminar.id_producto }, 
+              //     force: true // Hace un eliminado físico del registro en la tabla PedidoProductos
+              // })
+
+              res.status(201).json({p, 'msg' : 'Editado correctamente.'})
+          })
+      } else {
+          return res.status(404).json({msg : "Pedido no encontrado."})
+      }
+  } catch (error) {
+      console.log(error);
+      res.status(500).json({ msg: 'Error en el servidor' });
+  }
+}
+
 const deletePedido = async (req, res) => {
   try {
     const id = req.params.id;
@@ -180,6 +254,7 @@ const getAllPedidosUsuario = async (req, res) => {
 module.exports = {
   getAllPedidos,
   getOnePedido,
+  updatePedido,
   createPedido,
   deletePedido,
   getPendientes,
