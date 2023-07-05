@@ -113,6 +113,7 @@ const logOut = async (req, res, next) => {
 
 const updateUsuario = async (req, res) => {
     try {
+        console.log(req.body)
         const params = req.body;
         const id_usuario = req.params.id_usuario;
         const usuario = await Usuario.findByPk(id_usuario);
@@ -134,6 +135,7 @@ const updateUsuario = async (req, res) => {
                 apellido: params.apellido || usuario.apellido,
                 id_rol: params.id_rol || usuario.id_rol,
                 email: params.email || usuario.email,
+                fechaNacimiento: params.fechaNacimiento || usuario.fechaNacimiento,
                 contraseña: bcrypt.hashSync(params.contraseña) || usuario.contraseña,
                 direccion: params.direccion || usuario.direccion,
                 telefono: params.telefono || usuario.telefono,

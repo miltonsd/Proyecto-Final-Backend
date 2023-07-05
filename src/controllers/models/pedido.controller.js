@@ -134,21 +134,23 @@ const updatePedido = async (req,res) => {
               )
               console.log('Productos a eliminar:', productosEliminar)
 
-              // Agrega los nuevos productos asociados a la tabla intermedia
-              // await Promise.all(productosAgregar.map((producto) =>
-              //   PedidoProductos.create({ 
-              //     id_pedido: p.id_pedido, 
-              //     id_producto: producto.id_producto, 
-              //     cantidad_prod: producto.cantidad_prod, 
-              //     precio_unitario: producto.precio_unitario 
-              //   })
-              // ))
+              // Elimina los productos asociados que ya no corresponden en la tabla intermedia
+              await Promise.all(productosEliminar.map((producto) =>
+                PedidoProductos.destroy({ 
+                  where: { id_pedido: p.id_pedido, id_producto: producto.id_producto }, 
+                  force: true // Hace un eliminado físico del registro en la tabla PedidoProductos
+                })
+              ))
 
-              // // Elimina los productos asociados que ya no corresponden en la tabla intermedia
-              // await PedidoProductos.destroy({
-              //     where: { id_pedido: p.id_pedido, id_producto: productosEliminar.id_producto }, 
-              //     force: true // Hace un eliminado físico del registro en la tabla PedidoProductos
-              // })
+              // Agrega los nuevos productos asociados a la tabla intermedia
+              await Promise.all(productosAgregar.map((producto) =>
+                PedidoProductos.create({ 
+                  id_pedido: p.id_pedido, 
+                  id_producto: producto.id_producto, 
+                  cantidad_prod: producto.cantidad_prod, 
+                  precio_unitario: producto.precio_unitario 
+                })
+              ))
 
               res.status(201).json({p, 'msg' : 'Editado correctamente.'})
           })
