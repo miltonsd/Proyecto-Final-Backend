@@ -100,6 +100,19 @@ module.exports = (sequelize, DataTypes) => {
         fechaNacimiento: {
             type: DataTypes.DATEONLY,
             allowNull: false,
+            validate: {
+                validarFechaNac(valor) {
+                    const fechaNac = new Date(valor)
+                    const fechaLimite = new Date(
+                    new Date().getFullYear() - 15,
+                    new Date().getMonth(),
+                    new Date().getDate(), 0
+                    )
+                    if (fechaNac > fechaLimite) {
+                        throw new Error("Edad mínima requerida 15 años.");
+                    }
+                },
+            },
         },
         id_rol: {
             type: DataTypes.INTEGER,
