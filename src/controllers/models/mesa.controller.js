@@ -87,7 +87,7 @@ const createMesa = async (req, res) => {
 const habilitarMesa = async (req, res) => {
   try {
     const id = req.params.id;
-    let m = await Menu.findByPk(id);
+    let m = await Mesa.findByPk(id);
     if (m) {
       m.update({
         habilitada: true,
@@ -106,7 +106,7 @@ const habilitarMesa = async (req, res) => {
 const deshabilitarMesa = async (req, res) => {
   try {
     const id = req.params.id;
-    let m = await Menu.findByPk(id);
+    let m = await Mesa.findByPk(id);
     if (m) {
       m.update({
         habilitada: false,
