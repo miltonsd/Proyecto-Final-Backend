@@ -236,10 +236,9 @@ const getAllPedidosUsuario = async (req, res) => {
           where: { id_usuario : id },
           attributes: { exclude: ['id_usuario', 'updatedAt'] },
           include: { 
-            model: Producto, attributes: ['descripcion'], // ASÍ SE TRAEN LOS ATRIBUTOS QUE QUIERO (SIN USAR EL EXCLUDE)
+            model: Producto, attributes: ['id_producto', 'descripcion'], // ASÍ SE TRAEN LOS ATRIBUTOS QUE QUIERO (SIN USAR EL EXCLUDE)
             through: { attributes: ['cantidad_prod', 'precio_unitario'] }, // ASÍ SE TRAEN LOS ATRIBUTOS QUE QUIERO DE LA TABLA INTERMEDIA
           },
-          paranoid: false
       });
       if (pedidos.length > 0) {
           pedidos.sort((a, b) => a.fechaHora - b.fechaHora);
