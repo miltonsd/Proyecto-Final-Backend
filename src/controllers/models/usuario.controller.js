@@ -2,6 +2,7 @@ const { Usuario, Rol, Categoria } = require('../../database/models/index');
 const bcrypt = require('bcryptjs');
 const moment = require('moment');
 const jwt = require('jwt-simple');
+const { envioConfirmacionEmail } = require('../../helpers/sendEmail');
 
 const getAllUsuarios = async (req, res) => {
     try {
@@ -84,10 +85,10 @@ const crearToken = (usuario) => {
 
 const register = async (req, res) => {
     try {
-        req.body.contraseña = bcrypt.hashSync(req.body.contraseña); // tomo la contraseña que me llega, la encripto y la guardo en la DB
-        const usuario = await Usuario.create(req.body);
-        // sendConfirmationEmail(u);
+        req.body.contraseña = bcrypt.hashSync(req.body.contraseña) // tomo la contraseña que me llega, la encripto y la guardo en la DB
+        const usuario = await Usuario.create(req.body)
         if (usuario) {
+            envioConfirmacionEmail(usuario)
             return res.status(200).json({ msg: 'Creado correctamente.', usuario })
         } else {
             return res.status(404).json({ msg: 'No se recibieron los datos.' })
@@ -201,4 +202,24 @@ const modificarPerfil = async (req, res) => {
     }
 }
 
-module.exports = { getAllUsuarios, getOneUsuario, login, logOut, register, cambiarPassword, updateUsuario, modificarPerfil }
+const confirmarUsuario =  async (req, res) => {
+    try{
+        const token = req.params.token;
+        const email = jwt.decode(token, process.env.HASH_KEY);
+        const u = await Usuario.findOne({ where: { email: email } });
+        if (u) {
+            u.update({
+                isConfirmado: true
+            }).then(u => {
+                return res.redirect(`http://${process.env.FRONT_URL}/auth`);
+            })
+        } else {
+            return res.status(404).json({'msg':'No se recibieron los datos'})
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg: 'Error en el servidor' });
+    }
+}
+
+module.exports = { getAllUsuarios, getOneUsuario, login, logOut, register, cambiarPassword, updateUsuario, modificarPerfil, confirmarUsuario }

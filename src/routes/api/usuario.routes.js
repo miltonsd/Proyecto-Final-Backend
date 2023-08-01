@@ -2,7 +2,7 @@ const Router = require('express');
 const router = Router();
 const { deleteOne } = require('../../controllers/generico.controller');
 const { Usuario } = require('../../database/models/index');
-const { getAllUsuarios, getOneUsuario, login, logOut, register, updateUsuario, cambiarPassword, modificarPerfil } = require('../../controllers/models/usuario.controller');
+const { getAllUsuarios, getOneUsuario, login, logOut, register, updateUsuario, cambiarPassword, modificarPerfil, confirmarUsuario } = require('../../controllers/models/usuario.controller');
 const { getAllReservasUsuario } = require('../../controllers/models/reserva.controller');
 const { getAllPedidosUsuario } = require('../../controllers/models/pedido.controller');
 const { getAllMenuesUsuario } = require('../../controllers/models/menu.controller');
@@ -11,6 +11,7 @@ const { getAllMenuesUsuario } = require('../../controllers/models/menu.controlle
 router.delete('/:id', deleteOne(Usuario)); // Elimina un usuario
 
 // Rutas Especificas
+router.get('/confirmar/:token', confirmarUsuario); // Confirma el email del usuario
 router.get('/', getAllUsuarios); // Muestra todos
 router.get('/:id_usuario', getOneUsuario); // Muestra un usuario
 router.get('/:id_usuario/reservas', getAllReservasUsuario); // Muestra todas (inclusive las canceladas) las reservas del usuario
