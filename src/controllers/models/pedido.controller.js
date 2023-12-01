@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const {
   Pedido,
   Producto,
@@ -10,7 +11,7 @@ const createPedido = async (req, res) => {
     console.log(req.body);
     const pedido = await Pedido.create({
       fechaHora: req.body.fechaHora,
-      isPendiente: req.body.isPendiente,
+      estado: req.body.estado,
       montoImporte: req.body.montoImporte,
       id_usuario: req.body.id_usuario,
       id_mesa: req.body.id_mesa,
@@ -46,8 +47,9 @@ const getAllPedidos = async (req, res) => {
           as: "Usuario",
           attributes: { exclude: ["contraseña"] },
         },
-        { model: Producto },
+        { model: Producto, paranoid: false },
       ], // Sequelize incluye la tabla intermedia (PedidosProductos) y de ahi relaciona con Producto
+      paranoid: false
     });
     if (pedidos.length > 0) {
       pedidos.sort((a, b) => a.id_pedido - b.id_pedido);
@@ -72,8 +74,9 @@ const getOnePedido = async (req, res) => {
           as: "Usuario",
           attributes: { exclude: ["contraseña"] },
         },
-        { model: Producto },
+        { model: Producto, paranoid: false },
       ],
+      paranoid: false
     });
     if (!pedido) {
       return res.status(404).json({ msg: "Pedido no encontrado." });
@@ -97,7 +100,7 @@ const updatePedido = async (req,res) => {
           p.update({
               id_usuario: req.body.id_usuario || p.id_usuario,
               id_mesa: req.body.id_mesa || p.id_mesa,
-              isPendiente: req.body.isPendiente || p.isPendiente,
+              estado: req.body.estado || p.estado,
               montoImporte: req.body.montoImporte || p.montoImporte,
           }).then(async p => {
               const listaOriginal = []
@@ -186,7 +189,9 @@ const getPendientes = async (req, res) => {
   try {
     const pedidos = await Pedido.findAll({
       where: {
-        isPendiente: true,
+        estado: {
+          [Op.or]: ['Pendiente', 'Listo']
+        }
       },
       attributes: { exclude: ["id_usuario"] },
       include: [
@@ -210,16 +215,26 @@ const getPendientes = async (req, res) => {
   }
 };
 
-const setEntregado = async (req, res) => {
+const cambiarEstado = async (req, res) => {
   try {
     const id = req.params.id;
     let p = await Pedido.findByPk(id);
     if (p) {
-      p.update({
-        isPendiente: false,
-      }).then((p) => {
-        res.status(201).json({ p, msg: "Pedido entregado" });
-      });
+      // Comprueba que el pedido tenga el estado "Pendiente" para pasarlo al estado "Listo"
+      if (p.estado === 'Pendiente') {
+        p.update({
+          estado: 'Listo',
+        }).then((p) => {
+          res.status(201).json({ p, msg: "Pedido listo" });
+        });
+      } else {
+        // Cambia del estado "Listo" al estado "Entregado"
+        p.update({
+          estado: 'Entregado',
+        }).then((p) => {
+          res.status(201).json({ p, msg: "Pedido entregado" });
+        });
+      }
     } else {
       return res.status(404).json({ msg: "Pedido no encontrado" });
     }
@@ -259,6 +274,6 @@ module.exports = {
   createPedido,
   deletePedido,
   getPendientes,
-  setEntregado,
+  cambiarEstado,
   getAllPedidosUsuario
 };

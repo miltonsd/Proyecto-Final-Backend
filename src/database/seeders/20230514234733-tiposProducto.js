@@ -3,6 +3,9 @@
 module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.bulkInsert('tipos_producto', [
+      // Tipo producto genérico cuando un producto no tiene asignado un tipo de producto específico y/o cuando se borra el tipo producto al que pertenecía
+      { id_tipoProducto: 0, descripcion: "Genérico", imagen: "https://cdn.discordapp.com/attachments/956985601226338411/1180219235545387008/pngtree-open-lid-metallic-restaurant-cloche-with-white-gift-box-in-3d-picture-image_3708154.jpg", createdAt: new Date(), updatedAt: new Date() },
+      
       { id_tipoProducto: 1, descripcion: "Ensaladas y entradas", imagen: "https://cdn.discordapp.com/attachments/956985601226338411/1113943229423960136/001.jpg", createdAt: new Date(), updatedAt: new Date() },
       { id_tipoProducto: 2, descripcion: "Para picar", imagen: "https://cdn.discordapp.com/attachments/956985601226338411/1113943241482584145/636d2e0636819.jpg", createdAt: new Date(), updatedAt: new Date() },
       { id_tipoProducto: 3, descripcion: "Sandwiches y pizzas", imagen: "https://cdn.discordapp.com/attachments/956985601226338411/1113943229050671216/003.jpg", createdAt: new Date(), updatedAt: new Date() },

@@ -5,6 +5,7 @@ const getAllProductos = async (req, res) => {
         const productos = await Producto.findAll({
             attributes: { exclude: ['id_tipoProducto'] },
             include: [{ model: TipoProducto }],
+            // paranoid: false
         });
         if (productos.length > 0) {
             productos.sort((a, b) => a.id_producto - b.id_producto);
@@ -24,6 +25,7 @@ const getOneProducto = async (req, res) => {
         const producto = await Producto.findByPk(id, {
             attributes: { exclude: ['id_tipoProducto'] },
             include: [{ model: TipoProducto }],
+            paranoid: false
         });
         if (!Producto) {
             return res.status(404).json({ msg: 'Producto no encontrado.' });
@@ -45,7 +47,6 @@ const deleteProducto = async (req, res) => {
             return res.status(404).json({ msg: 'Producto no encontrado.' })
         } else {
             // Encuentro el producto y borro sus relaciones
-            PedidoProductos.destroy({ where: { id_producto: id } });
             MenuProductos.destroy({ where: { id_producto: id } });
             PromocionProductos.destroy({ where: { id_producto: id } });
             // Borro el producto
