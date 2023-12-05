@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
-        descripcion: {
+        descripcion: { //La descripción es el título/nombre del producto
             type: DataTypes.STRING(50),
             allowNull: false,
         },

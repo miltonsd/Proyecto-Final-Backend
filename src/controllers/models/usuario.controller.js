@@ -138,7 +138,7 @@ const updateUsuario = async (req, res) => {
                 email: params.email || usuario.email,
                 fechaNacimiento: params.fechaNacimiento || usuario.fechaNacimiento,
                 contraseña: params.contraseña? bcrypt.hashSync(params.contraseña) : usuario.contraseña, // Valida si recibe una contraseña para hashearla, sino se queda con la existente
-                isConfirmado: params.isConfirmado || usuario.isConfirmado,
+                isConfirmado: params.isConfirmado,
                 direccion: params.direccion || usuario.direccion,
                 telefono: params.telefono || usuario.telefono,
                 id_categoria: params.id_categoria || usuario.id_categoria,

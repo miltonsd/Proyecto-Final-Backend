@@ -37,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: false,
       },
       qr: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT('medium'),
         allowNull: false,
       }
     },
