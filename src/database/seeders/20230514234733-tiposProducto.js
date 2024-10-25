@@ -4,17 +4,16 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.bulkInsert('tipos_producto', [
       // Tipo producto genérico cuando un producto no tiene asignado un tipo de producto específico y/o cuando se borra el tipo producto al que pertenecía
-      { id_tipoProducto: 1, descripcion: "Genérico", imagen: "https://cdn.discordapp.com/attachments/956985601226338411/1180219235545387008/pngtree-open-lid-metallic-restaurant-cloche-with-white-gift-box-in-3d-picture-image_3708154.jpg", createdAt: new Date(), updatedAt: new Date() },
-      
-      { id_tipoProducto: 2, descripcion: "Ensaladas y entradas", imagen: "https://cdn.discordapp.com/attachments/956985601226338411/1113943229423960136/001.jpg", createdAt: new Date(), updatedAt: new Date() },
-      { id_tipoProducto: 3, descripcion: "Para picar", imagen: "https://cdn.discordapp.com/attachments/956985601226338411/1113943241482584145/636d2e0636819.jpg", createdAt: new Date(), updatedAt: new Date() },
-      { id_tipoProducto: 4, descripcion: "Sandwiches y pizzas", imagen: "https://cdn.discordapp.com/attachments/956985601226338411/1113943229050671216/003.jpg", createdAt: new Date(), updatedAt: new Date() },
-      { id_tipoProducto: 5, descripcion: "Platos principales", imagen: "https://cdn.discordapp.com/attachments/956985601226338411/1113943241927176272/5ffe098f5b78e.webp", createdAt: new Date(), updatedAt: new Date() },
-      { id_tipoProducto: 6, descripcion: "Postres y cafetería", imagen: "https://cdn.discordapp.com/attachments/956985601226338411/1113943228195029103/HD-wallpaper-mid-morning-coffee-good-morning-coffee-chocolate-cakes-desserts-cups-refreshments.jpg", createdAt: new Date(), updatedAt: new Date() },
-      { id_tipoProducto: 7, descripcion: "Bebidas sin alcohol", imagen: "https://cdn.discordapp.com/attachments/956985601226338411/1113943803238293585/739763.jpg", createdAt: new Date(), updatedAt: new Date() },
-      { id_tipoProducto: 8, descripcion: "Cervezas", imagen: "https://cdn.discordapp.com/attachments/956985601226338411/1113943241725841428/tomar-cerveza.jpeg", createdAt: new Date(), updatedAt: new Date() },
-      { id_tipoProducto: 9, descripcion: "Vinos y espumantes", imagen: "https://cdn.discordapp.com/attachments/956985601226338411/1114274915852484728/thumb_59390_default_big.jpeg", createdAt: new Date(), updatedAt: new Date() },
-      { id_tipoProducto: 10, descripcion: "Tragos", imagen: "https://cdn.discordapp.com/attachments/956985601226338411/1113943228589285477/006.jpg", createdAt: new Date(), updatedAt: new Date() }
+      { id_tipoProducto: 1, descripcion: "Genérico", imagen: "../../img/tipoProducto/generico.webp", createdAt: new Date(), updatedAt: new Date() },
+      { id_tipoProducto: 2, descripcion: "Ensaladas y entradas", imagen: "../../img/tipoProducto/ensaladasEntradas.webp", createdAt: new Date(), updatedAt: new Date() },
+      { id_tipoProducto: 3, descripcion: "Para picar", imagen: "../../img/tipoProducto/paraPicar.webp", createdAt: new Date(), updatedAt: new Date() },
+      { id_tipoProducto: 4, descripcion: "Sandwiches y pizzas", imagen: "../../img/tipoProducto/sandwichesPizzas.webp", createdAt: new Date(), updatedAt: new Date() },
+      { id_tipoProducto: 5, descripcion: "Platos principales", imagen: "../../img/tipoProducto/platosPrincipales.webp", createdAt: new Date(), updatedAt: new Date() },
+      { id_tipoProducto: 6, descripcion: "Postres y cafetería", imagen: "../../img/tipoProducto/postresCafeteria.webp", createdAt: new Date(), updatedAt: new Date() },
+      { id_tipoProducto: 7, descripcion: "Bebidas sin alcohol", imagen: "../../img/tipoProducto/bebidasSinAlcohol.webp", createdAt: new Date(), updatedAt: new Date() },
+      { id_tipoProducto: 8, descripcion: "Cervezas", imagen: "../../img/tipoProducto/cervezas.webp", createdAt: new Date(), updatedAt: new Date() },
+      { id_tipoProducto: 9, descripcion: "Vinos y espumantes", imagen: "../../img/tipoProducto/vinosEspumantes.webp", createdAt: new Date(), updatedAt: new Date() },
+      { id_tipoProducto: 10, descripcion: "Tragos", imagen: "../../img/tipoProducto/tragos.webp", createdAt: new Date(), updatedAt: new Date() }
     ], {});
   },
 

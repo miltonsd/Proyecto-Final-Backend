@@ -15,6 +15,7 @@ const createPedido = async (req, res) => {
       montoImporte: req.body.montoImporte,
       id_usuario: req.body.id_usuario,
       id_mesa: req.body.id_mesa,
+      observacion: req.body.observacion || 'No hay',
     });
 
     req.body.lista_productos.forEach((prod) => {

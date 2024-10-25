@@ -16,6 +16,9 @@ app.use(express.urlencoded({ extend: false }));
 app.use(json());
 
 // Rutas
+// Servir archivos estáticos desde el directorio de imágenes
+app.use('/img', express.static('src/img'));
+
 app.use('/', router);
 
 app.use((req, res, next) => {
