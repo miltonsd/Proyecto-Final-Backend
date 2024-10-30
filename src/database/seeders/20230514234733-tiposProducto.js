@@ -7,7 +7,7 @@ module.exports = {
       { id_tipoProducto: 1, descripcion: "Genérico", imagen: "../../img/tipoProducto/generico.webp", createdAt: new Date(), updatedAt: new Date() },
       { id_tipoProducto: 2, descripcion: "Ensaladas y entradas", imagen: "../../img/tipoProducto/ensaladasEntradas.webp", createdAt: new Date(), updatedAt: new Date() },
       { id_tipoProducto: 3, descripcion: "Para picar", imagen: "../../img/tipoProducto/paraPicar.webp", createdAt: new Date(), updatedAt: new Date() },
-      { id_tipoProducto: 4, descripcion: "Sandwiches y pizzas", imagen: "../../img/tipoProducto/sandwichesPizzas.webp", createdAt: new Date(), updatedAt: new Date() },
+      { id_tipoProducto: 4, descripcion: "Sandwiches", imagen: "../../img/tipoProducto/sandwiches.webp", createdAt: new Date(), updatedAt: new Date() },
       { id_tipoProducto: 5, descripcion: "Platos principales", imagen: "../../img/tipoProducto/platosPrincipales.webp", createdAt: new Date(), updatedAt: new Date() },
       { id_tipoProducto: 6, descripcion: "Postres y cafetería", imagen: "../../img/tipoProducto/postresCafeteria.webp", createdAt: new Date(), updatedAt: new Date() },
       { id_tipoProducto: 7, descripcion: "Bebidas sin alcohol", imagen: "../../img/tipoProducto/bebidasSinAlcohol.webp", createdAt: new Date(), updatedAt: new Date() },
