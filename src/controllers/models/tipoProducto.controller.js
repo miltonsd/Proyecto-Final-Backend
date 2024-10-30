@@ -5,7 +5,7 @@ const deleteTipoProducto = async (req,res) => {
         const id_tipoProducto = req.params.id;
         const tipoProducto = await TipoProducto.findByPk(id_tipoProducto);
         if (!tipoProducto) {
-            return res.status(404).json({msg:"Tipo producto no encontrado"})
+            return res.status(404).json({msg:"Tipo producto no encontrado."})
         } else {
             // Busca todos los productos que pertenecen a ese tipo producto
             // const productos = await Producto.findAll({
@@ -16,11 +16,11 @@ const deleteTipoProducto = async (req,res) => {
             //   ))
             // Borro el tipo producto
             tipoProducto.destroy();
-            return res.status(200).json({msg:"Borrado correctamente"})
+            return res.status(200).json({msg:"Tipo producto eliminado correctamente."})
         }
     } catch (error) {
         console.log(error);
-        res.status(500).json({ msg: 'Error en el servidor' });
+        res.status(500).json({ msg: 'Error en el servidor.' });
     }
 }
 

@@ -1,12 +1,11 @@
-exports.getAll = Model =>
+exports.createOne = Model =>
     async (req, res, next) => {
         try {
-            const elementos = await Model.findAll()
-            if (elementos.length > 0) {
-                elementos.sort((a, b) => a.id - b.id);
-                return res.status(200).json(elementos)
+            const elemento = await Model.create(req.body);
+            if (elemento) {
+                return res.status(200).json({ elemento, msg: 'Creado correctamente.' })
             } else {
-                return res.status(404).json({ msg: 'No hay datos.' })
+                return res.status(404).json({ msg: 'No se recibieron los datos.' })
             }
         } catch (error) {
             console.log(error);
@@ -31,14 +30,15 @@ exports.getOne = Model =>
         }
     }
 
-exports.createOne = Model =>
+exports.getAll = Model =>
     async (req, res, next) => {
         try {
-            const elemento = await Model.create(req.body);
-            if (elemento) {
-                return res.status(200).json({ elemento, msg: 'Creado correctamente.' })
+            const elementos = await Model.findAll()
+            if (elementos.length > 0) {
+                elementos.sort((a, b) => a.id - b.id);
+                return res.status(200).json(elementos)
             } else {
-                return res.status(404).json({ msg: 'No se recibieron los datos.' })
+                return res.status(404).json({ msg: 'No hay datos.' })
             }
         } catch (error) {
             console.log(error);

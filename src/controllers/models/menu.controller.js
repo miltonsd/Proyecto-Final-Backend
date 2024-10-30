@@ -14,9 +14,28 @@ const createMenu = async (req, res) => {
         });
 
         if (menu) {
-            return res.status(200).json({ msg: 'Creado correctamente.', menu })
+            return res.status(200).json({ msg: 'Menú creado correctamente.', menu })
         } else {
             return res.status(404).json({ msg: 'No se recibieron los datos.' })
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg: 'Error en el servidor.' });
+    }
+}
+
+const getOneMenu = async (req, res) => {
+    try {
+        const { id } = req.params; 
+        const menu = await Menu.findByPk(id, {
+            attributes: { exclude: ['id_usuario'] },
+            include: [{ model: Usuario, as: 'Usuario', attributes: { exclude: ['contraseña'] }}, { model: Producto }]
+        });
+        if (!menu) {
+            return res.status(404).json({ msg: 'Menú no encontrado.' });
+        } else {
+            // Devuelvo el menu
+            return res.status(200).json(menu);
         }
     } catch (error) {
         console.log(error);
@@ -34,7 +53,7 @@ const getAllMenues = async (req, res) => {
             menues.sort((a, b) => a.id_menu - b.id_menu);
             return await res.status(200).json(menues);
         } else {
-            return res.status(404).json({ msg: 'Menues no encontrados.' })
+            return res.status(404).json({ msg: 'Menúes no encontrados.' })
         }
     } catch (error) {
         console.log(error);
@@ -42,26 +61,30 @@ const getAllMenues = async (req, res) => {
     }
 }
 
-const getOneMenu = async (req, res) => {
+const getAllMenuesUsuario = async (req, res) => {
     try {
-        const { id } = req.params; 
-        const menu = await Menu.findByPk(id, {
-            attributes: { exclude: ['id_usuario'] },
-            include: [{ model: Usuario, as: 'Usuario', attributes: { exclude: ['contraseña'] }}, { model: Producto }]
+        const id  = req.params.id_usuario;
+        const menues = await Menu.findAll({
+            where: { id_usuario : id },
+            attributes: { exclude: ['id_usuario', 'createdAt', 'updatedAt', 'deletedAt'] },
+            include: { 
+              model: Producto, attributes: ['id_producto', 'descripcion', 'precio'], // ASÍ SE TRAEN LOS ATRIBUTOS QUE QUIERO (SIN USAR EL EXCLUDE)
+              through: { attributes: [] }, // ASÍ NO SE TRAEN LOS ATRIBUTOS DE LA TABLA INTERMEDIA
+            },
         });
-        if (!menu) {
-            return res.status(404).json({ msg: 'Menu no encontrado.' });
+        if (menues.length > 0) {
+            menues.sort((a, b) => a.id_menu - b.id_menu);
+            return await res.status(200).json(menues);
         } else {
-            // Devuelvo el menu
-            return res.status(200).json(menu);
+            return res.status(404).json({ msg: 'El usuario no posee menúes personalizados.' })
         }
     } catch (error) {
         console.log(error);
         res.status(500).json({ msg: 'Error en el servidor.' });
     }
-}
+  }
 
-const updateMenu = async (req,res) => {
+  const updateMenu = async (req,res) => {
     try {
         // Obtiene el menú
         const id_menu = req.params.id;
@@ -103,55 +126,32 @@ const updateMenu = async (req,res) => {
                     force: true // Hace un eliminado físico del registro en la tabla MenuProductos
                 })
 
-                res.status(201).json({m, 'msg':'Editado correctamente.'})
+                res.status(201).json({m, 'msg':'Menú editado correctamente.'})
             })
         } else {
             return res.status(404).json({msg : "Menú no encontrado."})
         }
     } catch (error) {
         console.log(error);
-        res.status(500).json({ msg: 'Error en el servidor' });
+        res.status(500).json({ msg: 'Error en el servidor.' });
     }
 }
 
-const deleteMenu = async (req, res) => {
+  const deleteMenu = async (req, res) => {
     try {
         const id = req.params.id;
         const menu = await Menu.findByPk(id);
         if (!menu) {
-            return res.status(404).json({ msg: 'Menu no encontrado.' })
+            return res.status(404).json({ msg: 'Menú no encontrado.' })
         } else {
             // Borro el menu
             menu.destroy();
-            return res.status(200).json({ msg: 'Menu correctamente.' })
+            return res.status(200).json({ msg: 'Menú eliminado correctamente.' })
         }
     } catch (error) {
         console.log(error);
         res.status(500).json({ msg: 'Error en el servidor.' });
     }
 }
-
-const getAllMenuesUsuario = async (req, res) => {
-    try {
-        const id  = req.params.id_usuario;
-        const menues = await Menu.findAll({
-            where: { id_usuario : id },
-            attributes: { exclude: ['id_usuario', 'createdAt', 'updatedAt', 'deletedAt'] },
-            include: { 
-              model: Producto, attributes: ['id_producto', 'descripcion', 'precio'], // ASÍ SE TRAEN LOS ATRIBUTOS QUE QUIERO (SIN USAR EL EXCLUDE)
-              through: { attributes: [] }, // ASÍ NO SE TRAEN LOS ATRIBUTOS DE LA TABLA INTERMEDIA
-            },
-        });
-        if (menues.length > 0) {
-            menues.sort((a, b) => a.id_menu - b.id_menu);
-            return await res.status(200).json(menues);
-        } else {
-            return res.status(404).json({ msg: 'El usuario no posee menúes personalizados.' })
-        }
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ msg: 'Error en el servidor.' });
-    }
-  }
 
 module.exports = { createMenu, getAllMenues, getOneMenu, updateMenu, deleteMenu, getAllMenuesUsuario }

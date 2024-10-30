@@ -16,26 +16,9 @@ const createPromocion = async (req, res) => {
         });
 
         if (promocion) {
-            return res.status(200).json({ msg: 'Creado correctamente.', promocion })
+            return res.status(200).json({ msg: 'Promoción creada correctamente.', promocion })
         } else {
             return res.status(404).json({ msg: 'No se recibieron los datos.' })
-        }
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ msg: 'Error en el servidor.' });
-    }
-}
-
-const getAllPromociones = async (req, res) => {
-    try {
-        const promociones = await Promocion.findAll({
-            include: [{ model: Producto }],
-        });
-        if (promociones.length > 0) {
-            promociones.sort((a, b) => a.id_promocion - b.id_promocion);
-            return await res.status(200).json(promociones);
-        } else {
-            return res.status(404).json({ msg: 'Promociones no encontradas.' })
         }
     } catch (error) {
         console.log(error);
@@ -54,6 +37,23 @@ const getOnePromocion = async (req, res) => {
         } else {
             // Devuelvo la promoción
             return res.status(200).json(promocion);
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg: 'Error en el servidor.' });
+    }
+}
+
+const getAllPromociones = async (req, res) => {
+    try {
+        const promociones = await Promocion.findAll({
+            include: [{ model: Producto }],
+        });
+        if (promociones.length > 0) {
+            promociones.sort((a, b) => a.id_promocion - b.id_promocion);
+            return await res.status(200).json(promociones);
+        } else {
+            return res.status(404).json({ msg: 'Promociones no encontradas.' })
         }
     } catch (error) {
         console.log(error);
@@ -104,14 +104,14 @@ const updatePromocion = async (req,res) => {
                     force: true // Hace un eliminado físico del registro en la tabla PromocionProductos
                 })
 
-                res.status(201).json({prom, 'msg' : 'Editado correctamente.'})
+                res.status(201).json({prom, 'msg' : 'Promoción editada correctamente.'})
             })
         } else {
             return res.status(404).json({msg : "Promoción no encontrada."})
         }
     } catch (error) {
         console.log(error);
-        res.status(500).json({ msg: 'Error en el servidor' });
+        res.status(500).json({ msg: 'Error en el servidor.' });
     }
 }
 
@@ -126,7 +126,7 @@ const deletePromocion = async (req, res) => {
             PromocionProductos.destroy({ where: { id_promocion: id } });
             // Borro la promocion
             promocion.destroy();
-            return res.status(200).json({ msg: 'Borrada correctamente.' })
+            return res.status(200).json({ msg: 'Promoción eliminada correctamente.' })
         }
     } catch (error) {
         console.log(error);

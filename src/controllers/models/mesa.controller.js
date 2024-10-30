@@ -1,6 +1,20 @@
 const mesa = require("../../database/models/mesa");
 const { Mesa } = require("../../database/models/index");
 
+const createMesa = async (req, res) => {
+  try {
+    const m = await Mesa.create(req.body);
+    if (m) {
+      return res.status(200).json({ msg: "Mesa creada correctamente.", m });
+    } else {
+      return res.status(404).json({ msg: "No se recibieron los datos." });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: "Error en el servidor." });
+  }
+};
+
 const getOneMesa = async (req, res) => {
   try {
     const { id } = req.params;
@@ -13,7 +27,7 @@ const getOneMesa = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ msg: "Error en el servidor" });
+    res.status(500).json({ msg: "Error en el servidor." });
   }
 };
 
@@ -21,14 +35,14 @@ const getAllMesas = async (req, res) => {
   try {
     const mesas = await Mesa.findAll();
     if (!mesa) {
-      return res.status(404).json({ msg: "Mesas no encontradas" });
+      return res.status(404).json({ msg: "Mesas no encontradas." });
     } else {
       mesas.sort((a, b) => a.id - b.id);
       return await res.status(200).json(mesas);
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ msg: "Error en el servidor" });
+    res.status(500).json({ msg: "Error en el servidor." });
   }
 };
 
@@ -42,14 +56,14 @@ const updateMesa = async (req, res) => {
       m.update({
         ubicacion: params.ubicacion || m.ubicacion,
       }).then((c) => {
-        res.status(201).json({ m, msg: "Editada correctamente" });
+        res.status(201).json({ m, msg: "Editada correctamente." });
       });
     } else {
-      return res.status(404).json({ msg: "Mesa no encontrada" });
+      return res.status(404).json({ msg: "Mesa no encontrada." });
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ msg: "Error en el servidor" });
+    res.status(500).json({ msg: "Error en el servidor." });
   }
 };
 
@@ -58,29 +72,15 @@ const deleteMesa = async (req, res) => {
     const id = req.params.id;
     const mesa = await Categoria.findByPk(id);
     if (!mesa) {
-      return res.status(404).json({ msg: "Mesa no encontrada" });
+      return res.status(404).json({ msg: "Mesa no encontrada." });
     } else {
       // Borro la mesa
       mesa.destroy();
-      return res.status(200).json({ msg: "Borrada correctamente" });
+      return res.status(200).json({ msg: "Mesa eliminada correctamente." });
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ msg: "Error en el servidor" });
-  }
-};
-
-const createMesa = async (req, res) => {
-  try {
-    const m = await Mesa.create(req.body);
-    if (m) {
-      return res.status(200).json({ msg: "Creada correctamente", m });
-    } else {
-      return res.status(404).json({ msg: "No se recibieron los datos" });
-    }
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ msg: "Error en el servidor" });
+    res.status(500).json({ msg: "Error en el servidor." });
   }
 };
 
@@ -92,14 +92,14 @@ const habilitarMesa = async (req, res) => {
       m.update({
         habilitada: true,
       }).then((c) => {
-        res.status(201).json({ m, msg: "Mesa habilitada" });
+        res.status(201).json({ m, msg: "Mesa habilitada." });
       });
     } else {
-      return res.status(404).json({ msg: "Mesa no encontrada" });
+      return res.status(404).json({ msg: "Mesa no encontrada." });
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ msg: "Error en el servidor" });
+    res.status(500).json({ msg: "Error en el servidor." });
   }
 };
 
@@ -111,14 +111,14 @@ const deshabilitarMesa = async (req, res) => {
       m.update({
         habilitada: false,
       }).then((c) => {
-        res.status(201).json({ m, msg: "Mesa deshabilitada" });
+        res.status(201).json({ m, msg: "Mesa deshabilitada." });
       });
     } else {
-      return res.status(404).json({ msg: "Mesa no encontrada" });
+      return res.status(404).json({ msg: "Mesa no encontrada." });
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ msg: "Error en el servidor" });
+    res.status(500).json({ msg: "Error en el servidor." });
   }
 };
 
