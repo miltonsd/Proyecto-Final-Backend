@@ -28,7 +28,7 @@ const createPedido = async (req, res) => {
     });
 
     if (pedido) {
-      return res.status(200).json({ msg: "Creado correctamente.", pedido });
+      return res.status(200).json({ msg: "Pedido realizado correctamente.", pedido });
     } else {
       return res.status(404).json({ msg: "No se recibieron los datos." });
     }
