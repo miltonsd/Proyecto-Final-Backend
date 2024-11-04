@@ -142,14 +142,13 @@ const modificarPerfil = async (req, res) => {
         const id_usuario = req.params.id_usuario;
         const usuario = await Usuario.findByPk(id_usuario);
         if (usuario) {
-            console.log(usuario)
             if (bcrypt.compareSync(req.body.contrasenia, usuario.contraseña)) {
                 // Aca modifica los datos del perfil del usuario
-                const datos = req.body
                 usuario.update({
                     nombre: datos.nombre || usuario.nombre,
                     apellido: datos.apellido || usuario.apellido,
-                    contraseña: bcrypt.hashSync(datos.nuevaContrasenia) || usuario.contraseña,
+                    // Valida si recibe una nuevaContrasenia para modificar la existente o, caso contrario, asigna la que ya tiene definida.
+                    contraseña: datos.nuevaContrasenia? bcrypt.hashSync(datos.nuevaContrasenia) : usuario.contraseña,
                     direccion: datos.direccion || usuario.direccion,
                     telefono: datos.telefono || usuario.telefono,
                 })

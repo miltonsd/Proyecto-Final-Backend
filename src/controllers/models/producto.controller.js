@@ -51,7 +51,7 @@ const deleteProducto = async (req, res) => {
             PromocionProductos.destroy({ where: { id_producto: id } });
             // Borro el producto
             producto.destroy();
-            return res.status(200).json({ msg: 'Borrado correctamente.' })
+            return res.status(200).json({ msg: 'Producto eliminado correctamente.' })
         }
     } catch (error) {
         console.log(error);
