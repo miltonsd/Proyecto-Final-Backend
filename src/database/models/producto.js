@@ -40,6 +40,7 @@ module.exports = (sequelize, DataTypes) => {
         id_tipoProducto: {
             type: DataTypes.INTEGER,
             allowNull: false,
+            defaultValue: 1 // Lo crea como genérico
         }
     }, {
         sequelize,

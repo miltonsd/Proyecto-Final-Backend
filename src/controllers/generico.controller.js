@@ -1,9 +1,15 @@
+const opcionesValidas = ["Reserva", "Categoria", "Promocion", "Mesa"];
+
 exports.createOne = Model =>
     async (req, res, next) => {
         try {
             const elemento = await Model.create(req.body);
             if (elemento) {
-                return res.status(200).json({ elemento, msg: 'Creado correctamente.' })
+                if (opcionesValidas.includes(Model.name)) {
+                    return res.status(200).json({ elemento, msg: `${Model.name.replace(/([a-z])([A-Z])/g, "$1 $2")} creada correctamente.` })
+                } else {
+                    return res.status(200).json({ elemento, msg: `${Model.name.replace(/([a-z])([A-Z])/g, "$1 $2")} creado correctamente.` })              
+                }
             } else {
                 return res.status(404).json({ msg: 'No se recibieron los datos.' })
             }
@@ -54,7 +60,12 @@ exports.updateOne = Model =>
             const elemento = await Model.findByPk(id);
             if (elemento) {
                 elemento.update(params)
-                    .then(elemento => { res.status(201).json({ elemento, msg: 'Editado correctamente.' }) })
+                    .then(elemento => {
+                        if (opcionesValidas.includes(Model.name)) {
+                            return res.status(201).json({ elemento, msg: `${Model.name.replace(/([a-z])([A-Z])/g, "$1 $2")} editada correctamente.`  })
+                        } else {
+                            return res.status(201).json({ elemento, msg: `${Model.name.replace(/([a-z])([A-Z])/g, "$1 $2")} editado correctamente.`  })              
+                        }})
             } else {
                 return res.status(404).json({ msg: 'Elemento no encontrado.' })
             }
@@ -73,7 +84,12 @@ exports.deleteOne = Model =>
                 return res.status(404).json({ msg: 'Elemento no encontrado.' })
             } else {
                 elemento.destroy()
-                    .then(elemento => { return res.status(200).json({ elemento, msg: 'Eliminado correctamente.' }) })
+                    .then(elemento => { 
+                        if (opcionesValidas.includes(Model.name)) {
+                            return res.status(200).json({ elemento, msg: `${Model.name.replace(/([a-z])([A-Z])/g, "$1 $2")} eliminada correctamente.` })
+                        } else {
+                            return res.status(200).json({ elemento, msg: `${Model.name.replace(/([a-z])([A-Z])/g, "$1 $2")} eliminado correctamente.` })              
+                        }})
             }
         } catch (error) {
             console.log(error);
