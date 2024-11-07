@@ -77,7 +77,7 @@ const getAllPedidos = async (req, res) => {
         },
         { model: Producto, paranoid: false },
       ], // Sequelize incluye la tabla intermedia (PedidosProductos) y de ahi relaciona con Producto
-      paranoid: false
+      paranoid: true // De esta manera, ignora los pedidos eliminados (con timestamp en deletedAt)
     });
     if (pedidos.length > 0) {
       pedidos.sort((a, b) => a.id_pedido - b.id_pedido);
@@ -156,6 +156,7 @@ const updatePedido = async (req,res) => {
               id_mesa: req.body.id_mesa || p.id_mesa,
               estado: req.body.estado || p.estado,
               montoImporte: req.body.montoImporte || p.montoImporte,
+              observacion: req.body.observacion || p.observacion
           }).then(async p => {
               const listaOriginal = []
               // Obtengo los productos asociados al pedido
