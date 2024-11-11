@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "id_pedido",
       });
       Pedido.belongsTo(models.Mesa, { as: "Mesa", foreignKey: "id_mesa" });
+      Pedido.belongsTo(models.ResumenDiarioUsuario, { as: 'resumenDiario', foreignKey: "id_resumenDiario", onUpdate: 'CASCADE', onDelete: 'SET NULL' });
     }
   }
   Pedido.init(
@@ -44,7 +45,11 @@ module.exports = (sequelize, DataTypes) => {
       observacion: {
         type: DataTypes.STRING(500),
         allowNull: true,
-      }
+      },
+      id_resumenDiario: {
+        type: DataTypes.INTEGER,
+        allowNull: true, // Va a ser nulo hasta que el resumen se cree al "Pedir la cuenta"
+      },
     },
     {
       sequelize,

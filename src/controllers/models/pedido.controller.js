@@ -18,16 +18,16 @@ const createPedido = async (req, res) => {
       observacion: req.body.observacion || 'No hay.',
     });
 
-    req.body.lista_productos.forEach((prod) => {
-      PedidoProductos.create({
-        id_pedido: pedido.id_pedido,
-        id_producto: prod.id_producto,
-        cantidad_prod: prod.cant_selecc,
-        precio_unitario: prod.precio,
-      });
-    });
-
     if (pedido) {
+      req.body.lista_productos.forEach((prod) => {
+        PedidoProductos.create({
+          id_pedido: pedido.id_pedido,
+          id_producto: prod.id_producto,
+          cantidad_prod: prod.cant_selecc,
+          precio_unitario: prod.precio,
+        });
+      });
+
       return res.status(200).json({ msg: "Pedido creado correctamente.", pedido });
     } else {
       return res.status(404).json({ msg: "No se recibieron los datos." });

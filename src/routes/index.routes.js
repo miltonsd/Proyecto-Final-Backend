@@ -29,6 +29,9 @@ router.use('/promociones', apiPromocionRouter);
 const apiReservaRouter = require('./api/reserva.routes');
 router.use('/reservas', validarReservas, apiReservaRouter);
 
+const apiResumenDiarioUsuarioRouter = require('./api/resumenDiarioUsuario.routes');
+router.use('/resumenes', apiResumenDiarioUsuarioRouter);
+
 const apiTipoProductoRouter = require('./api/tipoProducto.routes');
 router.use('/tiposProducto', apiTipoProductoRouter); 
 
