@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   class ResumenDiarioUsuario extends Model {
     static associate(models) {
       ResumenDiarioUsuario.belongsTo(models.Usuario, { foreignKey: "id_usuario" });
-      ResumenDiarioUsuario.hasMany(models.Pedido, { as: 'pedidos', foreignKey: "id_resumenDiario", onUpdate: 'CASCADE', onDelete: 'SET NULL' });
+      ResumenDiarioUsuario.hasMany(models.Pedido, { as: 'Pedido', foreignKey: "id_resumenDiario", onUpdate: 'CASCADE', onDelete: 'SET NULL' });
     }
   }
   ResumenDiarioUsuario.init(

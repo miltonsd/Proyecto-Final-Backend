@@ -2,7 +2,8 @@ const { Op } = require("sequelize");
 const {
   ResumenDiarioUsuario,
   Pedido,
-  Usuario
+  Usuario,
+  Producto
 } = require("../../database/models/index");
 
 const createResumen = async (req, res) => {
@@ -15,14 +16,23 @@ const createResumen = async (req, res) => {
     })
 
     if (resumen) {
+      console.log(resumen)
+      // Definir el inicio y fin del día
+      const inicioDia = new Date(resumen.fechaHora);
+      inicioDia.setUTCHours(0, 0, 0, 0);
+
+      const finDia = new Date(resumen.fechaHora);
+      finDia.setUTCHours(23, 59, 59, 999);
+
         req.body.lista_pedidos.forEach((pedido) => {
+          console.log(pedido)
             Pedido.update(
                 { id_resumenDiario: resumen.id_resumenDiario, },
                 {
                     where: {
                       id_usuario: pedido.id_usuario,
                       id_resumenDiario: null,  // Solo pedidos sin resumen
-                      fechaHora: new Date().toISOString().split('T')[0] // Fecha de hoy
+                      fechaHora: { [Op.gte]: inicioDia, [Op.lt]: finDia } // Fecha de hoy
                     },
                 }
             );
@@ -97,7 +107,11 @@ const getAllResumenesUsuario = async (req, res) => {
           where: { id_usuario : id },
           attributes: { exclude: ['id_usuario', 'updatedAt'] },
           include: { 
-            model: Pedido, as: "pedidos", paranoid: false
+            model: Pedido, as: "Pedido", paranoid: false, 
+              include: [{ 
+                model: Producto, attributes: ['id_producto', 'descripcion'], // ASÍ SE TRAEN LOS ATRIBUTOS QUE QUIERO (SIN USAR EL EXCLUDE)
+                through: { attributes: ['cantidad_prod', 'precio_unitario'] }, // ASÍ SE TRAEN LOS ATRIBUTOS QUE QUIERO DE LA TABLA INTERMEDIA
+              }]
           },
       });
       if (resumenes.length > 0) {
