@@ -84,7 +84,7 @@ const getAllResumenes = async (req, res) => {
           as: "Usuario",
           attributes: { exclude: ["contraseña"] },
         },
-        { model: Pedido, as: "pedidos", paranoid: false },
+        { model: Pedido, as: "Pedidos", paranoid: false },
       ],
       paranoid: true // De esta manera, ignora los resumenes eliminados (con timestamp en deletedAt)
     });
@@ -107,7 +107,7 @@ const getAllResumenesUsuario = async (req, res) => {
           where: { id_usuario : id },
           attributes: { exclude: ['id_usuario', 'updatedAt'] },
           include: { 
-            model: Pedido, as: "Pedido", paranoid: false, 
+            model: Pedido, as: "Pedidos", paranoid: false, 
               include: [{ 
                 model: Producto, attributes: ['id_producto', 'descripcion'], // ASÍ SE TRAEN LOS ATRIBUTOS QUE QUIERO (SIN USAR EL EXCLUDE)
                 through: { attributes: ['cantidad_prod', 'precio_unitario'] }, // ASÍ SE TRAEN LOS ATRIBUTOS QUE QUIERO DE LA TABLA INTERMEDIA
