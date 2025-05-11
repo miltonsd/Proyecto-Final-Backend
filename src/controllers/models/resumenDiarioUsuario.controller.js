@@ -82,7 +82,7 @@ const getAllResumenes = async (req, res) => {
         {
           model: Usuario,
           as: "Usuario",
-          attributes: { exclude: ["contraseña"] },
+          attributes: { exclude: ["contraseña"] }, paranoid: false
         },
         { model: Pedido, as: "Pedidos", paranoid: false },
       ],
@@ -109,7 +109,7 @@ const getAllResumenesUsuario = async (req, res) => {
           include: { 
             model: Pedido, as: "Pedidos", paranoid: false, 
               include: [{ 
-                model: Producto, attributes: ['id_producto', 'descripcion'], // ASÍ SE TRAEN LOS ATRIBUTOS QUE QUIERO (SIN USAR EL EXCLUDE)
+                model: Producto, attributes: ['id_producto', 'descripcion'], paranoid: false, // ASÍ SE TRAEN LOS ATRIBUTOS QUE QUIERO (SIN USAR EL EXCLUDE)
                 through: { attributes: ['cantidad_prod', 'precio_unitario'] }, // ASÍ SE TRAEN LOS ATRIBUTOS QUE QUIERO DE LA TABLA INTERMEDIA
               }]
           },

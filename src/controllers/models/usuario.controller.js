@@ -82,6 +82,56 @@ const updateUsuario = async (req, res) => {
     }
 }
 
+const deleteUsuario = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const usuario = await Usuario.findByPk(id);
+    if (!usuario) {
+      return res.status(404).json({ msg: "Usuario no encontrado." });
+    } else {
+      // Validar si el usuario no tiene pedidos "pendientes" ni "listos para entregar"
+      const pedidosAsociados = await usuario.getPedidos()
+      const pedidosSinEntregar = pedidosAsociados.filter(pedido => pedido.estado === "Pendiente" || pedido.estado === "Listo")
+      
+      if (pedidosSinEntregar.length > 0) {
+        // El usuario tiene pedidos con estado "Pendiente" o "Listo"
+        return res.status(404).json({ msg: "No se puede borrar el usuario porque tiene pedidos sin entregar." });
+      } else {
+        // El usuario tiene todos los pedidos entregados y asociados a los correspondientes resumenes
+
+        // Encuentro las reservas que contengan a ese usuario y verifico si estan pendientes
+        const reservasAsociadas = await usuario.getReservas()
+        const reservasPendientes = reservasAsociadas.filter(reserva => reserva.isPendiente)
+        
+        if (reservasPendientes.length > 0) {
+            // Borra lógicamente cada reserva pendiente
+            await Promise.all(reservasPendientes.map(async (reserva) => {
+                await reserva.destroy(); // Borrado lógico de la reserva pendiente
+            }))
+        }
+
+        // Obtiene los menúes asociados al usuario
+        const menusAsociados = await usuario.getMenus()
+
+        // Verificar si hay menús asociados antes de intentar borrarlos
+        if (menusAsociados.length > 0) {
+            // Borra lógicamente cada menú asociado
+            await Promise.all(menusAsociados.map(async (menu) => {
+                await menu.destroy();
+            }));
+        }
+        
+        // Borro el usuario
+        usuario.destroy();
+        return res.status(200).json({ msg: "Usuario eliminado correctamente." });
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: "Error en el servidor." });
+  }
+};
+
 const register = async (req, res) => {
     try {
         req.body.contraseña = bcrypt.hashSync(req.body.contraseña) // tomo la contraseña que me llega, la encripto y la guardo en la DB
@@ -222,4 +272,4 @@ const crearToken = (usuario) => {
     return jwt.encode(payload, process.env.HASH_KEY) // poner una frase secreta en el .env
 }
 
-module.exports = { getAllUsuarios, getOneUsuario, login, logOut, register, cambiarPassword, updateUsuario, modificarPerfil, confirmarUsuario }
+module.exports = { getAllUsuarios, getOneUsuario, login, logOut, register, cambiarPassword, updateUsuario, deleteUsuario, modificarPerfil, confirmarUsuario }

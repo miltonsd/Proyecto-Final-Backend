@@ -1,15 +1,12 @@
 const Router = require('express');
 const router = Router();
-const { deleteOne } = require('../../controllers/generico.controller');
-const { Usuario } = require('../../database/models/index');
-const { getAllUsuarios, getOneUsuario, login, logOut, register, updateUsuario, cambiarPassword, modificarPerfil, confirmarUsuario } = require('../../controllers/models/usuario.controller');
+const { getAllUsuarios, getOneUsuario, login, logOut, register, updateUsuario, cambiarPassword, modificarPerfil, confirmarUsuario, deleteUsuario } = require('../../controllers/models/usuario.controller');
 const { getAllReservasUsuario } = require('../../controllers/models/reserva.controller');
 const { getAllPedidosUsuario } = require('../../controllers/models/pedido.controller');
 const { getAllResumenesUsuario } = require('../../controllers/models/resumenDiarioUsuario.controller');
 const { getAllMenuesUsuario } = require('../../controllers/models/menu.controller');
 
 // Rutas Genericas
-router.delete('/:id', deleteOne(Usuario)); // Elimina un usuario
 
 // Rutas Especificas
 router.get('/confirmar/:token', confirmarUsuario); // Confirma el email del usuario
@@ -25,5 +22,6 @@ router.post('/register', register); // Crea un usuario
 router.patch('/resetPassword', cambiarPassword); // Modifica la contraseña del usuario
 router.patch('/modificarPerfil/:id_usuario', modificarPerfil); // Modifica los datos del perfil de un usuario
 router.patch('/:id_usuario', updateUsuario); // Modifica un usuario
+router.delete('/:id', deleteUsuario); // Elimina un usuario
 
 module.exports = router;

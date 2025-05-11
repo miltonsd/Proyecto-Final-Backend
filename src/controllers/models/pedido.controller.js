@@ -4,6 +4,7 @@ const {
   Producto,
   Usuario,
   PedidoProductos,
+  Mesa
 } = require("../../database/models/index");
 
 const createPedido = async (req, res) => {
@@ -74,8 +75,10 @@ const getAllPedidos = async (req, res) => {
           model: Usuario,
           as: "Usuario",
           attributes: { exclude: ["contraseña"] },
+          paranoid: false
         },
         { model: Producto, paranoid: false },
+        { model: Mesa, as: "Mesa", paranoid: false }
       ], // Sequelize incluye la tabla intermedia (PedidosProductos) y de ahi relaciona con Producto
       paranoid: true // De esta manera, ignora los pedidos eliminados (con timestamp en deletedAt)
     });
@@ -228,11 +231,17 @@ const deletePedido = async (req, res) => {
     if (!pedido) {
       return res.status(404).json({ msg: "Pedido no encontrado." });
     } else {
-      // Encuentro el pedido y borro las relaciones con los productos que lo tienen
-      PedidoProductos.destroy({ where: { id_pedido: id } });
-      // Borro el pedido
-      pedido.destroy();
-      return res.status(200).json({ msg: "Pedido eliminado correctamente." });
+      // Valida si el pedido está Pendiente para eliminarlo
+        if (pedido.estado === "Pendiente") {
+          // Encuentro el pedido y borro las relaciones con los productos que lo tienen
+          PedidoProductos.destroy({ where: { id_pedido: id } });
+          // Borro el pedido
+          pedido.destroy();
+          return res.status(200).json({ msg: "Pedido eliminado correctamente." });
+        } else {
+          return res.status(404).json({ msg: "El pedido no puede ser eliminado porque se encuentra 'Listo' o 'Entregado'." });
+        }
+      
     }
   } catch (error) {
     console.log(error);

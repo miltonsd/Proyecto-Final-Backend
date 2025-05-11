@@ -47,7 +47,7 @@ const getOnePromocion = async (req, res) => {
 const getAllPromociones = async (req, res) => {
     try {
         const promociones = await Promocion.findAll({
-            include: [{ model: Producto }],
+            include: [{ model: Producto, paranoid: false }],
         });
         if (promociones.length > 0) {
             promociones.sort((a, b) => a.id_promocion - b.id_promocion);
