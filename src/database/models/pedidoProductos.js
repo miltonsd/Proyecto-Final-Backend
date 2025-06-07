@@ -2,6 +2,35 @@
 
 const { Model } = require('sequelize');
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     PedidoProductos:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *           readOnly: true
+ *         id_pedido:
+ *           type: integer
+ *         id_producto:
+ *           type: integer
+ *         cantidad_prod:
+ *           type: integer
+ *         precio_unitario:
+ *           type: number
+ *           format: float 
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           readOnly: true
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           readOnly: true
+ */
+
 module.exports = (sequelize, DataTypes) => {
     class PedidoProductos extends Model {
         static associate(models) {

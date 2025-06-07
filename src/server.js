@@ -6,10 +6,14 @@ const path = require('path');
 const { json } = require('body-parser');
 const app = express();
 
+// Swagger
+const setupSwagger = require('./config/swagger');
+setupSwagger(app); // Llama a la función de configuración de Swagger con tu instancia 'app'
+
 // Requerir router
 const router = require('./routes/index.routes');
 
-// Settings
+// Settings (Middlewares globales)
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extend: false }));

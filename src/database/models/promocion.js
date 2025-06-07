@@ -2,6 +2,35 @@
 
 const { Model } = require('sequelize');
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Promocion:
+ *       type: object
+ *       properties:
+ *         id_promocion:
+ *           type: integer
+ *           readOnly: true
+ *         porcentaje_desc:
+ *           type: number
+ *           format: float  
+ *         fecha_desde:
+ *           type: string
+ *           format: date-time
+ *         fecha_hasta:
+ *           type: string
+ *           format: date-time
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           readOnly: true
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           readOnly: true
+ */
+
 module.exports = (sequelize, DataTypes) => {
     class Promocion extends Model {
         static associate(models) {

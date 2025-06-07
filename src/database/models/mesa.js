@@ -2,6 +2,37 @@
 
 const { Model } = require("sequelize");
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Mesa:
+ *       type: object
+ *       properties:
+ *         id_mesa:
+ *           type: integer
+ *           readOnly: true
+ *         capacidad:
+ *           type: integer
+ *           minimum: 2
+ *           maximum: 6
+ *         ubicacion:
+ *           type: string
+ *         habilitada:
+ *           type: boolean
+ *           default: false
+ *         qr:
+ *           type: string
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           readOnly: true
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           readOnly: true
+ */
+
 module.exports = (sequelize, DataTypes) => {
   class Mesa extends Model {
     static associate(models) {

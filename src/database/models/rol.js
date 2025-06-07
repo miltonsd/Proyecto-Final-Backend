@@ -2,6 +2,28 @@
 
 const { Model } = require('sequelize');
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Rol:
+ *       type: object
+ *       properties:
+ *         id_rol:
+ *           type: integer
+ *           readOnly: true
+ *         descripcion:
+ *           type: string
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           readOnly: true
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           readOnly: true
+ */
+
 module.exports = (sequelize, DataTypes) => {
     class Rol extends Model {
         static associate(models) {

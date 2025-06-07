@@ -2,6 +2,40 @@
 
 const { Model } = require("sequelize");
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Reserva:
+ *       type: object
+ *       properties:
+ *         id_reserva:
+ *           type: integer
+ *           readOnly: true
+ *         fechaHora:
+ *           type: string
+ *           format: date-time  
+ *         cant_personas:
+ *           type: integer
+ *           minimum: 1
+ *           maximum: 6
+ *         isPendiente:
+ *           type: boolean
+ *           default: true
+ *         id_usuario:
+ *           type: integer
+ *         id_mesa:
+ *           type: integer  
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           readOnly: true
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           readOnly: true
+ */
+
 module.exports = (sequelize, DataTypes) => {
   class Reserva extends Model {
     static associate(models) {
