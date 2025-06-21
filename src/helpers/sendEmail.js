@@ -1,8 +1,9 @@
 const nodemailer = require('nodemailer')
 const jwt = require('jwt-simple')
+const path = require('path')
 
-const logo = 'https://cdn.discordapp.com/attachments/956985601226338411/1129158762746355732/Pedido_Agile__4_-removebg-preview.png'
-const urlTienda = ''
+const logo = path.join(__dirname, '../img', 'Logo Pedidos Agiles.png')
+const urlPagina = process.env.URL_FRONT
 
 const envioConfirmacionEmail = async (usuario) => {
     try{
@@ -17,8 +18,7 @@ const envioConfirmacionEmail = async (usuario) => {
         });
 
         var token = jwt.encode(usuario.email, process.env.HASH_KEY) // Crea un token con el email de la cuenta a confirmar
-        const url = `http://${process.env.URL}/usuarios/confirmar/${token}` // Se crea la URL para que el usuario pueda confirmar su cuenta
-        console.log(url)
+        const url = `${process.env.URL_BACK}/usuarios/confirmar/${token}` // Se crea la URL para que el usuario pueda confirmar su cuenta
         // Ruta para enviar el correo electrónico
         transporter.sendMail({
             from: {
@@ -137,7 +137,7 @@ const envioConfirmacionEmail = async (usuario) => {
                     <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
                       <tr>
                         <td align="center" valign="top" style="padding: 36px 24px;">
-                          <a href="${urlTienda}" target="_blank" style="display: inline-block;">
+                          <a href="${urlPagina}" target="_blank" style="display: inline-block;">
                             <img src="${logo}" alt="Logo" border="0" width="100" style="display: block; width: 100px; max-width: 150px; min-width: 150px;">
                           </a>
                         </td>
