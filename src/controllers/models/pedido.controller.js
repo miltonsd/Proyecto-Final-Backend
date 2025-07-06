@@ -1,4 +1,3 @@
-const { Op } = require("sequelize");
 const {
   Pedido,
   Producto,
@@ -97,11 +96,7 @@ const getAllPedidos = async (req, res) => {
 const getPendientes = async (req, res) => {
   try {
     const pedidos = await Pedido.findAll({
-      where: {
-        estado: {
-          [Op.or]: ['Pendiente', 'Listo']
-        }
-      },
+      where: { estado: 'Pendiente' },
       attributes: { exclude: ["id_usuario"] },
       include: [
         {
@@ -117,6 +112,32 @@ const getPendientes = async (req, res) => {
       return await res.status(200).json(pedidos);
     } else {
       return res.status(404).json({ msg: "No se encontraron pedidos pendientes." });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: "Error en el servidor." });
+  }
+};
+
+const getListos = async (req, res) => {
+  try {
+    const pedidos = await Pedido.findAll({
+      where: { estado: 'Listo' },
+      attributes: { exclude: ["id_usuario"] },
+      include: [
+        {
+          model: Usuario,
+          as: "Usuario",
+          attributes: { exclude: ["contraseña"] },
+        },
+        { model: Producto },
+      ],
+    });
+    if (pedidos.length > 0) {
+      pedidos.sort((a, b) => a.id_pedido - b.id_pedido);
+      return await res.status(200).json(pedidos);
+    } else {
+      return res.status(404).json({ msg: "No se encontraron pedidos listos." });
     }
   } catch (error) {
     console.log(error);
@@ -251,6 +272,8 @@ const deletePedido = async (req, res) => {
 
 const cambiarEstado = async (req, res) => {
   try {
+    console.log(req.params.id)
+    console.log(req.body)
     const id = req.params.id;
     let p = await Pedido.findByPk(id);
     if (p) {
@@ -285,6 +308,7 @@ module.exports = {
   createPedido,
   deletePedido,
   getPendientes,
+  getListos,
   cambiarEstado,
   getAllPedidosUsuario
 };

@@ -53,6 +53,22 @@ module.exports = {
         createdAt: new Date(), 
         updatedAt: new Date() 
       },
+      { 
+        id_usuario: 4, 
+        nombre: 'Cocina', 
+        apellido: 'Cocina', 
+        email: 'cocina@gmail.com', 
+        contraseña: bcrypt.hashSync('cocina123'), 
+        isConfirmado: false,
+        documento: '42345678', 
+        direccion: 'Calle 123', 
+        telefono: '1111111',
+        fechaNacimiento: '2008-07-03',
+        id_rol: 4,
+        id_categoria: 1,
+        createdAt: new Date(), 
+        updatedAt: new Date() 
+      },
     ], {});
   },
 

@@ -6,6 +6,7 @@ const {
   createPedido,
   deletePedido,
   getPendientes,
+  getListos,
   cambiarEstado,
   updatePedido,
 } = require("../../controllers/models/pedido.controller");
@@ -74,8 +75,8 @@ router.post("/create", createPedido); // Crea un pedido
  *   get:
  *     tags:
  *       - Pedidos
- *     summary: Obtener pedidos pendientes y listos
- *     description: Devuelve todos los pedidos cuyo estado sea 'Pendiente' o 'Listo'.
+ *     summary: Obtener pedidos pendientes
+ *     description: Devuelve todos los pedidos cuyo estado sea 'Pendiente'.
  *     responses:
  *       200:
  *         description: Lista de pedidos pendientes.
@@ -85,6 +86,24 @@ router.post("/create", createPedido); // Crea un pedido
  *         description: Error en el servidor.
  */
 router.get("/pendientes", getPendientes); // Muestra pendientes (Va antes que el GetOne porque sino toma 'pendientes' como si fuera un id o param)
+
+/**
+ * @swagger
+ * /pedidos/listos:
+ *   get:
+ *     tags:
+ *       - Pedidos
+ *     summary: Obtener pedidos listos
+ *     description: Devuelve todos los pedidos cuyo estado sea 'Listo'.
+ *     responses:
+ *       200:
+ *         description: Lista de pedidos listos.
+ *       404:
+ *         description: No se encontraron pedidos listos.
+ *       500:
+ *         description: Error en el servidor.
+ */
+router.get("/listos", getListos); // Muestra listos (Va antes que el GetOne porque sino toma 'listos' como si fuera un id o param)
 
 /**
  * @swagger

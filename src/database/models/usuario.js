@@ -166,7 +166,7 @@ module.exports = (sequelize, DataTypes) => {
         id_rol: {
             type: DataTypes.INTEGER,
             allowNull: false,
-            defaultValue: 2, // Lo crea como cliente (1:AS|2:Cliente|3:Mozo)
+            defaultValue: 2, // Lo crea como cliente (1:AS|2:Cliente|3:Mozo|4:Cocina)
         },
         id_categoria: {
             type: DataTypes.INTEGER,
