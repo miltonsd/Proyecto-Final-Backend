@@ -1,6 +1,6 @@
 const Router = require('express');
 const router = Router();
-const { getAllUsuarios, getOneUsuario, login, logOut, register, updateUsuario, cambiarPassword, modificarPerfil, confirmarUsuario, deleteUsuario } = require('../../controllers/models/usuario.controller');
+const { getAllUsuarios, getOneUsuario, login, logOut, register, updateUsuario, resetPassword, cambiarPassword, modificarPerfil, confirmarUsuario, deleteUsuario } = require('../../controllers/models/usuario.controller');
 const { getAllReservasUsuario } = require('../../controllers/models/reserva.controller');
 const { getAllPedidosUsuario } = require('../../controllers/models/pedido.controller');
 const { getAllResumenesUsuario } = require('../../controllers/models/resumenDiarioUsuario.controller');
@@ -273,7 +273,7 @@ router.get('/:id_usuario/menues', getAllMenuesUsuario); // Muestra todos los men
  * @swagger
  * /usuarios/resetPassword:
  *   patch:
- *     summary: Cambiar la contraseña de un usuario por email
+ *     summary: Reinicia la contraseña de un usuario por email, cuando se olvida la contraseña
  *     tags: 
  *       - Usuarios
  *     requestBody:
@@ -291,6 +291,34 @@ router.get('/:id_usuario/menues', getAllMenuesUsuario); // Muestra todos los men
  *               contraseña:
  *                 type: string
  *     responses:
+ *       200:
+ *         description: Se envió un email de confirmación para cambiar la contraseña
+ *       404:
+ *         description: Usuario no encontrado
+ *       500:
+ *         description: Error en el servidor
+ */
+router.patch('/resetPassword', resetPassword); // Reinicia la contraseña del usuario (cuando se olvida la contraseña)
+
+/**
+ * @swagger
+ * /usuarios/cambiarPassword/{token}:
+ *   patch:
+ *     summary: Modifica la contraseña de un usuario
+ *     tags: 
+ *       - Usuarios
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - token
+ *             properties:
+ *               token:
+ *                 type: string
+ *     responses:
  *       201:
  *         description: Contraseña editada correctamente
  *       404:
@@ -298,7 +326,7 @@ router.get('/:id_usuario/menues', getAllMenuesUsuario); // Muestra todos los men
  *       500:
  *         description: Error en el servidor
  */
-router.patch('/resetPassword', cambiarPassword); // Modifica la contraseña del usuario
+router.get('/cambiarPassword/:token', cambiarPassword); // Modifica la contraseña del usuario
 
 /**
  * @swagger

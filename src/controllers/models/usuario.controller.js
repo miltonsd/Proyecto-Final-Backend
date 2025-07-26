@@ -2,7 +2,7 @@ const { Usuario, Rol, Categoria } = require('../../database/models/index');
 const bcrypt = require('bcryptjs');
 const moment = require('moment');
 const jwt = require('jwt-simple');
-const { envioConfirmacionEmail } = require('../../helpers/sendEmail');
+const { envioConfirmacionEmail, envioCambioPasswordEmail } = require('../../helpers/sendEmail');
 
 const getOneUsuario = async (req, res) => {
     try {
@@ -168,17 +168,43 @@ const confirmarUsuario =  async (req, res) => {
     }
 }
 
-const cambiarPassword = async (req, res) => {
+// Este método reinicia la contraseña desde el login (cuando se olvida la contraseña)
+const resetPassword = async (req, res) => {
     try {
         const usuario = await Usuario.findOne({ where: { email: req.body.email } });
         if (usuario) {
-        // Hago el update
+        // Genera un token con el email y la nueva contraseña
+            const token = jwt.encode(
+                { email: usuario.email, nuevaContrasenia: req.body.contraseña },
+                process.env.HASH_KEY
+            );
+            // Envía el email de confirmación
+            envioCambioPasswordEmail(usuario, token);
+            res.status(200).json({ msg: 'Se envió un email de confirmación para cambiar la contraseña.' });
+        } else {
+            return res.status(404).json({ msg: 'Usuario no encontrado.' })
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg: 'Error en el servidor.' });
+    }
+}
+
+// Este método modifica la contraseña del usuario en la base de datos
+const cambiarPassword = async (req, res) => {
+    try {
+        const token = req.params.token;
+        const data = jwt.decode(token, process.env.HASH_KEY);
+        console.log(data)
+        const usuario = await Usuario.findOne({ where: { email: data.email } });
+        if (usuario) {
+            // Hago el update
             usuario.update({
-                contraseña: bcrypt.hashSync(req.body.contraseña) || usuario.contraseña,
+                contraseña: bcrypt.hashSync(data.nuevaContrasenia) || usuario.contraseña,
             })
                 .then(usuario => { res.status(201).json({ usuario, msg: 'Contraseña editada correctamente.' }) })
         } else {
-            return res.status(404).json({ msg: 'Usuario no encontrado.' })
+            return res.status(404).json({ msg: 'Usuario no encontrado.' });
         }
     } catch (error) {
         console.log(error);
@@ -193,6 +219,7 @@ const modificarPerfil = async (req, res) => {
         const usuario = await Usuario.findByPk(id_usuario);
         if (usuario) {
             const data = req.body
+            // Compara la contraseña ingresada (en data) con la que tiene el usuario en la base de datos
             if (bcrypt.compareSync(data.contrasenia, usuario.contraseña)) {
                 // Aca modifica los datos del perfil del usuario
                 usuario.update({
@@ -265,6 +292,7 @@ const crearToken = (usuario) => {
     const payload = {
         id_usuario: usuario.id_usuario,
         id_rol: usuario.id_rol,
+        email: usuario.email,
         createdAt: moment().unix(),
         // Rol = 2 (Usuario) -> 90 minutos / El resto (admin y mozo/cocina) -> 8 horas
         expiredAt: usuario.id_rol === 2 ? moment().add(90, 'minutes').unix() : moment().add(8, 'hours').unix()
@@ -272,4 +300,4 @@ const crearToken = (usuario) => {
     return jwt.encode(payload, process.env.HASH_KEY) // poner una frase secreta en el .env
 }
 
-module.exports = { getAllUsuarios, getOneUsuario, login, logOut, register, cambiarPassword, updateUsuario, deleteUsuario, modificarPerfil, confirmarUsuario }
+module.exports = { getAllUsuarios, getOneUsuario, login, logOut, register, resetPassword, cambiarPassword, updateUsuario, deleteUsuario, modificarPerfil, confirmarUsuario }
