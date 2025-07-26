@@ -292,7 +292,6 @@ const crearToken = (usuario) => {
     const payload = {
         id_usuario: usuario.id_usuario,
         id_rol: usuario.id_rol,
-        email: usuario.email,
         createdAt: moment().unix(),
         // Rol = 2 (Usuario) -> 90 minutos / El resto (admin y mozo/cocina) -> 8 horas
         expiredAt: usuario.id_rol === 2 ? moment().add(90, 'minutes').unix() : moment().add(8, 'hours').unix()
