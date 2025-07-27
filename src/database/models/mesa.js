@@ -63,9 +63,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       habilitada: {
+        // Una mesa está habilitada si está disponible para el escaneo del QR por parte del cliente (Cuando un cliente escanea 
+        // el QR, la mesa pasa a estar deshabilitada)
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        defaultValue: false,
+        defaultValue: true,
       },
       qr: {
         type: DataTypes.TEXT('medium'),
