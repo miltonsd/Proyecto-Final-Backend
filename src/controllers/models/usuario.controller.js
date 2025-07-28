@@ -110,7 +110,7 @@ const deleteUsuario = async (req, res) => {
             }))
         }
 
-        // Obtiene los menúes asociados al usuario
+        // Obtiene los menús asociados al usuario
         const menusAsociados = await usuario.getMenus()
 
         // Verificar si hay menús asociados antes de intentar borrarlos

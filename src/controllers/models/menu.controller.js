@@ -43,17 +43,17 @@ const getOneMenu = async (req, res) => {
     }
 }
 
-const getAllMenues = async (req, res) => {
+const getAllMenus = async (req, res) => {
     try {
-        const menues = await Menu.findAll({
+        const menus = await Menu.findAll({
             attributes: { exclude: ['id_usuario'] },
             include: [{ model: Usuario, as: 'Usuario', attributes: { exclude: ['contraseña'] }}, { model: Producto }]
         });
-        if (menues.length > 0) {
-            menues.sort((a, b) => a.id_menu - b.id_menu);
-            return await res.status(200).json(menues);
+        if (menus.length > 0) {
+            menus.sort((a, b) => a.id_menu - b.id_menu);
+            return await res.status(200).json(menus);
         } else {
-            return res.status(404).json({ msg: 'Menúes no encontrados.' })
+            return res.status(404).json({ msg: 'Menús no encontrados.' })
         }
     } catch (error) {
         console.log(error);
@@ -61,10 +61,10 @@ const getAllMenues = async (req, res) => {
     }
 }
 
-const getAllMenuesUsuario = async (req, res) => {
+const getAllMenusUsuario = async (req, res) => {
     try {
         const id  = req.params.id_usuario;
-        const menues = await Menu.findAll({
+        const menus = await Menu.findAll({
             where: { id_usuario : id },
             attributes: { exclude: ['id_usuario', 'createdAt', 'updatedAt', 'deletedAt'] },
             include: { 
@@ -72,11 +72,11 @@ const getAllMenuesUsuario = async (req, res) => {
               through: { attributes: [] }, // ASÍ NO SE TRAEN LOS ATRIBUTOS DE LA TABLA INTERMEDIA
             },
         });
-        if (menues.length > 0) {
-            menues.sort((a, b) => a.id_menu - b.id_menu);
-            return await res.status(200).json(menues);
+        if (menus.length > 0) {
+            menus.sort((a, b) => a.id_menu - b.id_menu);
+            return await res.status(200).json(menus);
         } else {
-            return res.status(404).json({ msg: 'El usuario no posee menúes personalizados.' })
+            return res.status(404).json({ msg: 'El usuario no posee menús personalizados.' })
         }
     } catch (error) {
         console.log(error);
@@ -154,4 +154,4 @@ const getAllMenuesUsuario = async (req, res) => {
     }
 }
 
-module.exports = { createMenu, getAllMenues, getOneMenu, updateMenu, deleteMenu, getAllMenuesUsuario }
+module.exports = { createMenu, getAllMenus: getAllMenus, getOneMenu, updateMenu, deleteMenu, getAllMenusUsuario: getAllMenusUsuario }

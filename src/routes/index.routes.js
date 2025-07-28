@@ -12,7 +12,7 @@ const apiRolRouter = require('./api/rol.routes');
 router.use('/roles', apiRolRouter);
 
 const apiMenuRouter = require('./api/menu.routes');
-router.use('/menues', apiMenuRouter);
+router.use('/menus', apiMenuRouter);
 
 const apiMesaRouter = require('./api/mesa.routes');
 router.use('/mesas', apiMesaRouter);

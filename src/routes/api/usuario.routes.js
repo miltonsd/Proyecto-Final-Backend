@@ -4,7 +4,7 @@ const { getAllUsuarios, getOneUsuario, login, logOut, register, updateUsuario, r
 const { getAllReservasUsuario } = require('../../controllers/models/reserva.controller');
 const { getAllPedidosUsuario } = require('../../controllers/models/pedido.controller');
 const { getAllResumenesUsuario } = require('../../controllers/models/resumenDiarioUsuario.controller');
-const { getAllMenuesUsuario } = require('../../controllers/models/menu.controller');
+const { getAllMenusUsuario } = require('../../controllers/models/menu.controller');
 
 // Rutas Especificas
 
@@ -247,7 +247,7 @@ router.get('/:id_usuario/resumenes', getAllResumenesUsuario); // Muestra todos l
 
 /**
  * @swagger
- * /usuarios/{id_usuario}/menues:
+ * /usuarios/{id_usuario}/menus:
  *   get:
  *     summary: Obtener todos los menús asociados a un usuario
  *     tags: 
@@ -261,13 +261,13 @@ router.get('/:id_usuario/resumenes', getAllResumenesUsuario); // Muestra todos l
  *         description: ID del usuario
  *     responses:
  *       200:
- *         description: Menúes obtenidos correctamente
+ *         description: Menús obtenidos correctamente
  *       404:
  *         description: Usuario no encontrado o sin menús
  *       500:
  *         description: Error en el servidor
  */
-router.get('/:id_usuario/menues', getAllMenuesUsuario); // Muestra todos los menúes del usuario
+router.get('/:id_usuario/menus', getAllMenusUsuario); // Muestra todos los menús del usuario
 
 /**
  * @swagger

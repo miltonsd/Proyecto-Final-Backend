@@ -1,16 +1,16 @@
 const Router = require('express');
 const router = Router();
-const { createMenu, getAllMenues, getOneMenu,  deleteMenu, updateMenu } = require('../../controllers/models/menu.controller');
+const { createMenu, getAllMenus, getOneMenu,  deleteMenu, updateMenu } = require('../../controllers/models/menu.controller');
 
 // Rutas Especificas
 
 /**
  * @swagger
- * /menues/create:
+ * /menus/create:
  *   post:
  *     summary: Crea un nuevo menú con productos asociados
  *     tags:
- *       - Menúes
+ *       - Menús
  *     requestBody:
  *       required: true
  *       content:
@@ -53,11 +53,11 @@ router.post('/create', createMenu); // Crea un Menu
 
 /**
  * @swagger
- * /menues/{id}:
+ * /menus/{id}:
  *   get:
  *     summary: Obtiene un menú por ID, incluyendo usuario y productos asociados
  *     tags:
- *       - Menúes
+ *       - Menús
  *     parameters:
  *       - in: path
  *         name: id
@@ -109,11 +109,11 @@ router.get('/:id', getOneMenu); // Muestra un menu
 
 /**
  * @swagger
- * /menues:
+ * /menus:
  *   get:
  *     summary: Obtiene todos los menús con sus productos y usuario asociado
  *     tags:
- *       - Menúes
+ *       - Menús
  *     responses:
  *       200:
  *         description: Lista de menús encontrada correctamente
@@ -151,19 +151,19 @@ router.get('/:id', getOneMenu); // Muestra un menu
  *                           type: number
  *                           format: float
  *       404:
- *         description: Menúes no encontrados
+ *         description: Menús no encontrados
  *       500:
  *         description: Error en el servidor
  */
-router.get('/', getAllMenues); // Muestra todos
+router.get('/', getAllMenus); // Muestra todos
 
 /**
  * @swagger
- * /menues/{id}:
+ * /menus/{id}:
  *   patch:
  *     summary: Actualiza un menú existente, incluyendo productos asociados
  *     tags:
- *       - Menúes
+ *       - Menús
  *     parameters:
  *       - in: path
  *         name: id
@@ -209,11 +209,11 @@ router.patch('/:id', updateMenu); // Modifica un menu
 
 /**
  * @swagger
- * /menues/{id}:
+ * /menus/{id}:
  *   delete:
  *     summary: Elimina un menú existente por su ID
  *     tags:
- *       - Menúes
+ *       - Menús
  *     parameters:
  *       - in: path
  *         name: id
