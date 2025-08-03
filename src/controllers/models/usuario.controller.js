@@ -276,7 +276,7 @@ const login = async (req, res) => {
 
 const logOut = async (req, res, next) => {
     try {
-        const token = req.headers.authorization?.split(' ')[1]
+        const token = req.headers.authorization
         const payload = jwt.decode(token, process.env.HASH_KEY);
         payload.expiredAt = Math.floor(Date.now() / 1000) - 10; // Establece la fecha de expiración 10 segundos en el pasado
         const newToken = jwt.encode(payload, process.env.HASH_KEY); // Genera un nuevo token con la fecha de expiración modificada

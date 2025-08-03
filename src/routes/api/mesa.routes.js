@@ -12,6 +12,7 @@ const {
   habilitarMesa,
   deshabilitarMesa,
 } = require("../../controllers/models/mesa.controller");
+const { rolesMiddleware } = require("../../validators/middleware");
 
 // Rutas Genericas
 
@@ -54,7 +55,7 @@ const {
  *         description: Error del servidor
  *
  */
-router.post("/create", createOne(Mesa)); // Crea una Mesa
+router.post("/create", rolesMiddleware([1]), createOne(Mesa)); // Crea una Mesa
 
 /**
  * @swagger
@@ -78,7 +79,7 @@ router.post("/create", createOne(Mesa)); // Crea una Mesa
  *         description: Error del servidor
  *
  */
-router.get("/:id", getOne(Mesa)); // Muestra una mesa
+router.get("/:id", rolesMiddleware([1,2]), getOne(Mesa)); // Muestra una mesa
 
 /**
  * @swagger
@@ -95,7 +96,7 @@ router.get("/:id", getOne(Mesa)); // Muestra una mesa
  *       500:
  *         description: Error en el servidor
  */
-router.get("/", getAll(Mesa)); // Muestra todas
+router.get("/", rolesMiddleware([1,2,3]), getAll(Mesa)); // Muestra todas
 
 /**
  * @swagger
@@ -135,7 +136,7 @@ router.get("/", getAll(Mesa)); // Muestra todas
  *       500:
  *         description: Error en el servidor
  */
-router.patch("/:id", updateOne(Mesa)); // Modifica una mesa
+router.patch("/:id", rolesMiddleware([1]), updateOne(Mesa)); // Modifica una mesa
 
 //Rutas Especificas
 
@@ -160,7 +161,7 @@ router.patch("/:id", updateOne(Mesa)); // Modifica una mesa
  *       500:
  *         description: Error en el servidor
  */
-router.delete("/:id", deleteMesa); // Elimina una mesa
+router.delete("/:id", rolesMiddleware([1]), deleteMesa); // Elimina una mesa
 
 /**
  * @swagger
@@ -183,7 +184,7 @@ router.delete("/:id", deleteMesa); // Elimina una mesa
  *       500:
  *         description: Error en el servidor
  */
-router.patch("/habilitar/:id", habilitarMesa);
+router.patch("/habilitar/:id", rolesMiddleware([2,3]), habilitarMesa);
 
 /**
  * @swagger
@@ -206,6 +207,6 @@ router.patch("/habilitar/:id", habilitarMesa);
  *       500:
  *         description: Error en el servidor
  */
-router.patch("/deshabilitar/:id", deshabilitarMesa);
+router.patch("/deshabilitar/:id", rolesMiddleware([2,3]), deshabilitarMesa);
 
 module.exports = router;

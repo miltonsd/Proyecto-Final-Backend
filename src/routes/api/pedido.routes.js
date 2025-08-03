@@ -10,6 +10,7 @@ const {
   cambiarEstado,
   updatePedido,
 } = require("../../controllers/models/pedido.controller");
+const { rolesMiddleware } = require("../../validators/middleware");
 
 // Rutas Especificas
 
@@ -85,7 +86,7 @@ router.post("/create", createPedido); // Crea un pedido
  *       500:
  *         description: Error en el servidor.
  */
-router.get("/pendientes", getPendientes); // Muestra pendientes (Va antes que el GetOne porque sino toma 'pendientes' como si fuera un id o param)
+router.get("/pendientes", rolesMiddleware([4]), getPendientes); // Muestra pendientes (Va antes que el GetOne porque sino toma 'pendientes' como si fuera un id o param)
 
 /**
  * @swagger
@@ -103,7 +104,7 @@ router.get("/pendientes", getPendientes); // Muestra pendientes (Va antes que el
  *       500:
  *         description: Error en el servidor.
  */
-router.get("/listos", getListos); // Muestra listos (Va antes que el GetOne porque sino toma 'listos' como si fuera un id o param)
+router.get("/listos", rolesMiddleware([3]), getListos); // Muestra listos (Va antes que el GetOne porque sino toma 'listos' como si fuera un id o param)
 
 /**
  * @swagger
@@ -127,7 +128,7 @@ router.get("/listos", getListos); // Muestra listos (Va antes que el GetOne porq
  *       500:
  *         description: Error en el servidor.
  */
-router.get("/:id", getOnePedido); // Muestra un pedido
+router.get("/:id", rolesMiddleware([1]), getOnePedido); // Muestra un pedido
 
 /**
  * @swagger
@@ -145,7 +146,7 @@ router.get("/:id", getOnePedido); // Muestra un pedido
  *       500:
  *         description: Error en el servidor.
  */
-router.get("/", getAllPedidos); // Muestra todos
+router.get("/", rolesMiddleware([1]), getAllPedidos); // Muestra todos
 
 /**
  * @swagger
@@ -169,7 +170,7 @@ router.get("/", getAllPedidos); // Muestra todos
  *       500:
  *         description: Error en el servidor.
  */
-router.patch("/cambiarEstado/:id", cambiarEstado); // Cambia el estado del pedido "Pendiente" --> "Listo" --> "Entregado"
+router.patch("/cambiarEstado/:id", rolesMiddleware([3,4]), cambiarEstado); // Cambia el estado del pedido "Pendiente" --> "Listo" --> "Entregado"
 
 /**
  * @swagger
@@ -221,7 +222,7 @@ router.patch("/cambiarEstado/:id", cambiarEstado); // Cambia el estado del pedid
  *       500:
  *         description: Error en el servidor.
  */
-router.patch("/:id", updatePedido); // Modifica un pedido
+router.patch("/:id", rolesMiddleware([1]), updatePedido); // Modifica un pedido
 
 /**
  * @swagger
@@ -245,6 +246,6 @@ router.patch("/:id", updatePedido); // Modifica un pedido
  *       500:
  *         description: Error en el servidor.
  */
-router.delete("/:id", deletePedido); // Elimina un pedido
+router.delete("/:id", rolesMiddleware([1]), deletePedido); // Elimina un pedido
 
 module.exports = router;

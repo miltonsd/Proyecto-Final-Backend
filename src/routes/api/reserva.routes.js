@@ -3,6 +3,7 @@ const router = Router();
 const { createOne, updateOne, deleteOne } = require('../../controllers/generico.controller');
 const { Reserva } = require('../../database/models/index');
 const { getAllReservas, getOneReserva } = require('../../controllers/models/reserva.controller');
+const { rolesMiddleware } = require('../../validators/middleware');
 
 // Rutas Genericas
 
@@ -56,7 +57,7 @@ const { getAllReservas, getOneReserva } = require('../../controllers/models/rese
  *       500:
  *         description: Error en el servidor
  */
-router.post('/create', createOne(Reserva)); // Crea una reserva
+router.post('/create', rolesMiddleware([1,2]), createOne(Reserva)); // Crea una reserva
 
 /**
  * @swagger
@@ -109,7 +110,7 @@ router.post('/create', createOne(Reserva)); // Crea una reserva
  *       500:
  *         description: Error en el servidor
  */
-router.patch('/:id', updateOne(Reserva)); // Modifica una reserva
+router.patch('/:id', rolesMiddleware([1,2]), updateOne(Reserva)); // Modifica una reserva
 
 /**
  * @swagger
@@ -142,7 +143,7 @@ router.patch('/:id', updateOne(Reserva)); // Modifica una reserva
  *       500:
  *         description: Error en el servidor
  */
-router.delete('/:id', deleteOne(Reserva)); // Elimina una reserva
+router.delete('/:id', rolesMiddleware([1,2]), deleteOne(Reserva)); // Elimina una reserva
 
 // Rutas Especificas
 
@@ -198,7 +199,7 @@ router.delete('/:id', deleteOne(Reserva)); // Elimina una reserva
  *       500:
  *         description: Error en el servidor
  */
-router.get('/:id', getOneReserva); // Muestra una reserva
+router.get('/:id', rolesMiddleware([1]), getOneReserva); // Muestra una reserva
 
 /**
  * @swagger
@@ -247,6 +248,6 @@ router.get('/:id', getOneReserva); // Muestra una reserva
  *       500:
  *         description: Error en el servidor
  */
-router.get('/', getAllReservas); // Muestra todas
+router.get('/', rolesMiddleware([1,2]), getAllReservas); // Muestra todas
 
 module.exports = router;

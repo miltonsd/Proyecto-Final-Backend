@@ -3,6 +3,7 @@ const router = Router();
 const { getAll, getOne, createOne, updateOne } = require('../../controllers/generico.controller');
 const { TipoProducto } = require('../../database/models/index');
 const { deleteTipoProducto } = require('../../controllers/models/tipoProducto.controller');
+const { authMiddleware, rolesMiddleware } = require('../../validators/middleware');
 
 // Rutas Genericas
 
@@ -37,7 +38,7 @@ const { deleteTipoProducto } = require('../../controllers/models/tipoProducto.co
  *       500:
  *         description: Error en el servidor
  */
-router.post('/create', createOne(TipoProducto)); // Crea un tipoProducto
+router.post('/create', authMiddleware, rolesMiddleware([1]), createOne(TipoProducto)); // Crea un tipoProducto
 
 /**
  * @swagger
@@ -71,7 +72,7 @@ router.post('/create', createOne(TipoProducto)); // Crea un tipoProducto
  *       500:
  *         description: Error en el servidor
  */
-router.get('/:id', getOne(TipoProducto)); // Muestra un tipoProducto
+router.get('/:id', authMiddleware, rolesMiddleware([1]), getOne(TipoProducto)); // Muestra un tipoProducto
 
 /**
  * @swagger
@@ -135,7 +136,7 @@ router.get('/', getAll(TipoProducto)); // Muestra todos
  *       500:
  *         description: Error en el servidor
  */
-router.patch('/:id', updateOne(TipoProducto)); // Modifica un tipoProducto
+router.patch('/:id', authMiddleware, rolesMiddleware([1]), updateOne(TipoProducto)); // Modifica un tipoProducto
 
 // Rutas Especificas
 
@@ -160,6 +161,6 @@ router.patch('/:id', updateOne(TipoProducto)); // Modifica un tipoProducto
  *       500:
  *         description: Error en el servidor
  */
-router.delete('/:id', deleteTipoProducto) // Elimina un tipoProducto
+router.delete('/:id', authMiddleware, rolesMiddleware([1]), deleteTipoProducto) // Elimina un tipoProducto
 
 module.exports = router;

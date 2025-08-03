@@ -3,6 +3,7 @@ const router = Router();
 const { createOne, updateOne } = require('../../controllers/generico.controller');
 const { Producto } = require('../../database/models/index');
 const { getAllProductos, getOneProducto, deleteProducto } = require('../../controllers/models/producto.controller');
+const { authMiddleware, rolesMiddleware } = require('../../validators/middleware');
 
 // Rutas Genericas
 
@@ -61,7 +62,7 @@ const { getAllProductos, getOneProducto, deleteProducto } = require('../../contr
  *       500:
  *         description: Error en el servidor
  */
-router.post('/create', createOne(Producto)); // Crea un producto
+router.post('/create', authMiddleware, rolesMiddleware([1]), createOne(Producto)); // Crea un producto
 
 /**
  * @swagger
@@ -118,7 +119,7 @@ router.post('/create', createOne(Producto)); // Crea un producto
  *       500:
  *         description: Error en el servidor
  */
-router.patch('/:id', updateOne(Producto)); // Modifica un producto
+router.patch('/:id', authMiddleware, updateOne(Producto)); // Modifica un producto
 
 // Rutas Especificas
 
@@ -148,7 +149,7 @@ router.patch('/:id', updateOne(Producto)); // Modifica un producto
  *       500:
  *         description: Error en el servidor
  */
-router.get('/:id', getOneProducto); // Muestra un producto
+router.get('/:id', authMiddleware, rolesMiddleware([1]), getOneProducto); // Muestra un producto
 
 /**
  * @swagger
@@ -203,6 +204,6 @@ router.get('/', getAllProductos); // Muestra todos
  *       500:
  *         description: Error en el servidor
  */
-router.delete('/:id', deleteProducto); // Elimina un producto
+router.delete('/:id', authMiddleware, rolesMiddleware([1]), deleteProducto); // Elimina un producto
 
 module.exports = router;

@@ -1,6 +1,7 @@
 const Router = require('express');
 const router = Router();
 const { getAllPromociones, getOnePromocion, createPromocion, deletePromocion, updatePromocion } = require('../../controllers/models/promocion.controller');
+const { authMiddleware, rolesMiddleware } = require('../../validators/middleware');
 
 // Rutas Especificas
 
@@ -53,7 +54,7 @@ const { getAllPromociones, getOnePromocion, createPromocion, deletePromocion, up
  *       500:
  *         description: Error en el servidor
  */
-router.post('/create', createPromocion); // Crea una promocion
+router.post('/create', authMiddleware, rolesMiddleware([1]), createPromocion); // Crea una promocion
 
 /**
  * @swagger
@@ -81,7 +82,7 @@ router.post('/create', createPromocion); // Crea una promocion
  *       500:
  *         description: Error en el servidor
  */
-router.get('/:id', getOnePromocion); // Muestra una promocion
+router.get('/:id', authMiddleware, rolesMiddleware([1]), getOnePromocion); // Muestra una promocion
 
 /**
  * @swagger
@@ -158,7 +159,7 @@ router.get('/', getAllPromociones); // Muestra todas
  *       500:
  *         description: Error en el servidor
  */
-router.patch('/:id', updatePromocion); // Modifica una promocion
+router.patch('/:id', authMiddleware, rolesMiddleware([1]), updatePromocion); // Modifica una promocion
 
 /**
  * @swagger
@@ -190,6 +191,6 @@ router.patch('/:id', updatePromocion); // Modifica una promocion
  *       500:
  *         description: Error en el servidor
  */
-router.delete('/:id', deletePromocion); // Elimina una promocion
+router.delete('/:id', authMiddleware, rolesMiddleware([1]), deletePromocion); // Elimina una promocion
 
 module.exports = router;

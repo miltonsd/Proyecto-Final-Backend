@@ -1,6 +1,7 @@
 const Router = require('express');
 const router = Router();
 const { createMenu, getAllMenus, getOneMenu,  deleteMenu, updateMenu } = require('../../controllers/models/menu.controller');
+const { rolesMiddleware } = require('../../validators/middleware');
 
 // Rutas Especificas
 
@@ -105,7 +106,7 @@ router.post('/create', createMenu); // Crea un Menu
  *       500:
  *         description: Error en el servidor
  */
-router.get('/:id', getOneMenu); // Muestra un menu
+router.get('/:id', rolesMiddleware([1]), getOneMenu); // Muestra un menu
 
 /**
  * @swagger
@@ -155,7 +156,7 @@ router.get('/:id', getOneMenu); // Muestra un menu
  *       500:
  *         description: Error en el servidor
  */
-router.get('/', getAllMenus); // Muestra todos
+router.get('/', rolesMiddleware([1]), getAllMenus); // Muestra todos
 
 /**
  * @swagger

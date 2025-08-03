@@ -5,6 +5,7 @@ const { getAllReservasUsuario } = require('../../controllers/models/reserva.cont
 const { getAllPedidosUsuario } = require('../../controllers/models/pedido.controller');
 const { getAllResumenesUsuario } = require('../../controllers/models/resumenDiarioUsuario.controller');
 const { getAllMenusUsuario } = require('../../controllers/models/menu.controller');
+const { authMiddleware, rolesMiddleware } = require('../../validators/middleware');
 
 // Rutas Especificas
 
@@ -37,7 +38,7 @@ const { getAllMenusUsuario } = require('../../controllers/models/menu.controller
  *       500:
  *         description: Error en el servidor
  */
-router.post('/login', /*validateLogin, checkVerification,*/ login); // Login de usuario
+router.post('/login', login); // Login de usuario
 
 /**
  * @swagger
@@ -54,7 +55,7 @@ router.post('/login', /*validateLogin, checkVerification,*/ login); // Login de 
  *       500:
  *         description: No hay token o error en el servidor
  */
-router.post('/logout', /*validateLogin, checkVerification,*/ logOut); // LogOut del usuario
+router.post('/logout', authMiddleware, logOut); // LogOut del usuario
 
 /**
  * @swagger
@@ -147,7 +148,7 @@ router.get('/confirmar/:token', confirmarUsuario); // Confirma el email del usua
  *       500:
  *         description: Error en el servidor
  */
-router.get('/', getAllUsuarios); // Muestra todos
+router.get('/', authMiddleware, rolesMiddleware([1]), getAllUsuarios); // Muestra todos
 
 /**
  * @swagger
@@ -171,7 +172,7 @@ router.get('/', getAllUsuarios); // Muestra todos
  *       500:
  *         description: Error en el servidor
  */
-router.get('/:id_usuario', getOneUsuario); // Muestra un usuario
+router.get('/:id_usuario', authMiddleware, getOneUsuario); // Muestra un usuario
 
 /**
  * @swagger
@@ -195,7 +196,7 @@ router.get('/:id_usuario', getOneUsuario); // Muestra un usuario
  *       500:
  *         description: Error en el servidor
  */
-router.get('/:id_usuario/reservas', getAllReservasUsuario); // Muestra todas (inclusive las canceladas) las reservas del usuario
+router.get('/:id_usuario/reservas', authMiddleware, getAllReservasUsuario); // Muestra todas (inclusive las canceladas) las reservas del usuario
 
 /**
  * @swagger
@@ -219,7 +220,7 @@ router.get('/:id_usuario/reservas', getAllReservasUsuario); // Muestra todas (in
  *       500:
  *         description: Error en el servidor
  */
-router.get('/:id_usuario/pedidos', getAllPedidosUsuario); // Muestra todos los pedidos del usuario
+router.get('/:id_usuario/pedidos', authMiddleware, getAllPedidosUsuario); // Muestra todos los pedidos del usuario
 
 /**
  * @swagger
@@ -243,7 +244,7 @@ router.get('/:id_usuario/pedidos', getAllPedidosUsuario); // Muestra todos los p
  *       500:
  *         description: Error en el servidor
  */
-router.get('/:id_usuario/resumenes', getAllResumenesUsuario); // Muestra todos los resumenes del usuario
+router.get('/:id_usuario/resumenes', authMiddleware, getAllResumenesUsuario); // Muestra todos los resumenes del usuario
 
 /**
  * @swagger
@@ -267,7 +268,7 @@ router.get('/:id_usuario/resumenes', getAllResumenesUsuario); // Muestra todos l
  *       500:
  *         description: Error en el servidor
  */
-router.get('/:id_usuario/menus', getAllMenusUsuario); // Muestra todos los menús del usuario
+router.get('/:id_usuario/menus', authMiddleware, getAllMenusUsuario); // Muestra todos los menús del usuario
 
 /**
  * @swagger
@@ -326,7 +327,7 @@ router.patch('/resetPassword', resetPassword); // Reinicia la contraseña del us
  *       500:
  *         description: Error en el servidor
  */
-router.get('/cambiarPassword/:token', cambiarPassword); // Modifica la contraseña del usuario
+router.get('/cambiarPassword/:token', authMiddleware, cambiarPassword); // Modifica la contraseña del usuario
 
 /**
  * @swagger
@@ -371,7 +372,7 @@ router.get('/cambiarPassword/:token', cambiarPassword); // Modifica la contrase�
  *       500:
  *         description: Error en el servidor
  */
-router.patch('/modificarPerfil/:id_usuario', modificarPerfil); // Modifica los datos del perfil de un usuario
+router.patch('/modificarPerfil/:id_usuario', authMiddleware, modificarPerfil); // Modifica los datos del perfil de un usuario
 
 /**
  * @swagger
@@ -423,7 +424,7 @@ router.patch('/modificarPerfil/:id_usuario', modificarPerfil); // Modifica los d
  *       500:
  *         description: Error en el servidor
  */
-router.patch('/:id_usuario', updateUsuario); // Modifica un usuario
+router.patch('/:id_usuario', authMiddleware, rolesMiddleware([1]), updateUsuario); // Modifica un usuario
 
 /**
  * @swagger
@@ -456,6 +457,6 @@ router.patch('/:id_usuario', updateUsuario); // Modifica un usuario
  *       500:
  *         description: Error en el servidor
  */
-router.delete('/:id', deleteUsuario); // Elimina un usuario
+router.delete('/:id', authMiddleware, rolesMiddleware([1]), deleteUsuario); // Elimina un usuario
 
 module.exports = router;

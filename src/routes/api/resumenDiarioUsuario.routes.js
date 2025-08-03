@@ -2,6 +2,7 @@ const Router = require("express");
 const router = Router();
 
 const { getAllResumenes, getOneResumen, createResumen, deleteResumen, updateResumen } = require("../../controllers/models/resumenDiarioUsuario.controller");
+const { rolesMiddleware } = require("../../validators/middleware");
   
 // Rutas Especificas
 
@@ -87,7 +88,7 @@ router.post("/create", createResumen); // Crea un resumen
  *       500:
  *         description: Error en el servidor
  */
-router.get("/:id", getOneResumen); // Muestra un resumen
+router.get("/:id", rolesMiddleware([1]), getOneResumen); // Muestra un resumen
 
 /**
  * @swagger
@@ -131,7 +132,7 @@ router.get("/:id", getOneResumen); // Muestra un resumen
  *       500:
  *         description: Error en el servidor
  */
-router.get("/", getAllResumenes); // Muestra todos
+router.get("/", rolesMiddleware([1]), getAllResumenes); // Muestra todos
 
 /**
  * @swagger
@@ -168,7 +169,7 @@ router.get("/", getAllResumenes); // Muestra todos
  *       500:
  *         description: Error en el servidor
  */
-router.patch("/:id", updateResumen); // Modifica un resumen
+router.patch("/:id", rolesMiddleware([1]), updateResumen); // Modifica un resumen
 
 /**
  * @swagger
@@ -191,6 +192,6 @@ router.patch("/:id", updateResumen); // Modifica un resumen
  *       500:
  *         description: Error en el servidor
  */
-router.delete("/:id", deleteResumen); // Elimina un resumen
+router.delete("/:id", rolesMiddleware([1]), deleteResumen); // Elimina un resumen
 
 module.exports = router;
