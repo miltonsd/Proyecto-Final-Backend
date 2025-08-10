@@ -2,7 +2,7 @@ const Router = require('express');
 const router = Router();
 const { createOne, updateOne } = require('../../controllers/generico.controller');
 const { Producto } = require('../../database/models/index');
-const { getAllProductos, getOneProducto, deleteProducto } = require('../../controllers/models/producto.controller');
+const { getAllProductos, getOneProducto, deleteProducto, getAllProductosCarta } = require('../../controllers/models/producto.controller');
 const { authMiddleware, rolesMiddleware } = require('../../validators/middleware');
 
 // Rutas Genericas
@@ -122,6 +122,29 @@ router.post('/create', authMiddleware, rolesMiddleware([1]), createOne(Producto)
 router.patch('/:id', authMiddleware, updateOne(Producto)); // Modifica un producto
 
 // Rutas Especificas
+
+/**
+ * @swagger
+ * /productos/carta:
+ *   get:
+ *     summary: Obtiene todos los productos de la carta con las promociones aplicadas
+ *     tags:
+ *       - Productos
+ *     responses:
+ *       200:
+ *         description: Lista de productos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Producto'
+ *       404:
+ *         description: Productos no encontrados
+ *       500:
+ *         description: Error en el servidor
+ */
+router.get('/carta', getAllProductosCarta); // Muestra los productos de la carta
 
 /**
  * @swagger

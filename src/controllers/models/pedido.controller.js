@@ -8,7 +8,6 @@ const {
 
 const createPedido = async (req, res) => {
   try {
-    console.log(req.body);
     const pedido = await Pedido.create({
       fechaHora: req.body.fechaHora,
       estado: req.body.estado,
@@ -25,8 +24,16 @@ const createPedido = async (req, res) => {
           id_producto: prod.id_producto,
           cantidad_prod: prod.cant_selecc,
           precio_unitario: prod.precio,
-        });
-      });
+        })
+        // Actualiza el stock del producto
+        let stockNuevo = prod.stock - prod.cant_selecc
+        Producto.update(
+          { stock: stockNuevo }, 
+          { where: 
+            { id_producto: prod.id_producto }
+          }
+        )
+      })
 
       return res.status(200).json({ msg: "Pedido creado correctamente.", pedido });
     } else {
@@ -194,7 +201,6 @@ const updatePedido = async (req,res) => {
                 // Guardo los id_producto de la lista original asociados al pedido
                 listaOriginal.push(producto)
               })
-              console.log('Productos del pedido Original:', listaOriginal)
               // Defino la lista con los productos que envía el frontend desde la petición HTTP
               const listaNuevos = req.body.lista_productos.map((p) => ({
                 id_producto: p.id_producto,
@@ -202,19 +208,15 @@ const updatePedido = async (req,res) => {
                 cantidad_prod: p.cant_selecc
               }))
 
-              console.log('Productos desde el front:', listaNuevos)
-
               // Filtra desde los productos de la lista nueva aquellos que no están incluidos en la lista original, para agregarlos luego
               const productosAgregar = listaNuevos.filter(
                   (producto) => !listaOriginal.includes(producto) 
               )
-              console.log('Productos a agregar:', productosAgregar)
               
               // Filtra desde los productos de la lista original aquellos que no están incluidos en la lista nueva, para eliminarlos luego
               const productosEliminar = listaOriginal.filter(
                 (producto) => !listaNuevos.includes(producto)
               )
-              console.log('Productos a eliminar:', productosEliminar)
 
               // Elimina los productos asociados que ya no corresponden en la tabla intermedia
               await Promise.all(productosEliminar.map((producto) =>
@@ -272,8 +274,6 @@ const deletePedido = async (req, res) => {
 
 const cambiarEstado = async (req, res) => {
   try {
-    console.log(req.params.id)
-    console.log(req.body)
     const id = req.params.id;
     let p = await Pedido.findByPk(id);
     if (p) {
