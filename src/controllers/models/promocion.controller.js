@@ -2,7 +2,6 @@ const { Promocion, Producto, PromocionProductos } = require('../../database/mode
 
 const createPromocion = async (req, res) => {
     try {
-        console.log(req.body)
         const promocion = await Promocion.create({
             porcentaje_desc: req.body.porcentaje_desc,
             fecha_desde: req.body.fecha_desde,
@@ -21,7 +20,7 @@ const createPromocion = async (req, res) => {
             return res.status(404).json({ msg: 'No se recibieron los datos.' })
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ msg: 'Error en el servidor.' });
     }
 }
@@ -39,7 +38,7 @@ const getOnePromocion = async (req, res) => {
             return res.status(200).json(promocion);
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ msg: 'Error en el servidor.' });
     }
 }
@@ -56,7 +55,7 @@ const getAllPromociones = async (req, res) => {
             return res.status(404).json({ msg: 'Promociones no encontradas.' })
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ msg: 'Error en el servidor.' });
     }
 }
@@ -110,7 +109,7 @@ const updatePromocion = async (req,res) => {
             return res.status(404).json({msg : "Promoción no encontrada."})
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ msg: 'Error en el servidor.' });
     }
 }
@@ -129,7 +128,7 @@ const deletePromocion = async (req, res) => {
             return res.status(200).json({ msg: 'Promoción eliminada correctamente.' })
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ msg: 'Error en el servidor.' });
     }
 }

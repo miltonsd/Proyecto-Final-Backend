@@ -18,7 +18,7 @@ const getOneUsuario = async (req, res) => {
             return res.status(200).json(usuario);
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ msg: 'Error en el servidor.' });
     }
 }
@@ -36,29 +36,17 @@ const getAllUsuarios = async (req, res) => {
             return res.status(404).json({ msg: 'Usuarios no encontrados.' })
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ msg: 'Error en el servidor.' });
     }
 }
 
 const updateUsuario = async (req, res) => {
     try {
-        console.log(req.body)
         const params = req.body;
         const id_usuario = req.params.id_usuario;
         const usuario = await Usuario.findByPk(id_usuario);
         if (usuario) {
-            // let email = u.email;
-            // Valido para cambiar el correo
-            /* if (u.email != params.email) { // El mail del body es distinto al del usuario
-                console.log("Voy a validar el email");
-                const emailUnique = await EmailIsUniqueB(req, res); // Valido si ese mail lo tiene otro usuario
-                if (emailUnique) {
-                    email = params.email; // Si el correo es distinto al de la db y no esta en uso, guardo el nuevo
-                } else {
-                    return res.status(404).json({msg:"El mail ya fue registrado"})
-                }
-            } */
             // Hago el update
             usuario.update({
                 nombre: params.nombre || usuario.nombre,
@@ -77,7 +65,7 @@ const updateUsuario = async (req, res) => {
             return res.status(404).json({ msg: 'Usuario no encontrado.' })
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ msg: 'Error en el servidor.' });
     }
 }
@@ -127,7 +115,7 @@ const deleteUsuario = async (req, res) => {
       }
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ msg: "Error en el servidor." });
   }
 };
@@ -143,7 +131,7 @@ const register = async (req, res) => {
             return res.status(404).json({ msg: 'No se recibieron los datos.' })
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ msg: 'Error en el servidor.' });
     }
 }
@@ -163,7 +151,7 @@ const confirmarUsuario =  async (req, res) => {
             return res.status(404).json({'msg':'No se recibieron los datos.'})
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ msg: 'Error en el servidor.' });
     }
 }
@@ -185,7 +173,7 @@ const resetPassword = async (req, res) => {
             return res.status(404).json({ msg: 'Usuario no encontrado.' })
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ msg: 'Error en el servidor.' });
     }
 }
@@ -195,7 +183,6 @@ const cambiarPassword = async (req, res) => {
     try {
         const token = req.params.token;
         const data = jwt.decode(token, process.env.HASH_KEY);
-        console.log(data)
         const usuario = await Usuario.findOne({ where: { email: data.email } });
         if (usuario) {
             // Hago el update
@@ -207,7 +194,7 @@ const cambiarPassword = async (req, res) => {
             return res.status(404).json({ msg: 'Usuario no encontrado.' });
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ msg: 'Error en el servidor.' });
     }
 }
@@ -239,7 +226,7 @@ const modificarPerfil = async (req, res) => {
             return res.status(404).json({ msg: 'Usuario no encontrado.' })
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ msg: 'Error en el servidor.' });
     }
 }
@@ -269,7 +256,7 @@ const login = async (req, res) => {
             return res.status(404).json({ msg:'Email y/o contraseña incorrectos.' })
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ msg: 'Error en el servidor.' });
     }
 }
@@ -282,7 +269,7 @@ const logOut = async (req, res, next) => {
         const newToken = jwt.encode(payload, process.env.HASH_KEY); // Genera un nuevo token con la fecha de expiración modificada
         res.status(200).json({ message: 'Logout exitoso.', token: newToken });
     } catch (error) {
-        console.log(error)
+        console.error(error)
         res.status(500).json({ msg: 'No hay token.' })
     }
 };

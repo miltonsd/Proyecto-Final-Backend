@@ -16,7 +16,7 @@ const getOneProducto = async (req, res) => {
             return res.status(200).json(producto);
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ msg: 'Error en el servidor.' });
     }
 }
@@ -35,7 +35,7 @@ const getAllProductos = async (req, res) => {
             return res.status(404).json({ msg: 'Productos no encontrados.' })
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ msg: 'Error en el servidor.' });
     }
 }
@@ -64,7 +64,6 @@ const getAllProductosCarta = async (req, res) => {
                 }, 
             ],
             attributes: ['id_producto', 'descripcion', 'precio', 'stock', 'imagen', 'detalle'],
-            // paranoid: false,
             order: [['id_producto', 'ASC']] // Ordena por id_producto ascendente
         });
         if (productos.length === 0) {
@@ -106,7 +105,7 @@ const getAllProductosCarta = async (req, res) => {
         })    
         return await res.status(200).json(productosConPromo);
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ msg: 'Error en el servidor.' });
     }
 }
@@ -126,7 +125,7 @@ const deleteProducto = async (req, res) => {
             return res.status(200).json({ msg: 'Producto eliminado correctamente.' })
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ msg: 'Error en el servidor.' });
     }
 }

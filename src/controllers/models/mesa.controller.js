@@ -34,7 +34,7 @@ const deleteMesa = async (req, res) => {
       }
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ msg: "Error en el servidor." });
   }
 };
@@ -53,7 +53,7 @@ const habilitarMesa = async (req, res) => {
       return res.status(404).json({ msg: "Mesa no encontrada." });
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ msg: "Error en el servidor." });
   }
 };
@@ -72,7 +72,7 @@ const deshabilitarMesa = async (req, res) => {
       return res.status(404).json({ msg: "Mesa no encontrada." });
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ msg: "Error en el servidor." });
   }
 };

@@ -14,7 +14,7 @@ const getOneReserva = async (req, res) => {
             return res.status(200).json(reserva);
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ msg: 'Error en el servidor.' });
     }
 }
@@ -35,7 +35,7 @@ const getAllReservas = async (req, res) => {
             return res.status(404).json({ msg: 'Reservas no encontradas.' })
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ msg: 'Error en el servidor.' });
     }
 }
@@ -52,7 +52,7 @@ const getReservasPendientes = async (req, res) => {
         }
         return await res.status(200).json(reservas);
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ msg: 'Error en el servidor.' });
     }
 }
@@ -72,7 +72,7 @@ const getAllReservasUsuario = async (req, res) => {
             return res.status(404).json({ msg: 'El usuario no posee reservas registradas.' })
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ msg: 'Error en el servidor.' });
     }
 }

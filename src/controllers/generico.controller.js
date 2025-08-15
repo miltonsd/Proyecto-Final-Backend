@@ -14,7 +14,7 @@ exports.createOne = Model =>
                 return res.status(404).json({ msg: 'No se recibieron los datos.' })
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
             res.status(500).json({ msg: 'Error en el servidor.' });
         }
     }
@@ -23,7 +23,6 @@ exports.getOne = Model =>
     async (req, res, next) => {
         try {
             const id = req.params.id
-            // let elemento = await Model.findOne({ where: { id: id } });
             const elemento = await Model.findByPk(id);
             if (elemento) {
                 return res.status(200).json(elemento)
@@ -31,7 +30,7 @@ exports.getOne = Model =>
                 return res.status(404).json({ msg: 'No hay datos.' })
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
             res.status(500).json({ msg: 'Error en el servidor.' });
         }
     }
@@ -47,7 +46,7 @@ exports.getAll = Model =>
                 return res.status(404).json({ msg: 'No hay datos.' })
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
             res.status(500).json({ msg: 'Error en el servidor.' });
         }
     }
@@ -70,7 +69,7 @@ exports.updateOne = Model =>
                 return res.status(404).json({ msg: 'Elemento no encontrado.' })
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
             res.status(500).json({ msg: 'Error en el servidor.' });
         }
     }
@@ -92,7 +91,7 @@ exports.deleteOne = Model =>
                         }})
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
             res.status(500).json({ msg: 'Error en el servidor.' });
         }
     }

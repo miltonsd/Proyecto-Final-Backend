@@ -11,5 +11,5 @@ http.listen(PORT, () => {
             console.log('Conexion a DB exitosa');
             console.log(`Documentación de la API disponible en http://localhost:${PORT}/api-docs`);
          })
-        .catch(error => { console.log('Se ha producido un error', error) })
+        .catch(error => { console.error('Se ha producido un error', error) })
 });

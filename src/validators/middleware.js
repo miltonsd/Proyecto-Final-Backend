@@ -11,7 +11,7 @@ const validarReservas = [
                 }
             });
         } catch (error) {
-            console.log(error);
+            console.error(error);
             res.status(500).json({ msg: 'Error en el servidor' });
         }
         next();

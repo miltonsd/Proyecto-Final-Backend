@@ -9,7 +9,7 @@ const createCategoria = async (req,res) => {
             return res.status(404).json({'msg':'No se recibieron los datos.'})
         } 
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ msg: 'Error en el servidor.' });
     }
 }
@@ -25,7 +25,7 @@ const getOneCategoria = async (req,res) => {
             return res.status(200).json(categoria);
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ msg: 'Error en el servidor.' });
     }
 }
@@ -40,7 +40,7 @@ const getAllCategorias = async (req,res) => {
             return await res.status(200).json(categorias);
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ msg: 'Error en el servidor.' });
     }
 }
@@ -61,7 +61,7 @@ const updateCategoria = async (req,res) => {
             return res.status(404).json({msg:"Categoría no encontrada."})
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ msg: 'Error en el servidor.' });
     }
 }
@@ -78,7 +78,7 @@ const deleteCategoria = async (req,res) => {
             return res.status(200).json({msg:"Categoría eliminada correctamente."})
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ msg: 'Error en el servidor.' });
     }
 }

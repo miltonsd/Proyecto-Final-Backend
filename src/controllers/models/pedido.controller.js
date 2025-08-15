@@ -40,7 +40,7 @@ const createPedido = async (req, res) => {
       return res.status(404).json({ msg: "No se recibieron los datos." });
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ msg: "Error en el servidor." });
   }
 };
@@ -67,7 +67,7 @@ const getOnePedido = async (req, res) => {
       return res.status(200).json(pedido);
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ msg: "Error en el servidor." });
   }
 };
@@ -95,7 +95,7 @@ const getAllPedidos = async (req, res) => {
       return res.status(404).json({ msg: "Pedidos no encontrados." });
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ msg: "Error en el servidor." });
   }
 };
@@ -121,7 +121,7 @@ const getPendientes = async (req, res) => {
       return res.status(404).json({ msg: "No se encontraron pedidos pendientes." });
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ msg: "Error en el servidor." });
   }
 };
@@ -147,7 +147,7 @@ const getListos = async (req, res) => {
       return res.status(404).json({ msg: "No se encontraron pedidos listos." });
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ msg: "Error en el servidor." });
   }
 };
@@ -170,7 +170,7 @@ const getAllPedidosUsuario = async (req, res) => {
           return res.status(404).json({ msg: 'El usuario no posee pedidos registrados.' })
       }
   } catch (error) {
-      console.log(error);
+      console.error(error);
       res.status(500).json({ msg: 'Error en el servidor.' });
   }
 }
@@ -242,7 +242,7 @@ const updatePedido = async (req,res) => {
           return res.status(404).json({msg : "Pedido no encontrado."})
       }
   } catch (error) {
-      console.log(error);
+      console.error(error);
       res.status(500).json({ msg: 'Error en el servidor.' });
   }
 }
@@ -267,7 +267,7 @@ const deletePedido = async (req, res) => {
       
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ msg: "Error en el servidor." });
   }
 };
@@ -296,7 +296,7 @@ const cambiarEstado = async (req, res) => {
       return res.status(404).json({ msg: "Pedido no encontrado." });
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ msg: "Error en el servidor." });
   }
 };

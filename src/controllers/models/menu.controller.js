@@ -19,7 +19,7 @@ const createMenu = async (req, res) => {
             return res.status(404).json({ msg: 'No se recibieron los datos.' })
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ msg: 'Error en el servidor.' });
     }
 }
@@ -38,7 +38,7 @@ const getOneMenu = async (req, res) => {
             return res.status(200).json(menu);
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ msg: 'Error en el servidor.' });
     }
 }
@@ -56,7 +56,7 @@ const getAllMenus = async (req, res) => {
             return res.status(404).json({ msg: 'Menús no encontrados.' })
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ msg: 'Error en el servidor.' });
     }
 }
@@ -79,7 +79,7 @@ const getAllMenusUsuario = async (req, res) => {
             return res.status(404).json({ msg: 'El usuario no posee menús personalizados.' })
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ msg: 'Error en el servidor.' });
     }
   }
@@ -132,7 +132,7 @@ const getAllMenusUsuario = async (req, res) => {
             return res.status(404).json({msg : "Menú no encontrado."})
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ msg: 'Error en el servidor.' });
     }
 }
@@ -149,7 +149,7 @@ const getAllMenusUsuario = async (req, res) => {
             return res.status(200).json({ msg: 'Menú eliminado correctamente.' })
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({ msg: 'Error en el servidor.' });
     }
 }
