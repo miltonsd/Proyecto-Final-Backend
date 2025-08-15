@@ -2,7 +2,7 @@ const Router = require('express');
 const router = Router();
 const { createOne, updateOne, deleteOne } = require('../../controllers/generico.controller');
 const { Reserva } = require('../../database/models/index');
-const { getAllReservas, getOneReserva } = require('../../controllers/models/reserva.controller');
+const { getAllReservas, getOneReserva, getReservasPendientes } = require('../../controllers/models/reserva.controller');
 const { rolesMiddleware } = require('../../validators/middleware');
 
 // Rutas Genericas
@@ -149,6 +149,55 @@ router.delete('/:id', rolesMiddleware([1,2]), deleteOne(Reserva)); // Elimina un
 
 /**
  * @swagger
+ * /reservas/pendientes:
+ *   get:
+ *     summary: Obtiene las reservas que se encuentran pendientes (programadas para una fecha futura)
+ *     tags:
+ *       - Reservas
+ *     responses:
+ *       200:
+ *         description: Reservas pendientes encontradas
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id_reserva:
+ *                     type: integer
+ *                   fechaHora:
+ *                     type: string
+ *                     format: date-time
+ *                   cant_personas:
+ *                     type: integer
+ *                   isPendiente:
+ *                     type: boolean
+ *                   Usuario:
+ *                     type: object
+ *                     properties:
+ *                       id_usuario:
+ *                         type: integer
+ *                       nombre:
+ *                         type: string
+ *                       email:
+ *                         type: string
+ *                   Mesa:
+ *                     type: object
+ *                     properties:
+ *                       id_mesa:
+ *                         type: integer
+ *                       ubicacion:
+ *                         type: string
+ *       404:
+ *         description: Reservas no encontradas
+ *       500:
+ *         description: Error en el servidor
+ */
+router.get('/pendientes', rolesMiddleware([2]), getReservasPendientes); // Muestra las reservas pendientes (programadas)
+
+/**
+ * @swagger
  * /reservas/{id}:
  *   get:
  *     summary: Obtiene una reserva por ID
@@ -248,6 +297,6 @@ router.get('/:id', rolesMiddleware([1]), getOneReserva); // Muestra una reserva
  *       500:
  *         description: Error en el servidor
  */
-router.get('/', rolesMiddleware([1,2]), getAllReservas); // Muestra todas
+router.get('/', rolesMiddleware([1]), getAllReservas); // Muestra todas
 
 module.exports = router;

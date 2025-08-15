@@ -40,6 +40,23 @@ const getAllReservas = async (req, res) => {
     }
 }
 
+const getReservasPendientes = async (req, res) => {
+    try {
+        const reservas = await Reserva.findAll({
+            where: { isPendiente : true },
+            attributes: { exclude: ['isPendiente', 'deletedAt'] },
+            order: [['fechaHora', 'ASC'], ['updatedAt', 'ASC']]
+        });
+        if (reservas.length === 0) {
+            return res.status(404).json({ msg: 'Reservas no encontradas.' });
+        }
+        return await res.status(200).json(reservas);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ msg: 'Error en el servidor.' });
+    }
+}
+
 const getAllReservasUsuario = async (req, res) => {
     try {
         const id  = req.params.id_usuario;
@@ -60,4 +77,4 @@ const getAllReservasUsuario = async (req, res) => {
     }
 }
 
-module.exports = { getAllReservas, getOneReserva, getAllReservasUsuario }
+module.exports = { getAllReservas, getOneReserva, getReservasPendientes, getAllReservasUsuario }
