@@ -181,6 +181,10 @@ const updatePedido = async (req,res) => {
       const id_pedido = req.params.id;
       let p = await Pedido.findByPk(id_pedido)
       if (p) {
+          // Valida si el pedido está Pendiente para editarlo
+          if (p.estado !== "Pendiente") {
+            return res.status(404).json({ msg: "El pedido no puede ser editado porque se encuentra 'Listo' o 'Entregado'." });
+          }
           // Hago el update
           p.update({
               id_usuario: req.body.id_usuario || p.id_usuario,

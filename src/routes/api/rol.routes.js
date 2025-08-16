@@ -1,8 +1,8 @@
 const Router = require('express');
 const router = Router();
-const { getAll, getOne, createOne, updateOne, deleteOne } = require('../../controllers/generico.controller');
+const { getAll, getOne, createOne, updateOne } = require('../../controllers/generico.controller');
 const { Rol } = require('../../database/models/index');
-const {} = require('../../controllers/models/rol.controller');
+const { deleteRol } = require('../../controllers/models/rol.controller');
 
 // Rutas Genericas
 
@@ -148,6 +148,6 @@ router.patch('/:id', updateOne(Rol)); // Modifica un rol
  *       500:
  *         description: Error en el servidor
  */
-router.delete('/:id', deleteOne(Rol)); // Elimina un rol
+router.delete('/:id', deleteRol); // Elimina un rol
 
 module.exports = router;
