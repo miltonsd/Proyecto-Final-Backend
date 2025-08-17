@@ -1,8 +1,13 @@
 {
+  "name": "proyecto-final-backend",
+  "version": "1.0.0",
+  "main": "src/app.js",
+  "bin": "src/app.js",
   "scripts": {
     "start": "SET NODE_ENV=production && node src/app.js",
     "dev": "SET NODE_ENV=development && nodemon src/app",
-    "test": "echo \"Error: not test specified\" && exit 1"
+    "test": "echo \"Error: not test specified\" && exit 1",
+    "pkg": "pkg --targets node18-win-x64,node18-linux-x64,node18-macos-x64 ."
   },
   "dependencies": {
     "bcryptjs": "2.4.3",
@@ -24,6 +29,7 @@
   },
   "devDependencies": {
     "nodemon": "^1.14.9",
+    "pkg": "^5.8.1",
     "sequelize-cli": "^5.3.0"
   }
 }
