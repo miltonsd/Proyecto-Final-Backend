@@ -1,14 +1,15 @@
 const app = require('./server');
-const {sequelize} = require('./database/models/index');
 const http = require('http').createServer(app);
+const { sequelize } = require('./database/models/index');
 
-const PORT=process.env.PORT ||3000;
+const PORT = process.env.PORT || 3000;
 
 http.listen(PORT, () => {
     console.log(`Running on a port: ${PORT}`);
-    sequelize.sync({ force: false }).then(() => {
-    console.log('Conexion a DB exitosa');
-    }).catch(error => {
-    console.log('Se ha producido un error', error);
-    })
-    }); 
+    sequelize.sync({ force: false })
+        .then(() => { 
+            console.log('Conexion a DB exitosa');
+            console.log(`Documentación de la API disponible en http://localhost:${PORT}/api-docs`);
+         })
+        .catch(error => { console.error('Se ha producido un error', error) })
+});

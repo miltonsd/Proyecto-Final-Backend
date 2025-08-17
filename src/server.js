@@ -1,27 +1,35 @@
-require("dotenv").config();
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
-const path = require("path");
-const {json} = require('body-parser');
+const path = require('path');
+const { json } = require('body-parser');
 const app = express();
 
-//Requerir router
+// Swagger
+const setupSwagger = require('./config/swagger');
+setupSwagger(app); // Llama a la función de configuración de Swagger con tu instancia 'app'
+
+// Requerir router
 const router = require('./routes/index.routes');
 
-//Settings
+// Settings (Middlewares globales)
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({extend:false}));
+app.use(express.urlencoded({ extend: false }));
 app.use(json());
 
-//Rutas
-// app.use('/', router);
+// Rutas
+// Servir archivos estáticos desde el directorio de imágenes
+app.use('/img', express.static('src/img'));
+
+app.use('/', router);
 
 app.use((req, res, next) => {
-  res.status(404).json({
-    status: '404',
-    descripcion: 'Pagina no encontrada'
-  })
+    res.status(404).json({
+        status: '404',
+        descripcion: 'Página no encontrada.'
+    })
 })
 
 module.exports = app;
