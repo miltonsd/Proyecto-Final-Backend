@@ -127,6 +127,8 @@ router.get('/', getAll(Rol)); // Muestra todos
  */
 router.patch('/:id', updateOne(Rol)); // Modifica un rol
 
+// Rutas Específicas
+
 /**
  * @swagger
  * /roles/{id}:

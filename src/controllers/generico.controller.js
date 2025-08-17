@@ -27,7 +27,11 @@ exports.getOne = Model =>
             if (elemento) {
                 return res.status(200).json(elemento)
             } else {
-                return res.status(404).json({ msg: 'No hay datos.' })
+                if (opcionesValidas.includes(Model.name)) {
+                    return res.status(404).json({ elemento, msg: `${Model.name.replace(/([a-z])([A-Z])/g, "$1 $2")} no encontrada.` })
+                } else {
+                    return res.status(404).json({ elemento, msg: `${Model.name.replace(/([a-z])([A-Z])/g, "$1 $2")} no encontrado.` })              
+                }
             }
         } catch (error) {
             console.error(error);
@@ -43,7 +47,15 @@ exports.getAll = Model =>
                 elementos.sort((a, b) => a.id - b.id);
                 return res.status(200).json(elementos)
             } else {
-                return res.status(404).json({ msg: 'No hay datos.' })
+                if (opcionesValidas.includes(Model.name)) {
+                    return res.status(404).json({ elemento, msg: `${Model.name.replace(/([a-z])([A-Z])/g, "$1 $2")}s no encontradas.` })
+                } else {
+                    if (Model.name === "Rol") {
+                        return res.status(404).json({ elemento, msg: `Roles no encontrados.` })
+                    } else {
+                        return res.status(404).json({ elemento, msg: `${Model.name.replace(/([a-z])([A-Z])/g, "$1 $2")}s no encontrados.` })
+                    }
+                }
             }
         } catch (error) {
             console.error(error);
@@ -59,14 +71,19 @@ exports.updateOne = Model =>
             const elemento = await Model.findByPk(id);
             if (elemento) {
                 elemento.update(params)
-                    .then(elemento => {
-                        if (opcionesValidas.includes(Model.name)) {
-                            return res.status(201).json({ elemento, msg: `${Model.name.replace(/([a-z])([A-Z])/g, "$1 $2")} editada correctamente.`  })
-                        } else {
-                            return res.status(201).json({ elemento, msg: `${Model.name.replace(/([a-z])([A-Z])/g, "$1 $2")} editado correctamente.`  })              
-                        }})
+                .then(elemento => {
+                    if (opcionesValidas.includes(Model.name)) {
+                        return res.status(201).json({ elemento, msg: `${Model.name.replace(/([a-z])([A-Z])/g, "$1 $2")} editada correctamente.`  })
+                    } else {
+                        return res.status(201).json({ elemento, msg: `${Model.name.replace(/([a-z])([A-Z])/g, "$1 $2")} editado correctamente.`  })              
+                    }
+                })
             } else {
-                return res.status(404).json({ msg: 'Elemento no encontrado.' })
+                if (opcionesValidas.includes(Model.name)) {
+                    return res.status(404).json({ elemento, msg: `${Model.name.replace(/([a-z])([A-Z])/g, "$1 $2")} no encontrada.` })
+                } else {
+                    return res.status(404).json({ elemento, msg: `${Model.name.replace(/([a-z])([A-Z])/g, "$1 $2")} no encontrado.` })              
+                }
             }
         } catch (error) {
             console.error(error);
@@ -80,15 +97,20 @@ exports.deleteOne = Model =>
             const id = req.params.id;
             const elemento = await Model.findByPk(id);
             if (!elemento) {
-                return res.status(404).json({ msg: 'Elemento no encontrado.' })
+                if (opcionesValidas.includes(Model.name)) {
+                    return res.status(404).json({ elemento, msg: `${Model.name.replace(/([a-z])([A-Z])/g, "$1 $2")} no encontrada.` })
+                } else {
+                    return res.status(404).json({ elemento, msg: `${Model.name.replace(/([a-z])([A-Z])/g, "$1 $2")} no encontrado.` })              
+                }
             } else {
-                elemento.destroy()
-                    .then(elemento => { 
-                        if (opcionesValidas.includes(Model.name)) {
-                            return res.status(200).json({ elemento, msg: `${Model.name.replace(/([a-z])([A-Z])/g, "$1 $2")} eliminada correctamente.` })
-                        } else {
-                            return res.status(200).json({ elemento, msg: `${Model.name.replace(/([a-z])([A-Z])/g, "$1 $2")} eliminado correctamente.` })              
-                        }})
+                await elemento.destroy()
+                .then(elemento => { 
+                    if (opcionesValidas.includes(Model.name)) {
+                        return res.status(200).json({ elemento, msg: `${Model.name.replace(/([a-z])([A-Z])/g, "$1 $2")} eliminada correctamente.` })
+                    } else {
+                        return res.status(200).json({ elemento, msg: `${Model.name.replace(/([a-z])([A-Z])/g, "$1 $2")} eliminado correctamente.` })              
+                    }
+                })
             }
         } catch (error) {
             console.error(error);

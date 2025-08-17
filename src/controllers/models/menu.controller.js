@@ -154,4 +154,4 @@ const getAllMenusUsuario = async (req, res) => {
     }
 }
 
-module.exports = { createMenu, getAllMenus: getAllMenus, getOneMenu, updateMenu, deleteMenu, getAllMenusUsuario: getAllMenusUsuario }
+module.exports = { createMenu, getAllMenus, getOneMenu, updateMenu, deleteMenu, getAllMenusUsuario }

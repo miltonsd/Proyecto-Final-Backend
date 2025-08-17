@@ -107,7 +107,6 @@ router.post('/logout', authMiddleware, logOut); // LogOut del usuario
  */
 router.post('/register', register); // Crea un usuario
 
-
 /**
  * @swagger
  * /usuarios/confirmar/{token}:
@@ -131,7 +130,6 @@ router.post('/register', register); // Crea un usuario
  *         description: Error en el servidor
  */
 router.get('/confirmar/:token', confirmarUsuario); // Confirma el email del usuario
-
 
 /**
  * @swagger
