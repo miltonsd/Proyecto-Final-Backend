@@ -19,9 +19,18 @@ const validarReservas = [
 ];
 
 const authMiddleware = async(req, res, next) => {
-  const token = req.headers['authorization']
+  // Intenta obtener el token del encabezado 'Authorization' de la request
+  let token = req.headers['authorization']
+
+  // En caso de no encontrarlo en el encabezado, lo buscara en los parámetros de la URL
+  if (!token) { 
+    token = req.params.token 
+  }
+
+  // Si no encontró el token, devuelve error 401
   if (!token) return res.status(401).json({ msg: 'Token requerido' });
   
+  // Si lo encontró, intentará decodificarlo y continuar
   try {
       const decoded = jwt.decode(token, process.env.HASH_KEY);
       req.user = decoded;

@@ -144,15 +144,15 @@ const confirmarUsuario =  async (req, res) => {
         if (u) {
             u.update({
                 isConfirmado: true
-            }).then(u => {
-                return res.redirect(`${process.env.URL_FRONT}/auth`);
+            }).then(() => {
+                return res.redirect(`${process.env.URL_FRONT}/auth?confirmed=true`);
             })
         } else {
-            return res.status(404).json({'msg':'No se recibieron los datos.'})
+            return res.redirect(`${process.env.URL_FRONT}/auth?confirmed=false`);
         }
     } catch (error) {
         console.error(error);
-        res.status(500).json({ msg: 'Error en el servidor.' });
+        res.redirect(`${process.env.URL_FRONT}/auth?confirmed=false`);
     }
 }
 
@@ -189,13 +189,16 @@ const cambiarPassword = async (req, res) => {
             usuario.update({
                 contraseña: bcrypt.hashSync(data.nuevaContrasenia) || usuario.contraseña,
             })
-                .then(usuario => { res.status(201).json({ usuario, msg: 'Contraseña editada correctamente.' }) })
+                .then(() => {
+                    // Redirige al frontend en caso de éxito
+                    res.redirect(`${process.env.URL_FRONT}/auth?password_changed=true`)  
+                })
         } else {
-            return res.status(404).json({ msg: 'Usuario no encontrado.' });
+            return res.redirect(`${process.env.URL_FRONT}/auth?password_changed=false`)
         }
     } catch (error) {
         console.error(error);
-        res.status(500).json({ msg: 'Error en el servidor.' });
+        res.redirect(`${process.env.URL_FRONT}/auth?password_changed=false`);
     }
 }
 
