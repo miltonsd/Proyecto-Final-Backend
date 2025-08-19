@@ -68,7 +68,7 @@ const getAllMenusUsuario = async (req, res) => {
             where: { id_usuario : id },
             attributes: { exclude: ['id_usuario', 'createdAt', 'updatedAt', 'deletedAt'] },
             include: { 
-              model: Producto, attributes: ['id_producto', 'descripcion', 'precio'], // ASÍ SE TRAEN LOS ATRIBUTOS QUE QUIERO (SIN USAR EL EXCLUDE)
+              model: Producto, attributes: ['id_producto', 'descripcion', 'precio', 'stock'], // ASÍ SE TRAEN LOS ATRIBUTOS QUE QUIERO (SIN USAR EL EXCLUDE)
               through: { attributes: [] }, // ASÍ NO SE TRAEN LOS ATRIBUTOS DE LA TABLA INTERMEDIA
             },
         });
