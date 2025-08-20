@@ -1,8 +1,8 @@
 const Router = require('express');
 const router = Router();
-const { getAll, getOne, createOne, updateOne } = require('../../controllers/generico.controller');
+const { getOne, createOne, updateOne } = require('../../controllers/generico.controller');
 const { TipoProducto } = require('../../database/models/index');
-const { deleteTipoProducto } = require('../../controllers/models/tipoProducto.controller');
+const { deleteTipoProducto, getAllTiposProductos } = require('../../controllers/models/tipoProducto.controller');
 const { authMiddleware, rolesMiddleware } = require('../../validators/middleware');
 
 // Rutas Genericas
@@ -76,36 +76,6 @@ router.get('/:id', authMiddleware, rolesMiddleware([1]), getOne(TipoProducto)); 
 
 /**
  * @swagger
- * /tiposProducto:
- *   get:
- *     summary: Obtiene todos los tipos de producto
- *     tags:
- *       - TiposProducto
- *     responses:
- *       200:
- *         description: Lista de tipos de producto
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   id_tipoProducto:
- *                     type: integer
- *                   descripcion:
- *                     type: string
- *                   imagen:
- *                     type: string
- *       404:
- *         description: No hay datos
- *       500:
- *         description: Error en el servidor
- */
-router.get('/', getAll(TipoProducto)); // Muestra todos
-
-/**
- * @swagger
  * /tiposProducto/{id}:
  *   patch:
  *     summary: Edita un tipo de producto existente
@@ -139,6 +109,36 @@ router.get('/', getAll(TipoProducto)); // Muestra todos
 router.patch('/:id', authMiddleware, rolesMiddleware([1]), updateOne(TipoProducto)); // Modifica un tipoProducto
 
 // Rutas Especificas
+
+/**
+ * @swagger
+ * /tiposProducto:
+ *   get:
+ *     summary: Obtiene todos los tipos de producto
+ *     tags:
+ *       - TiposProducto
+ *     responses:
+ *       200:
+ *         description: Lista de tipos de producto
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id_tipoProducto:
+ *                     type: integer
+ *                   descripcion:
+ *                     type: string
+ *                   imagen:
+ *                     type: string
+ *       404:
+ *         description: No hay datos
+ *       500:
+ *         description: Error en el servidor
+ */
+router.get('/', getAllTiposProductos); // Muestra todos
 
 /**
  * @swagger

@@ -1,4 +1,28 @@
+const { fn, col } = require('sequelize');
 const { TipoProducto, Producto } = require('../../database/models/index');
+
+const getAllTiposProductos = async (req,res) => {
+    try {
+        const usuarios = await TipoProducto.findAll({
+            attributes: {
+                include: [
+                    [fn('COUNT', col('Productos.id_tipoProducto')), 'cant_productos']
+                ]
+            },
+            include: [{ model: Producto, attributes: [], required: false }],
+            group: ['TipoProducto.id_tipoProducto']
+        });
+        if (usuarios.length > 0) {
+            usuarios.sort((a, b) => a.id_usuario - b.id_usuario);
+            return await res.status(200).json(usuarios);
+        } else {
+            return res.status(404).json({ msg: 'Usuarios no encontrados.' })
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ msg: 'Error en el servidor.' });
+    }
+}
 
 const deleteTipoProducto = async (req,res) => {
     try {
@@ -28,4 +52,4 @@ const deleteTipoProducto = async (req,res) => {
     }
 }
 
-module.exports = { deleteTipoProducto }
+module.exports = { getAllTiposProductos, deleteTipoProducto }
